@@ -1,0 +1,35 @@
+---
+# These task will configure aliases in '.bashrc'
+
+- name: "Get home directory {{ item }}."
+  shell: >
+    getent passwd {{ item }} | cut -d: -f6
+  changed_when: false
+  register: user_home
+
+# http://docs.ansible.com/ansible/lineinfile_module.html
+# Add aliases to .bashrc
+- name: Insert alias ll into .bashrc
+  lineinfile:
+    dest: "{{ user_home.stdout }}/.bashrc"
+    regexp: '^\s*alias ll='
+    state: present
+    line: 'alias ll="ls -ls --color"'
+  become: true
+
+- name: Insert alias grep into .bashrc
+  lineinfile:
+    dest: "{{ user_home.stdout }}/.bashrc"
+    regexp: '^\s*alias grep='
+    state: present
+    line: 'alias grep="grep --color=auto"'
+  become: true
+    
+# Change file ownership, group and permissions
+- name: Change file ownership, group and permissions .bashrc
+  file:
+    path: "{{ user_home.stdout }}/.bashrc"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: '0644'
+  become: true

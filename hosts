@@ -1,0 +1,25 @@
+[raspbian]
+7inch
+
+[raspbian:vars]
+ansible_user=pi
+accounts='["root", "pi"]'
+TLS_CA_File='/etc/ssl/certs/ca-certificates.crt'
+
+[all:children]
+raspbian
+
+[all:vars]
+gitusername=tedsluis
+gitemailaddress=ted.sluis@gmail.com
+
+emailaddress=ted.sluis@gmail.com
+#emailpassword= ..... stored in /home/tedsluis/.ansible_secrets.yaml
+mailhubhost=smtp.gmail.com
+mailhubport=587
+
+timezone=Europe/Amsterdam
+
+[apt:children]
+raspbian
+

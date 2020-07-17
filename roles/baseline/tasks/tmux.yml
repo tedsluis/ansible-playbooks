@@ -1,0 +1,20 @@
+# tmux configuration
+
+# Get home directory
+- name: "Get home directory {{ item }}."
+  shell: >
+    getent passwd {{ item }} | cut -d: -f6
+  changed_when: false
+  register: user_home
+
+# http://docs.ansible.com/ansible/copy_module.html
+# Copies tmux.conf to ~/.tmux.conf
+- name: "Copies tmux.conf to {{ user_home.stdout }}/.tmux.conf"
+  copy:
+    src: 'files/tmux.conf'
+    dest: "{{ user_home.stdout }}/.tmux.conf"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0775
+  become: true
+

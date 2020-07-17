@@ -1,0 +1,26 @@
+---
+# These tasks will configure cronjobs.
+
+# http://docs.ansible.com/ansible/cron_module.html
+
+# cron jobs: weekly update
+- name: schedule apt-get update & upgrade every monday 10pm on raspbian.
+  cron: 
+    name: "schedule apt-get update & upgrade every cronjob monday 10pm."
+    minute: "0"
+    hour: "22"
+    weekday: "1"
+    job: "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && echo \"finished.\""
+  become: true
+  when: inventory_hostname in groups['raspbian']
+
+# Weekly reboot
+- name: schedule reboot cronjob every monday 11:30pm on raspbian.
+  cron:
+    name: "schedule reboot every monay 11:30pm."
+    minute: "30"
+    hour: "23"
+    weekday: "1"
+    job: "sudo /sbin/reboot"
+  become: true
+  when: inventory_hostname in groups['raspbian']

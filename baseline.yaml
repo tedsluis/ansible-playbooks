@@ -1,0 +1,7 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Baseline
+  hosts: 
+  - lenovo
+  roles:
+  - baseline

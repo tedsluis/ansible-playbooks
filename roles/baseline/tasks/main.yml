@@ -1,0 +1,29 @@
+---
+# tasks file for baseline
+
+- include: packages.yml
+
+- include: aliasses.yml
+  loop: "{{ accounts }}"
+  
+- include: cronjobs.yml
+
+- include: git.yml
+  loop: "{{ accounts }}"
+  
+- include: hosts.yml
+
+- include: mail.yml
+
+- include: motd.yml
+
+- include: prompt.yml
+  loop: "{{ accounts }}"
+  
+- include: timezone.yml
+
+- include: tmux.yml
+  loop: "{{ accounts }}"
+  
+- include: vimsettings.yml
+  loop: "{{ accounts }}"

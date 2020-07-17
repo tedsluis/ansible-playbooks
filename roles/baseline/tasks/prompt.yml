@@ -1,0 +1,41 @@
+# These tasks will set the default command prompt.
+
+- name: "Get home directory {{ item }}."
+  shell: >
+    getent passwd {{ item }} | cut -d: -f6
+  changed_when: false
+  register: user_home
+
+# Clone https://github.com/tedsluis/bash-git-prompt
+- name: "Clone bash-git-prompt to {{ user_home.stdout }}/.bash-git-prompt"
+  git:
+    repo: git@github.com:tedsluis/bash-git-prompt.git
+    dest: "{{ user_home.stdout }}/.bash-git-prompt"
+    depth: 1
+    accept_hostkey: yes
+    key_file: "{{ user_home.stdout }}/.ssh/id_rsa"
+  become: true
+
+# Copies .git-prompt-colors.sh to ~/.git-prompt-colors.sh
+- name: "Copies .git-prompt-colors.sh to {{ user_home.stdout }}/.git-prompt-colors.sh"
+  copy:
+    src: 'files/.git-prompt-colors.sh'
+    dest: "{{ user_home.stdout }}/.git-prompt-colors.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0774
+  become: true
+
+# Add git branch name to bash prompt
+# https://docs.ansible.com/ansible/blockinfile_module.html
+- name: "Add bash prompt using {{ user_home.stdout }}/.bashrc"
+  blockinfile:
+    dest: "{{ user_home.stdout }}/.bashrc"
+    block: |
+      if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+         GIT_PROMPT_THEME=Custom
+         GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
+         GIT_PROMPT_ONLY_IN_REPO=1
+         source $HOME/.bash-git-prompt/gitprompt.sh
+      fi
+  become: true
