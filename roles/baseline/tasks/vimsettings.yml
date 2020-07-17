@@ -1,0 +1,29 @@
+---
+# These task will do the vim configuration.
+
+- debug:
+    msg: "{{ ansible_facts['os_family'] }}"
+
+# http://docs.ansible.com/ansible/lineinfile_module.html
+
+# Set vim syntax highlighting on (debian based hosts)
+- name: "Set vim syntax no (globaly) in /etc/vim/vimrc."
+  lineinfile:
+    dest: /etc/vim/vimrc
+    regexp: '^\s*"?syntax o'
+    state: present
+    line: 'syntax on'
+  become: true
+  when: ansible_facts['os_family'] == "Debian"
+
+# Set vim syntax highlighting on (rhel based hosts)
+- name: "Set vim syntax no (globaly) in /etc/vimrc."
+  lineinfile:
+    dest: /etc/vimrc
+    regexp: '^\s*"?syntax o'
+    state: present
+    line: 'syntax on'
+  become: true
+  when: ansible_facts['os_family'] == "RedHat"
+
+
