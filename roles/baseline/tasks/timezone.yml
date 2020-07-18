@@ -1,7 +1,4 @@
 ---
-# These task will do the basic configuration for a dump1090 host.
-# ted.sluis@gmail.com
-
 # https://docs.ansible.com/ansible/timezone_module.html
 
 # Set time zone

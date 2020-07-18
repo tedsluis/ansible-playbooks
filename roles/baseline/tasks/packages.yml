@@ -1,7 +1,17 @@
----
+--
 # These task will install basic packages.
 
+- name: create podman repo
+  copy:
+    content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'
+    dest: /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+    owner: root
+    root: root
+    mode: 0644
 
+- name: Get gpg key
+  shell: |
+    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
 
 # http://docs.ansible.com/ansible/apt_module.html
 - name: "apt install basic packages."
