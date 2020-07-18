@@ -1,7 +1,8 @@
 ---
 # These task will install basic packages.
 
-# APT based hosts
+
+
 # http://docs.ansible.com/ansible/apt_module.html
 - name: "apt install basic packages."
   apt: 
@@ -18,73 +19,20 @@
     - mailutils
     - netcat 
     - net-tools 
+    - podman
     - rsync
     - ssmtp
     - tmux
     - vim
     - wget
   become: true
-  when: inventory_hostname in groups['apt']
 
 - name: "apt update: refresh cache."
   apt: 
     update_cache: yes
   become: true
-  when: inventory_hostname in groups['apt']
 
 - name: "apt upgrade: update all packages to the latest version."
   apt: 
     upgrade: full
   become: true
-  when: inventory_hostname in groups['apt']
-
-# DNF bases hosts
-# https://docs.ansible.com/ansible/latest/modules/dnf_module.html
-- name: "dnf install basic packages."
-  dnf: 
-    name:
-      - curl
-      - git
-      - libselinux-python
-      - net-tools
-      - rsync
-      - ssmtp
-      - tmux
-      - vim
-      - wget
-    state: latest
-  become: true
-  when: inventory_hostname in groups['dnf']
-
-- name: "dnf update all packages to the latest version."
-  dnf:
-    name: "*"
-    state: latest
-  become: true
-  when: inventory_hostname in groups['dnf']
-
-# YUM bases hosts
-# https://docs.ansible.com/ansible/latest/modules/yum_module.html
-- name: "yum install basic packages."
-  yum: 
-    name: 
-      - curl
-      - git
-      - libselinux-python
-      - net-tools
-      - rsync
-      - ssmtp
-      - tmux
-      - vim
-      - wget
-    state: latest
-  become: true
-  when: inventory_hostname in groups['yum']
-
-- name: "yum update all packages to the latest version."
-  dnf:
-    name: "*"
-    state: latest
-  become: true
-  when: inventory_hostname in groups['yum']
-
