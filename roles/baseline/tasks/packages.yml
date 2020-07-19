@@ -8,8 +8,9 @@
     content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'
     dest: /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
     owner: root
-    root: root
+    group: root
     mode: 0644
+  become: true
 
 - name: Get gpg key
   shell: |
