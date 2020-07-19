@@ -2,6 +2,6 @@
 
 - name: Baseline
   hosts: 
-  - lenovo
+  - all
   roles:
   - baseline

@@ -1,8 +1,8 @@
---
+---
 # These task will install basic packages.
 
 # http://docs.ansible.com/ansible/apt_module.html
-#
+
 - name: create podman repo
   copy:
     content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'

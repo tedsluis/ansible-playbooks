@@ -14,7 +14,7 @@ gitusername=tedsluis
 gitemailaddress=ted.sluis@gmail.com
 
 emailaddress=ted.sluis@gmail.com
-#emailpassword= ..... stored in /home/tedsluis/.ansible_secrets.yaml
+#emailpassword= ..... stored in groupv_vars/vault.yaml
 mailhubhost=smtp.gmail.com
 mailhubport=587
 
