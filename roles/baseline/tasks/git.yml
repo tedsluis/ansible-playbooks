@@ -55,7 +55,7 @@
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: 'name'
     state: present
-    insertafter: 'user'
+    insertafter: '\[user\]'
     line: "name = {{ gitusername }}"
   become: true
 
@@ -85,6 +85,6 @@
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: 'default'
     state: present
-    insertafter: 'push'
+    insertafter: '\[push\]'
     line: 'default = matching'
   become: true
