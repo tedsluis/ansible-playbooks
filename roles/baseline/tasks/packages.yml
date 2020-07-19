@@ -1,6 +1,8 @@
 --
 # These task will install basic packages.
 
+# http://docs.ansible.com/ansible/apt_module.html
+#
 - name: create podman repo
   copy:
     content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'
@@ -13,7 +15,11 @@
   shell: |
     curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
 
-# http://docs.ansible.com/ansible/apt_module.html
+- name: "apt update: refresh cache."
+  apt: 
+    update_cache: yes
+  become: true
+
 - name: "apt install basic packages."
   apt: 
     name: "{{ packages }}"
@@ -26,6 +32,7 @@
     - cron 
     - curl
     - git 
+    - jq
     - mailutils
     - netcat 
     - net-tools 

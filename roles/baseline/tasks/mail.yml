@@ -3,7 +3,7 @@
 
 # Get mail password
 - name: "Include Ansible secrets to get emailpassword."
-  include_vars: /home/tedsluis/.ansible_secrets.yaml
+  include_vars: group_vars/vault.yaml
 
 # http://docs.ansible.com/ansible/lineinfile_module.html
 
