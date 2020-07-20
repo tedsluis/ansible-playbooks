@@ -8,12 +8,13 @@
   
 - include: cronjobs.yml
 
+- include: sshconfig.yml
+  loop: "{{ accounts }}"
+
 - include: git.yml
   loop: "{{ accounts }}"
   
 - include: hosts.yml
-
-- include: mail.yml
 
 - include: motd.yml
 
@@ -27,3 +28,6 @@
   
 - include: vimsettings.yml
   loop: "{{ accounts }}"
+
+- include: mail.yml
+
