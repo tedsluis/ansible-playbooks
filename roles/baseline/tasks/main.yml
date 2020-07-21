@@ -29,5 +29,8 @@
 - include: vimsettings.yml
   loop: "{{ accounts }}"
 
+- include: ansible.yml
+  loop: "{{ accounts }}"
+
 - include: mail.yml
 
