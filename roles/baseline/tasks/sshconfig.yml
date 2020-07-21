@@ -11,8 +11,8 @@
   register: user_home
 
 - name: "create {{ user_home.stdout }}/id_rsa"
-  copy:
-    content: "{{ id_rsa }}"
+  template:
+    src: templates/id_rsa
     dest: "{{ user_home.stdout}}/.ssh/id_rsa"
     owner: "{{ item }}"
     group: "{{ item }}"
