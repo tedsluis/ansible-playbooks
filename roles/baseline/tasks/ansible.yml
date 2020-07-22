@@ -18,12 +18,14 @@
 
 - name: copy /tmp/ansible-completion/*.bash to /etc/bash_completion.d/
   copy: 
-    src: "{{ item.[1] }}"
+    src: "{{ file_item }}"
     dest: /etc/bash_completion.d/
     owner: root
     group: root
     mode: 0744
   with_fileglob: "/tmp/ansible-completion/*.bash"
+  loop_control:
+    loop_var: file_item
   become: true
 
 - name: remove /tmp/ansible-completion
@@ -35,11 +37,15 @@
 # https://github.com/junegunn/vim-plug
 - name: create directory vim autoload
   file:
-    path:  "{{ user_home.stdout }}/.vim/autoload"
+    path:  "{{ user_home.stdout }}/{{ directory_item }}"
     state: directory
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0664
+  loop:
+    - ".vim/autoload"
+  loop_control:
+    loop_var: directory_item
   become: true
 
 - name: install plug.vim
@@ -49,6 +55,7 @@
   
 # https://github.com/pearofducks/ansible-vim
 - name: install VIM syntax highlighting plugin for Ansible
+  become: true
   blockinfile:
     dest: "{{ user_home.stdout }}/.vimrc"
     block: |
@@ -60,4 +67,3 @@
   
       " List ends here. Plugins become visible to Vim after this call.
       call plug#end()
-  become: true
