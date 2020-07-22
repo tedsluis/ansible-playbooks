@@ -41,7 +41,7 @@
     state: directory
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 0664
+    mode: 0774
   loop:
     - ".vim/autoload"
   loop_control:
@@ -52,6 +52,14 @@
   shell: |
     curl -fLo {{ user_home.stdout }}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   become: true
+
+- name: Set permissions plug.vim
+  file:
+    path: "{{ user_home.stdout }}/.vim/autoload/plug.vim"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0774
+  become: true
   
 # https://github.com/pearofducks/ansible-vim
 - name: install VIM syntax highlighting plugin for Ansible
@@ -59,6 +67,7 @@
   blockinfile:
     create: true
     dest: "{{ user_home.stdout }}/.vimrc"
+    marker: '"' 
     block: |
       " Plugins will be downloaded under the specified directory.
       call plug#begin('~/.vim/plugged')
