@@ -1,0 +1,24 @@
+[Unit]
+Descriptiom=rocketchat
+Requires=mongo.service
+After=mongo.service
+
+[Service]
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/podman kill rocketchat
+ExecStartPre=-/usr/bin/podman rm rocketchat
+ExecStartPre=-/usr/bin/podman pull rocketchat:latest
+
+ExecStartPre=/usr/bin/podman run \
+    --name rocketchat \
+    -e MONGO_INITDB_ROOT_USERNAME={{ mongo_root_username | default(root) }} \
+    -e MONGO_INITDB_ROOT_PASSWORD{{ mongo_root_password | default(password) }} \
+    -v /data/mongo/db:/data/db \
+    -v /data/mongo/dump:/data/dump \
+    --net=rocketchati_default
+    mongo:{{ mongo_image_version | default(3.2) }} \
+    mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+
+ExecStop=-/usr/bin/podman kill mongo
+ExecStop=-/usr/bin/podman rm mongo
