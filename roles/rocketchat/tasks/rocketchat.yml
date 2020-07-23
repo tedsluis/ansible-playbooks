@@ -12,24 +12,20 @@
     - /data/mongo/dump
   become: true
 
-- name: create mongo unit
+- name: create rocketchat unit
   template:
-    src: templates/mongo.j2
-    dest: /etc/systemd/system/mongo.service
+    src: templates/rocketchat.j2
+    dest: /etc/systemd/system/rocketchat.service
     owner: root
     group: root
     mode: 0775
   become: true
-  notify: restart mongo
+  notify: restart rocketchat
 
-- name: start mongo
+- name: start rocketchhat
   systemd:
-    name: mongo
+    name: rocketchat
     state: started
     enabled: yes
   become: true
-
-- name: Initiate mongo
-  shell: |
-    /usr/bin/podman exec -it mongo mongo --eval "printjson(rs.initiate())"
 
