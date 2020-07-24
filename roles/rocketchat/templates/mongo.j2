@@ -8,7 +8,7 @@ ExecStartPre=-/usr/bin/podman kill mongo
 ExecStartPre=-/usr/bin/podman rm mongo
 ExecStartPre=-/usr/bin/podman pull mongo:{{ mongo_image_version | default('3.2') }}
 
-ExecStartPre=/usr/bin/podman run \
+ExecStart=/usr/bin/podman run \
     --name mongo \
     -e MONGO_INITDB_ROOT_USERNAME={{ mongo_root_username | default('root') }} \
     -e MONGO_INITDB_ROOT_PASSWORD={{ mongo_root_password | default('password') }} \
