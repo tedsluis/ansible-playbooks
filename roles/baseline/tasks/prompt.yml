@@ -13,8 +13,10 @@
     dest: "{{ user_home.stdout }}/.bash-git-prompt"
     depth: 1
     accept_hostkey: yes
+    force: yes
     key_file: "{{ user_home.stdout }}/.ssh/id_rsa"
   become: true
+  become_user: "{{ item }}"
 
 # Copies .git-prompt-colors.sh to ~/.git-prompt-colors.sh
 - name: "Copies .git-prompt-colors.sh to {{ user_home.stdout }}/.git-prompt-colors.sh"
