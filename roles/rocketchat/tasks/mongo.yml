@@ -7,14 +7,14 @@
     owner: root
     group: root
     mode: 0775
-  with_item:
-    - /data/mongo/db
-    - /data/mongo/dump
+  with_items:
+    - "/data/mongo/db"
+    - "/data/mongo/dump"
   become: true
 
 - name: create mongo unit
   template:
-    src: templates/mongo.j2
+    src: mongo.j2
     dest: /etc/systemd/system/mongo.service
     owner: root
     group: root
@@ -29,7 +29,7 @@
     enabled: yes
   become: true
 
-- name: Initiate mongo
-  shell: |
-    /usr/bin/podman exec -it mongo mongo --eval "printjson(rs.initiate())"
+  #- name: Initiate mongo
+  #shell: |
+    #  /usr/bin/podman exec -it mongo mongo --eval "printjson(rs.initiate())"
 

@@ -1,4 +1,0 @@
----
-- name: check rocketchat network
-  shell: |
-    /usr/bin/podman network ls | grep rocketchat

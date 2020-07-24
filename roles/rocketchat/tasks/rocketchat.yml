@@ -7,14 +7,13 @@
     owner: root
     group: root
     mode: 0775
-  with_item:
-    - /data/mongo/db
-    - /data/mongo/dump
+  with_items:
+    - /data/rocketchat/uploads
   become: true
 
 - name: create rocketchat unit
   template:
-    src: templates/rocketchat.j2
+    src: rocketchat.j2
     dest: /etc/systemd/system/rocketchat.service
     owner: root
     group: root

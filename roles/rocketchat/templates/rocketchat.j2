@@ -1,5 +1,5 @@
 [Unit]
-Descriptiom=rocketchat
+Description=rocketchat
 Requires=mongo.service
 After=mongo.service
 
@@ -17,7 +17,8 @@ ExecStartPre=/usr/bin/podman run \
     -e MONGO_INITDB_ROOT_USERNAME={{ mongo_root_username | default(root) }} \
     -e MONGO_INITDB_ROOT_PASSWORD{{ mongo_root_password | default(password) }} \
     -v /data/rockerchat/uploads:/app/uploads \
-    --net=rocketchati_default
+    --net=rocketchat_default \
+    --expose 3000 \
     rocketchat/rocket.chat:latest
 
 ExecStop=-/usr/bin/podman kill rocketchat

@@ -1,6 +1,8 @@
 ---
 # tasks file for rocketchat
 
+- include: network.yml
+
 - include: mongo.yml
 
 - include: rocketchat.yml
