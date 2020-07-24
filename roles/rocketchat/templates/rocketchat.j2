@@ -10,7 +10,7 @@ ExecStartPre=-/usr/bin/podman kill rocketchat
 ExecStartPre=-/usr/bin/podman rm rocketchat
 ExecStartPre=-/usr/bin/podman pull rocketchat/rocket.chat:latest
 
-ExecStartPre=/usr/bin/podman run \
+ExecStart=/usr/bin/podman run \
     --name rocketchat \
     -e MONGO_OPLOG_URL=mongodb://mongo:27017/local \
     -e MONGO_URL=mongodb://mongo27017/rocketchat \
