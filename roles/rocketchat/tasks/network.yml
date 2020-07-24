@@ -1,0 +1,13 @@
+---
+- name: check rocketchat_default podman network
+  shell: |
+    /usr/bin/podman network ls 
+  become: true
+  register: podman_network
+
+- name: create rocketchat_default podman network
+  shell: |
+    /usr/bin/podman network create rocketchat_default
+  become: true
+  when: '"rocketchat_default" not in podman_network.stdout' 
+

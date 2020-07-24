@@ -1,0 +1,7 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Rocketchat
+  hosts: 
+  - 7inch
+  roles:
+  - rocketchat
