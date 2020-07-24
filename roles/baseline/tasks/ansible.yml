@@ -68,6 +68,9 @@
     create: true
     dest: "{{ user_home.stdout }}/.vimrc"
     marker: '"' 
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0774
     block: |
       " Plugins will be downloaded under the specified directory.
       call plug#begin('~/.vim/plugged')
