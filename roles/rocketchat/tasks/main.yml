@@ -3,6 +3,8 @@
 
 - include: network.yml
 
+- include: mongo-build.yml
+
 - include: mongo.yml
 
 - include: rocketchat.yml
