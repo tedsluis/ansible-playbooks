@@ -1,62 +1,71 @@
 ---
 
-- name: create temporery mongo directory
-  file: 
-    path: /tmp/mongo
-    state: directory
-    owner: root
-    group: root
-    mode: 775
-  become: true
-
-- name: clone repo https://github.com/lowdef/rpi3-mongodb3.2.git
-  git:
-    repo: https://github.com/lowdef/rpi3-mongodb3.2.git
-    dest: /tmp/mongo
-    force: yes
-  become: true
-
-- name: pull resin/rpi-raspbian:jessie base image 
-  shell: |
-    podman pull resin/rpi-raspbian:jessie
-    become: true
-
-- name: create swap space
-  shell: |
-    dd if=/dev/zero of=/mytempswapfile bs=1024 count=524288
-    chmod 0600 /mytempswapfile
-    mkswap /mytempswapfile
-    swapon /mytempswapfile
-  become: true
-
-- name: build mongo 3.2 image for raspberry 32bit arm v7
-  shell: |
-    cd /tmp/mongo
-    podman build -t mongo -f /tmp/mongo/Dockerfile . |  tee /tmp/rpi3-mongodb3.2-build.log
-    become: true
-
-- name: remove swap space
-  shell: |
-    swapoff -v /mytempswapfile
-
-- name: ls image
+- name: 
   shell: |
     podman images | grep mongo
-  register: ls_image
+  become: true
+  register: mongo_image
 
-- debug:
-    msg: "ls image: {{ ls_image.stdout }}"
+- name: build mongo image when mongo image not exists
+  when: '"latest" not in mongo_image'
+  block:
 
-- name: inspect mongo image
-  shell: |
-    podman inspect $(podman images | grep mongo | awk '{print $3}')
-  register: inspect_image
-
-- debug:
-    msg: "inspect image: {{ inspect_image.stdout }}"
-
-
-
-
-
-
+    - name: create temporery mongo directory
+      file: 
+        path: /tmp/mongo
+        state: directory
+        owner: root
+        group: root
+        mode: 775
+      become: true
+    
+    - name: clone repo https://github.com/lowdef/rpi3-mongodb3.2.git
+      git:
+        repo: https://github.com/lowdef/rpi3-mongodb3.2.git
+        dest: /tmp/mongo
+        force: yes
+      become: true
+    
+    - name: pull resin/rpi-raspbian:jessie base image 
+      shell: |
+        podman pull resin/rpi-raspbian:jessie
+      become: true
+    
+    - name: create swap space
+      shell: |
+        dd if=/dev/zero of=/mytempswapfile bs=1024 count=524288
+        chmod 0600 /mytempswapfile
+        mkswap /mytempswapfile
+        swapon /mytempswapfile
+      become: true
+    
+    - name: build mongo 3.2 image for raspberry 32bit arm v7
+      shell: |
+        cd /tmp/mongo
+        podman build -t mongo -f /tmp/mongo/Dockerfile . |  tee /tmp/rpi3-mongodb3.2-build.log
+      become: true
+    
+    - name: remove swap space and clone directory
+      shell: |
+        swapoff -v /mytempswapfile
+        rm -f /mytempswapfile || echo "gone"
+        rm -rf /tmp/mongo
+      become: true
+    
+    - name: ls image
+      shell: |
+        podman images | grep mongo
+      become: true
+      register: ls_image
+    
+    - debug:
+        msg: "ls image: {{ ls_image.stdout }}"
+    
+    - name: inspect mongo image
+      shell: |
+        podman inspect $(podman images | grep mongo | awk '{print $3}')
+      become: true
+      register: inspect_image
+    
+    - debug:
+        msg: "inspect image: {{ inspect_image.stdout }}"
