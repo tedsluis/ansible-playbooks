@@ -1,3 +1,4 @@
 ---
 mongo_image_version: latest
+mongo_image_name: mongo
 
