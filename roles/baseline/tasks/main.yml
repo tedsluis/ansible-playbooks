@@ -8,6 +8,8 @@
   
 - include: cronjobs.yml
 
+- include: dnsmasq.yml
+
 - include: sshconfig.yml
   loop: "{{ accounts }}"
 

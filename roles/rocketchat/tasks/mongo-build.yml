@@ -2,12 +2,15 @@
 
 - name: check for mongo image
   shell: |
-    podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version | default('latest') }} 
+    podman images | grep {{ mongo_image_name }} 
   become: true
   register: mongo_image
 
+- debug:
+    msg: "existing mongo images: '{{ mongo_image.stdout }}', mongo image name: '{{ mongo_image_name }}', mongo image version: '{{ mongo_image_version }}'"
+
 - name: build mongo image when mongo image not exists
-  when: '"mongo" not in mongo_image'
+  when: mongo_image.stdout is not search( "{{ mongo_image_name }}" ) or mongo_image.stdout is not search( "{{ mongo_image_version }}" ) 
   block:
 
     - name: create temporery mongo directory
@@ -38,8 +41,9 @@
         mkswap /mytempswapfile
         swapon /mytempswapfile
       become: true
+      ignore_errors: True
     
-      - name: build mongo {{ mongo_image_name }}:{{ mongo_image_version }} image for raspberry 32bit arm v7
+    - name: "build mongo {{ mongo_image_name }}:{{ mongo_image_version }} image for raspberry 32bit arm v7"
       shell: |
         cd /tmp/mongo
         podman build --format=docker -t {{ mongo_image_name }}:{{ mongo_image_version | default('latest') }} -f /tmp/mongo/Dockerfile . |  tee /tmp/{{ mongo_image_name }}{{ mongo_image_version | default('latest') }}-build.log
@@ -54,7 +58,7 @@
       become: true
       ignore_errors: True
     
-    - name: ls image {{ mongo_image_name }}:{{ mongo_image_version }}
+    - name: "ls image {{ mongo_image_name }}:{{ mongo_image_version }}"
       shell: |
         podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }}
       become: true
@@ -63,7 +67,7 @@
     - debug:
         msg: "ls image: {{ ls_image.stdout }}"
     
-    - name: inspect mongo image {{ mongo_image_name }}:{{ mongo_image_version }}
+    - name: "inspect mongo image {{ mongo_image_name }}:{{ mongo_image_version }}"
       shell: |
         podman inspect $(podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }} | awk '{print $3}')
       become: true
@@ -72,14 +76,17 @@
     - debug:
         msg: "inspect image: {{ inspect_image.stdout }}"
 
-    - name: login docker.io, user {{ docker_username }}
-      shell: |
-        podman login docker.io --username {{ docker_username }} --password {{ docker_token }}
-      become: true
+- name: "include ansible vault secrets to login to docker.io."
+  include_vars: group_vars/vault.yaml
 
-    - name: push {{ mongo_image_name }}:{{ mongo_image_version }} to docker.io
-      shell: |
-        podman tag $(podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }} | awk '{print $3}') docker.io/tedsluis/{{ mongo_image_name }}:{{ mongo_image_version }}
-        podman push docker.io/tedsluis/{{ mongo_image_name }}:{{ mongo_image_version }}
-      become: true
+- name: "login docker.io, user {{ dockerio_username }}"
+  shell: |
+    podman login docker.io --username {{ dockerio_username }} --password {{ dockerio_token }}
+  become: true
+
+- name: "push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }} to docker.io"
+  shell: |
+    podman tag $(podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }} | awk '{print $3}') {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
+    podman push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
+  become: true
 
