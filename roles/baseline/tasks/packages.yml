@@ -30,6 +30,7 @@
   vars:
     packages:
     - apt-utils 
+    - dnsmasq
     - cron 
     - curl
     - git 

@@ -6,7 +6,7 @@ Restart=always
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/podman kill mongo
 ExecStartPre=-/usr/bin/podman rm mongo
-ExecStartPre=-/usr/bin/podman pull mongo:{{ mongo_image_version | default('latest') }}
+ExecStartPre=-/usr/bin/podman pull {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version | default('latest') }}
 
 ExecStart=/usr/bin/podman run \
     --name mongo \
@@ -15,7 +15,7 @@ ExecStart=/usr/bin/podman run \
     -v /data/mongo/db:/data/db \
     -v /data/mongo/dump:/data/dump \
     --net=rocketchat_default \
-    mongo:{{ mongo_image_version | default('latest') }} \
+    {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version | default('latest') }} \
     mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
 
 ExecStop=-/usr/bin/podman kill mongo

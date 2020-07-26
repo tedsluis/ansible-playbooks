@@ -1,4 +1,5 @@
 ---
-mongo_image_version: latest
+mongo_image_version: 3.2
 mongo_image_name: mongo
+mongo_image_repo: docker.io/tedsluis
 
