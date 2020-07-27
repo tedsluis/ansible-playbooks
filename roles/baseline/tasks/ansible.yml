@@ -1,13 +1,13 @@
 ---
 
-- name: "Get home directory {{ item }}."
+- name: "get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
   register: user_home
 
 # https://github.com/dysosmus/ansible-completion
-- name: "Clone git@github.com:dysosmus/ansible-completion.git to /tmp/ansible-completion/"
+- name: "clone git@github.com:dysosmus/ansible-completion.git to /tmp/ansible-completion/"
   git:
     repo:  git@github.com:dysosmus/ansible-completion.git 
     dest: "/tmp/ansible-completion"
@@ -48,12 +48,12 @@
     loop_var: directory_item
   become: true
 
-- name: install plug.vim
+- name: download plug.vim
   shell: |
     curl -fLo {{ user_home.stdout }}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   become: true
 
-- name: Set permissions plug.vim
+- name: set permissions plug.vim
   file:
     path: "{{ user_home.stdout }}/.vim/autoload/plug.vim"
     owner: "{{ item }}"
@@ -62,7 +62,7 @@
   become: true
   
 # https://github.com/pearofducks/ansible-vim
-- name: install VIM syntax highlighting plugin for Ansible
+- name: install vim syntax highlighting plugin for Ansible
   become: true
   blockinfile:
     create: true
@@ -80,3 +80,9 @@
   
       " List ends here. Plugins become visible to Vim after this call.
       call plug#end()
+
+- name: update vim.plug
+  shell: |
+    vim +PlugUpdate +qall > /dev/null
+  become: true
+  become_user: "{{ item }}"
