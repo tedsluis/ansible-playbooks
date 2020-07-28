@@ -76,17 +76,17 @@
     - debug:
         msg: "inspect image: {{ inspect_image.stdout }}"
 
-- name: "include ansible vault secrets to login to docker.io."
-  include_vars: group_vars/vault.yaml
-
-- name: "login docker.io, user {{ dockerio_username }}"
-  shell: |
-    podman login docker.io --username {{ dockerio_username }} --password {{ dockerio_token }}
-  become: true
-
-- name: "push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }} to docker.io"
-  shell: |
-    podman tag $(podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }} | awk '{print $3}') {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
-    podman push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
-  become: true
-
+    - name: "include ansible vault secrets to login to docker.io."
+      include_vars: group_vars/vault.yaml
+    
+    - name: "login docker.io, user {{ dockerio_username }}"
+      shell: |
+        podman login docker.io --username {{ dockerio_username }} --password {{ dockerio_token }}
+      become: true
+    
+    - name: "push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }} to docker.io"
+      shell: |
+        podman tag $(podman images | grep {{ mongo_image_name }} | grep {{ mongo_image_version }} | awk '{print $3}') {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
+        podman push {{ mongo_image_repo }}/{{ mongo_image_name }}:{{ mongo_image_version }}
+      become: true
+    
