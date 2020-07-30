@@ -36,3 +36,6 @@
 
 - include: mail.yml
 
+- include: raspi-config.yml
+  tags: raspi-config
+
