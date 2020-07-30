@@ -1,0 +1,12 @@
+---
+
+- name: Initiate mongo
+  shell: |
+    /usr/bin/podman exec -it mongo mongo --eval "printjson(rs.initiate())"
+
+    mongo -u root -p yourRootPass --authenticationDatabase admin 
+
+    rs.initiate({ _id: 'rs0', members: [ { _id: 0, host: 'localhost:27017' } ]})
+
+
+
