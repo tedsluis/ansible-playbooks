@@ -12,10 +12,10 @@ ExecStartPre=-/usr/bin/podman pull rocketchat/rocket.chat:latest
 
 ExecStart=/usr/bin/podman run \
     --name rocketchat \
-    -e MONGO_URL=mongodb://{{ mongo_root_username }}:{{ mongo_root_password }}@mongo:27017/rocketchat?replicaSet=rs01&authSource={{ mongo_root_user }} \
-    -e MONGO_OPLOG_URL=mongodb://{{ mongo_root_user }}:{{ mongo_root_password}}@mongo:27017/local?replicaSet=rs01&authSource={{ mongo_root_password }} \
+    -e MONGO_URL=mongodb://{{ mongo_root_username | default('root') }}:{{ mongo_root_password | default('password') }}@mongo:27017/rocketchat?replicaSet=rs01&authSource={{ mongo_root_user | default('root') }} \
+    -e MONGO_OPLOG_URL=mongodb://{{ mongo_root_user | default('root') }}:{{ mongo_root_password | default('password') }}@mongo:27017/local?replicaSet=rs01&authSource={{ mongo_root_password | default('password') }} \
     -e ROOT_URL=http://192.168.43.226 \
-    -v /data/rockerchat/uploads:/app/uploads \
+    -v /data/rocketchat/uploads:/app/uploads \
     --net=rocketchat_default \
     --expose 3000 \
     rocketchat/rocket.chat:latest
