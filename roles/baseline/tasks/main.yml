@@ -2,39 +2,53 @@
 # tasks file for baseline
 
 - include: packages.yml
+  tags: packages
 
 - include: aliasses.yml
   loop: "{{ accounts }}"
-  
+  tags: aliasses
+
 - include: cronjobs.yml
+  tags: cronjobs.nl
 
 - include: dnsmasq.yml
+  tags: dnsmasq
 
 - include: sshconfig.yml
   loop: "{{ accounts }}"
+  tags: sshconfig
 
 - include: git.yml
   loop: "{{ accounts }}"
-  
-- include: hosts.yml
+  tags: git
 
+- include: hosts.yml
+  tags: hosts
+    
 - include: motd.yml
+  tags: motd
 
 - include: prompt.yml
   loop: "{{ accounts }}"
-  
+  tags: prompt
+
 - include: timezone.yml
+  tags: timezone
 
 - include: tmux.yml
   loop: "{{ accounts }}"
-  
+  tags: tmux
+
 - include: vimsettings.yml
   loop: "{{ accounts }}"
+  tags: vimsettings
 
 - include: ansible.yml
   loop: "{{ accounts }}"
-
+  tags: ansible
+    
 - include: mail.yml
+  tags: mail
 
 - include: raspi-config.yml
   tags: raspi-config
