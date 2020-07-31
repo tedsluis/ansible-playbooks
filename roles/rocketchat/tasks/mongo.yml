@@ -29,7 +29,3 @@
     enabled: yes
   become: true
 
-  #- name: Initiate mongo
-  #shell: |
-    #  /usr/bin/podman exec -it mongo mongo --eval "printjson(rs.initiate())"
-
