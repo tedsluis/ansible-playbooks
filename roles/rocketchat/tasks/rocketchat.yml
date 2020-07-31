@@ -18,6 +18,7 @@
     owner: root
     group: root
     mode: 0775
+    force: yes
   become: true
   notify: restart rocketchat
 
