@@ -1,9 +1,26 @@
 ---
+- name: copy init mongo scipt to host
+  copy:
+    src: init-mongo.sh
+    dest: /tmp
+    owner: root
+    group: root
+    mode: 0777
+  become: true
+
+- name: copy init mongo script to pod
+  shell: |
+    /usr/bin/podman cp /tmp/init-mongo.sh mongo:/tmp
+  become: true
 
 - name: Initiate mongo
   shell: |
-    /usr/bin/podman exec mongo /bin/bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({_id: 'rs0',members: [ { _id: 0, host: 'localhost:27017' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"
+    /usr/bin/podman exec mongo /bin/bash -c /tmp/init-mongo.sh
+  register: result
+  become: true
 
+- debug:
+    msg: "init mongo result: {{ result.stdout }}"
 
 
 
