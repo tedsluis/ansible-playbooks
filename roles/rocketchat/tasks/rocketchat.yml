@@ -22,6 +22,15 @@
   become: true
   notify: restart rocketchat
 
+- name: copy rocketchat main.sh script
+  copy:
+    scr: main.sh
+    dest: /tmp
+    owner: root
+    group: root
+    mode: 0777
+  become: true
+
 - name: start rocketchhat
   systemd:
     name: rocketchat

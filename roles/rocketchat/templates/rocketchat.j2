@@ -16,9 +16,12 @@ ExecStart=/usr/bin/podman run \
     -e MONGO_OPLOG_URL=mongodb://{{ mongo_root_user | default('root') }}:{{ mongo_root_password | default('password') }}@mongo:27017/local?replicaSet=rs01&authSource={{ mongo_root_password | default('password') }} \
     -e ROOT_URL=http://192.168.43.226 \
     -v /data/rocketchat/uploads:/app/uploads \
+    -v /data/rocketchat/scripts/main.sh:/tmp/main.sh \
     --net=rocketchat_default \
     --expose 3000 \
-    rocketchat/rocket.chat:latest /bin/bash -c "for i in `seq 1 30`; do  node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"
+    rocketchat/rocket.chat:latest /bin/bash -c /tmp/main.sh
+    "for i in `seq 1 30`; do  node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"
+
 
 ExecStop=-/usr/bin/podman kill rocketchat
 ExecStop=-/usr/bin/podman rm rocketchat
