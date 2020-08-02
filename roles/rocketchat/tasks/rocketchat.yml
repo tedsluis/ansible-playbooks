@@ -9,6 +9,7 @@
     mode: 0777
   with_items:
     - /data/rocketchat/uploads
+    - /data/rocketchat/scripts
   become: true
 
 - name: create rocketchat unit
@@ -24,8 +25,8 @@
 
 - name: copy rocketchat main.sh script
   copy:
-    scr: main.sh
-    dest: /tmp
+    src: main.sh
+    dest: /data/rocketchat/scripts/
     owner: root
     group: root
     mode: 0777
