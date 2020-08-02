@@ -9,7 +9,7 @@ do
 	echo "Tried $$i times. Waiting 5 secs..."; 
 	sleep 5; 
 done; 
-(exit $$)
+(exit 0)
 
 
 

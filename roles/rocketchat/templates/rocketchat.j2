@@ -20,7 +20,6 @@ ExecStart=/usr/bin/podman run \
     --net=rocketchat_default \
     --expose 3000 \
     rocketchat/rocket.chat:latest /bin/bash -c /tmp/main.sh
-    "for i in `seq 1 30`; do  node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"
 
 
 ExecStop=-/usr/bin/podman kill rocketchat
