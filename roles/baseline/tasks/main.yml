@@ -47,8 +47,8 @@
   loop: "{{ accounts }}"
   tags: ansible
     
-- include: mail.yml
-  tags: mail
+#- include: mail.yml
+#  tags: mail
 
 - include: raspi-config.yml
   tags: raspi-config

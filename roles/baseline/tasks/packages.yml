@@ -5,7 +5,8 @@
 
 - name: create podman repo
   copy:
-    content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'
+    #content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/ /'
+    content: 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /'
     dest: /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
     owner: root
     group: root
@@ -14,7 +15,8 @@
 
 - name: Get gpg key
   shell: |
-    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
+    #curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
+    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/Release.key | sudo apt-key add -
 
 - name: "apt update: refresh cache."
   apt: 
@@ -40,7 +42,7 @@
     - net-tools 
     - podman
     - rsync
-    - ssmtp
+#    - ssmtp
     - tmux
     - vim
     - wget

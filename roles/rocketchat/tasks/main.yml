@@ -4,8 +4,8 @@
 - include: network.yml
   tags: network
 
-- include: mongo-build.yml
-  tags: mongo-build
+#- include: mongo-build.yml
+#  tags: mongo-build
 
 - include: mongo.yml
   tags: mongo
