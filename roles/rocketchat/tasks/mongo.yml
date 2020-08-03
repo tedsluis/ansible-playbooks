@@ -20,7 +20,9 @@
     group: root
     mode: 0775
   become: true
-  notify: restart mongo
+  notify: 
+    - reload daemon mongo
+    - restart mongo
 
 - name: start mongo
   systemd:

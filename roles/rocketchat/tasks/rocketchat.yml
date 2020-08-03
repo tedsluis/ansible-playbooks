@@ -21,7 +21,9 @@
     mode: 0775
     force: yes
   become: true
-  notify: restart rocketchat
+  notify:
+    - reload daemon rocketchat 
+    - restart rocketchat
 
 - name: copy rocketchat main.sh script
   copy:

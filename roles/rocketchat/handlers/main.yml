@@ -1,5 +1,11 @@
 ---
 
+- name: reload daemon mongo
+  systemd:
+    daemon_reload: yes
+    name: mongo
+  become: true
+
 - name: restart mongo
   systemd:
     daemon_reload: yes
@@ -7,9 +13,14 @@
     name: mongo
   become: true
 
-- name: restart rocketchat
+- name: reload daemon rocketchat
   systemd:
     daemon_reload: yes
+    name: rocketchat
+  become: true
+
+- name: restart rocketchat
+  systemd:
     state: restarted
     name: rocketchat
   become: true
