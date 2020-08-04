@@ -7,6 +7,10 @@
 #- include: mongo-build.yml
 #  tags: mongo-build
 
+- include: rocketchat-build.yml
+  tags: rocketchat-build
+
+
 - include: mongo.yml
   tags: mongo
 

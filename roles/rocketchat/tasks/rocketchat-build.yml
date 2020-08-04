@@ -1,0 +1,102 @@
+---
+
+- name: check for rocketchat image
+  shell: |
+    podman images | grep {{ rocketchat_image_name }} 
+  become: true
+  register: rocketchat_image
+
+- debug:
+    msg: "existing rocketchat images: '{{ rocketchat_image.stdout }}', rocketchat image name: '{{ rocketchat_image_name }}', rocketchat image version: '{{ rocketchat_image_version }}'"
+
+- name: build rocketchat image when rocketchat image not exists
+  when: rocketchat_image.stdout is not search( "{{ rocketchat_image_name }}" ) or rocketchat_image.stdout is not search( "{{ rocketchat_image_version }}" ) 
+  block:
+
+    - name: create temporery rocketchat directory
+      file: 
+        path: /root/git/rocketchat
+        state: directory
+        owner: root
+        group: root
+        mode: 775
+      become: true
+    
+    - name: clone repo https://github.com/RocketChat/Rocket.Chat.Embedded.arm64.git
+      git:
+        repo: https://github.com/RocketChat/Rocket.Chat.Embedded.arm64.git
+        dest: /root/git/rocketchat
+        force: yes
+      become: true
+
+    - name: set rocketchat version in docker file
+      lineinfile:
+        path: /root/git/rocketchat/docker/rocketchat/dockerfile
+        regexp: '^ENV RC_VERSION' 
+        line: "ENV RC_VERSION {{ rocketchat_image_version }}"
+      become: true
+    
+    - name: pull arm64v8/node base image 
+      shell: |
+        podman pull arm64v8/node:12.16.1-stretch
+      become: true
+    
+    - name: create swap space
+      shell: |
+        dd if=/dev/zero of=/mytempswapfile bs=1024 count=524288
+        chmod 0600 /mytempswapfile
+        mkswap /mytempswapfile
+        swapon /mytempswapfile
+      become: true
+      ignore_errors: True
+    
+    - name: "build rocketchat {{ rocketchat_image_name }}:{{ rocketchat_image_version }} image for raspberry 64bit arm v8"
+      shell: |
+        cd /root/git/rocketchat/docker/rocketchat
+        podman build --format=docker -t {{ rocketchat_image_name }}:{{ rocketchat_image_version | default('latest') }} -f /root/git/rocketchat/docker/rocketcat/dockerfile . |  tee /root/git/{{ rocketchat_image_name }}{{ rocketchat_image_version | default('latest') }}-build.log
+      become: true
+      register: build_output
+
+    - debug:
+        msg: "build output: {{ build_output.stdout }}"
+    
+    - name: remove swap space and clone directory
+      shell: |
+        swapoff -v /mytempswapfile
+        rm -f /mytempswapfile
+        #rm -rf /tmp/rocketchat
+      become: true
+      ignore_errors: True
+    
+    - name: "ls image {{ rocketchat_image_name }}:{{ rocketchat_image_version }}"
+      shell: |
+        podman images | grep {{ rocketchat_image_name }} | grep {{ rocketchat_image_version }}
+      become: true
+      register: ls_image
+    
+    - debug:
+        msg: "ls image: {{ ls_image.stdout }}"
+    
+    - name: "inspect rocketchat image {{ rocketchat_image_name }}:{{ rocketchat_image_version }}"
+      shell: |
+        podman inspect $(podman images | grep {{ rocketchat_image_name }} | grep {{ rocketchat_image_version }} | awk '{print $3}')
+      become: true
+      register: inspect_image
+    
+    - debug:
+        msg: "inspect image: {{ inspect_image.stdout }}"
+
+    - name: "include ansible vault secrets to login to docker.io."
+      include_vars: group_vars/vault.yaml
+    
+    - name: "login docker.io, user {{ dockerio_username }}"
+      shell: |
+        podman login docker.io --username {{ dockerio_username }} --password {{ dockerio_token }}
+      become: true
+    
+    - name: "push {{ rocketchat_image_repo }}/{{ rocketchat_image_name }}:{{ rocketchat_image_version }} to docker.io"
+      shell: |
+        podman tag $(podman images | grep {{ rocketchat_image_name }} | grep {{ rocketchat_image_version }} | awk '{print $3}') {{ rocketchat_image_repo }}/{{ rocketchat_image_name }}:{{ rocketchat_image_version }}
+        podman push {{ rocketchat_image_repo }}/{{ rocketchat_image_name }}:{{ rocketchat_image_version }}
+      become: true
+    

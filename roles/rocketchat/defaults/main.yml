@@ -2,4 +2,7 @@
 mongo_image_version: 4.0
 mongo_image_name: mongo
 mongo_image_repo: docker.io
+rocketchat_image_version: 3.2.2
+rocketchat_image_name: rocketchat
+rocketchat_image_repo: docker.io
 
