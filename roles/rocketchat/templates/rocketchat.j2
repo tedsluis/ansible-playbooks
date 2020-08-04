@@ -19,7 +19,7 @@ ExecStart=/usr/bin/podman run \
     -v /data/rocketchat/scripts/main.sh:/tmp/main.sh \
     --net=rocketchat_default \
     --expose 3000 \
-    docker.io/rocketchat/rocket.chat:latest /bin/bash -c /tmp/main.sh
+    {{ rocketchat_image_repo}}/{{ rocketchat_image_name }}:{{ rocketchat_image_version }} /bin/bash -c /tmp/main.sh
 
 
 ExecStop=-/usr/bin/podman kill rocketchat
