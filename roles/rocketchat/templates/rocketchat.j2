@@ -8,18 +8,18 @@ Restart=always
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/podman kill rocketchat
 ExecStartPre=-/usr/bin/podman rm rocketchat
-ExecStartPre=-/usr/bin/podman pull docker.io/rocketchat/rocket.chat:latest
 
 ExecStart=/usr/bin/podman run \
     --name rocketchat \
     -e MONGO_URL=mongodb://{{ mongo_root_username | default('root') }}:{{ mongo_root_password | default('password') }}@mongo:27017/rocketchat?replicaSet=rs01&authSource=admin \
     -e MONGO_OPLOG_URL=mongodb://{{ mongo_root_user | default('root') }}:{{ mongo_root_password | default('password') }}@mongo:27017/local?replicaSet=rs01&authSource=admin \
     -e ROOT_URL=http://192.168.43.226 \
+    -e MONGO_OPTIONS='{ "serverSelectionTimeoutMS": 30000 }' \
     -v /data/rocketchat/uploads:/app/uploads \
     -v /data/rocketchat/scripts/main.sh:/tmp/main.sh \
     --net=rocketchat_default \
     --expose 3000 \
-    {{ rocketchat_image_repo}}/{{ rocketchat_image_name }}:{{ rocketchat_image_version }} /bin/bash -c /tmp/main.sh
+    {{ rocketchat_image_name }}:{{ rocketchat_image_version }} /bin/bash -c /tmp/main.sh
 
 
 ExecStop=-/usr/bin/podman kill rocketchat

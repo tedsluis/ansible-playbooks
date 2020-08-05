@@ -15,12 +15,16 @@
 
 - name: Initiate mongo
   shell: |
-    /usr/bin/podman exec mongo /bin/bash -c /tmp/init-mongo.sh
+    /usr/bin/podman exec \
+       -e MONGO_INITDB_ROOT_USERNAME={{ mongo_root_username | default('root') }} \
+       -e MONGO_INITDB_ROOT_PASSWORD={{ mongo_root_password | default('password') }} \   
+       mongo /bin/bash -c /tmp/init-mongo.sh
   register: result
   become: true
 
 - debug:
     msg: "init mongo result: {{ result.stdout }}"
+
 
 
 

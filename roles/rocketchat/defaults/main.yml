@@ -1,4 +1,5 @@
 ---
+
 mongo_image_version: 4.0
 mongo_image_name: mongo
 mongo_image_repo: docker.io
