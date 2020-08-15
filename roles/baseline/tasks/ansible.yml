@@ -86,3 +86,12 @@
     vim +PlugUpdate +qall > /dev/null
   become: true
   become_user: "{{ item }}"
+
+- name: Insert ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt into .bashrc
+  lineinfile:
+    dest: "{{ user_home.stdout }}/.bashrc"
+    regexp: '^export\sANSIBLE_VAULT_PASSWORD_FILE'
+    state: present
+    line: 'export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt'
+  become: true
+

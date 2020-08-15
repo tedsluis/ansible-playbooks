@@ -1,5 +1,7 @@
 [raspbian]
+4inch
 7inch
+pihole
 
 [raspbian:vars]
 ansible_user=pi
@@ -14,11 +16,18 @@ gitusername=tedsluis
 gitemailaddress=ted.sluis@gmail.com
 
 emailaddress=ted.sluis@gmail.com
-#emailpassword= ..... stored in groupv_vars/vault.yaml
 mailhubhost=smtp.gmail.com
 mailhubport=587
 
 timezone=Europe/Amsterdam
+
+# stored in groupv_vars/vault.yaml
+# emailpassword: 
+# id_rsa:
+# id_rsa_pub:
+# dockerio_username:
+# dockerio_token: 
+# pihole_password:
 
 [apt:children]
 raspbian
