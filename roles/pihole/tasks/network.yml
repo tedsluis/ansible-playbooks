@@ -1,0 +1,13 @@
+---
+- name: check pihole podman network
+  shell: |
+    /usr/bin/podman network ls 
+  become: true
+  register: podman_network
+
+- name: create pihole_default podman network
+  shell: |
+    /usr/bin/podman network create pihole_default
+  become: true
+  when: '"pihole_default" not in podman_network.stdout' 
+

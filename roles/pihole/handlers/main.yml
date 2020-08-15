@@ -1,0 +1,14 @@
+---
+- name: reload daemon pihole
+  systemd:
+    daemon_reload: yes
+    name: pihole
+  become: true
+
+- name: restart pihole
+  systemd:
+    state: restarted
+    name: pihole
+  become: true
+
+

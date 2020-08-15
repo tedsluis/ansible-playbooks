@@ -1,0 +1,7 @@
+#!/usr/bin/env ansible-playbook
+
+- name: pihole
+  hosts: 
+  - pihole
+  roles:
+  - pihole

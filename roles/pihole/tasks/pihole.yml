@@ -1,0 +1,36 @@
+---
+- name: "Include Ansible secrets to get pihole password."
+  include_vars: group_vars/vault.yaml
+
+- name: create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0777
+  with_items:
+    - /home/pi/etc-pihole
+    - /home/pi/etc-dnsmasq.d
+  become: true
+
+- name: create pihole unit
+  template:
+    src: pihole.j2
+    dest: /etc/systemd/system/pihole.service
+    owner: root
+    group: root
+    mode: 0775
+    force: yes
+  become: true
+  notify:
+    - reload daemon pihole 
+    - restart pihole
+
+- name: start pihole
+  systemd:
+    name: pihole
+    state: started
+    enabled: yes
+  become: true
+
