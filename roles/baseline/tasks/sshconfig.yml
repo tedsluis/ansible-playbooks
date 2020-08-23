@@ -3,14 +3,19 @@
 - name: "Include Ansible secrets to get rsa keys."
   include_vars: group_vars/vault.yaml
 
-
 - name: "Get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
   register: user_home
 
-- name: "create {{ user_home.stdout }}/id_rsa"
+- name: "create {{ user_home.stdout }}/.ssh directory"
+  file:
+    path: "{{ user_home.stdout }}/.ssh"
+    state: directory
+  become: true
+
+- name: "create {{ user_home.stdout }}/.ssh/id_rsa"
   template:
     src: templates/id_rsa
     dest: "{{ user_home.stdout}}/.ssh/id_rsa"
@@ -19,7 +24,7 @@
     mode: 0600
   become: true
 
-- name: "create {{ user_home.stdout }}/id_rsa.pub"
+- name: "create {{ user_home.stdout }}/.ssh/id_rsa.pub"
   copy:
     content: "{{ id_rsa_pub }}"
     dest: "{{ user_home.stdout}}/.ssh/id_rsa.pub"
@@ -28,7 +33,7 @@
     mode: 0644
   become: true
 
-- name: "create {{ user_home.stdout }}/authorized_keys"
+- name: "create {{ user_home.stdout }}/.ssh/authorized_keys"
   copy:
     content: "{{ id_rsa_pub }}"
     dest: "{{ user_home.stdout}}/.ssh/authorized_keys"

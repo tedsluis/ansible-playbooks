@@ -1,14 +1,27 @@
 [raspbian]
-4inch
-7inch
 pihole
 
 [raspbian:vars]
 ansible_user=pi
 accounts='["root", "pi"]'
 TLS_CA_File='/etc/ssl/certs/ca-certificates.crt'
+_etc_vimrc='/etc/vim/vimrc'
+_raspi_configtxt='/boot/config.txt'
+
+[fedora]
+fed143
+fed149
+fed157
+
+[fedora:vars]
+ansible_user=tedsluis
+accounts='["root", "tedsluis"]'
+TLS_CA_File='/etc/ssl/certs/ca-bundle.trust.crt'
+_etc_vimrc='/etc/vimrc'
+_raspi_configtxt='/boot/efi/config.txt'
 
 [all:children]
+fedora
 raspbian
 
 [all:vars]
@@ -28,7 +41,4 @@ timezone=Europe/Amsterdam
 # dockerio_username:
 # dockerio_token: 
 # pihole_password:
-
-[apt:children]
-raspbian
 

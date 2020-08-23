@@ -1,5 +1,5 @@
 ---
-# handlers file for raspbian_baseline
+# handlers file for baseline
 
 - name: restart dnsmasq
   systemd:

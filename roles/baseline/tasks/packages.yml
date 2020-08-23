@@ -12,16 +12,19 @@
     group: root
     mode: 0644
   become: true
+  when: inventory_hostname in groups['raspbian']
 
 - name: Get gpg key
   shell: |
     #curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Raspbian_10/Release.key | sudo apt-key add -
     curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/Release.key | sudo apt-key add -
+  when: inventory_hostname in groups['raspbian']
 
 - name: "apt update: refresh cache."
   apt: 
     update_cache: yes
   become: true
+  when: inventory_hostname in groups['raspbian']
 
 - name: "apt install basic packages."
   apt: 
@@ -47,13 +50,46 @@
     - vim
     - wget
   become: true
+  when: inventory_hostname in groups['raspbian']
 
 - name: "apt update: refresh cache."
   apt: 
     update_cache: yes
   become: true
+  when: inventory_hostname in groups['raspbian']
 
 - name: "apt upgrade: update all packages to the latest version."
   apt: 
     upgrade: full
   become: true
+  when: inventory_hostname in groups['raspbian']
+
+- name: "dnf install basic packages."
+  dnf: 
+    name: "{{ packages }}"
+    state: latest 
+  vars:
+    packages:
+    - dnsmasq
+    - cronie 
+    - cronie-anacron
+    - curl
+    - git 
+    - jq
+      #- mailutils
+    - net-tools 
+    - podman
+    - rsync
+    - ssmtp
+    - tmux
+    - vim
+    - wget
+  become: true
+  when: inventory_hostname in groups['fedora']
+
+- name: "dnf update packages."
+  dnf: 
+    name: "*"
+    state: latest 
+  become: true
+  when: inventory_hostname in groups['fedora']

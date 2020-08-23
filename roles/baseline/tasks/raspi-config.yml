@@ -1,8 +1,8 @@
 ---
 
-- name: update /boot/config.txt
+- name: "update {{ _raspi_configtxt }}"
   lineinfile:
-    dest: "/boot/config.txt"
+    dest: "{{ _raspi_configtxt }}"
     regexp: '^{{ item.regex }}'
     state: present
     line: '{{ item.line }}'

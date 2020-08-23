@@ -3,11 +3,12 @@
 
 # http://docs.ansible.com/ansible/lineinfile_module.html
 
-# Set vim syntax highlighting on (debian based hosts)
-- name: "Set vim syntax no (globaly) in /etc/vim/vimrc."
+# Set vim syntax highlighting 
+- name: "Set vim syntax no (globaly) in {{ _etc_vimrc }}"
   lineinfile:
-    dest: /etc/vim/vimrc
+    dest: "{{ _etc_vimrc }}"
     regexp: '^\s*"?syntax o'
     state: present
     line: 'syntax on'
   become: true
+
