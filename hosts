@@ -1,5 +1,5 @@
 [raspbian]
-pihole
+pihole _ip_address='192.168.1.17'
 
 [raspbian:vars]
 ansible_user=pi
@@ -9,9 +9,10 @@ _etc_vimrc='/etc/vim/vimrc'
 _raspi_configtxt='/boot/config.txt'
 
 [fedora]
-fed143
-fed149
-fed157
+fed143  _ip_address='192.168.11.143'
+fed149  _ip_address='192.168.11.149'
+fed157  _ip_address='192.168.11.157'
+fed159  _ip_address='192.168.11.159'
 
 [fedora:vars]
 ansible_user=tedsluis

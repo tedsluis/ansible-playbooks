@@ -1,9 +1,9 @@
 ---
 
-- name: "Include Ansible secrets to get rsa keys."
+- name: "include Ansible secrets to get rsa keys."
   include_vars: group_vars/vault.yaml
 
-- name: "Get home directory {{ item }}."
+- name: "get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
@@ -41,4 +41,27 @@
     group: "{{ item }}"
     mode: 0700
   become: true
+
+- name: "create {{ user_home.stdout }}/.ssh/cofig"
+  file:
+    path: "{{ user_home.stdout }}/.ssh/config"
+    state: touch
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0744
+  become: true
+
+- name: "configure {{ user_home.stdout }}/.ssh/cofig"
+  become: true
+  blockinfile:
+    create: true
+    dest: "{{ user_home.stdout }}/.ssh/config"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0744
+    block: |
+      Host github.com
+          Hostname github.com
+          User tedsluis
+          IdentityFile ~/.ssh/id_rsa
 

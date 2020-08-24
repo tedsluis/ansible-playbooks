@@ -18,3 +18,18 @@
     mode: 0775
   become: true
 
+- name: "Get home directory {{ item }}."
+  shell: >
+    getent passwd {{ item }} | cut -d: -f6
+  changed_when: false
+  register: user_home
+
+- name: Insert tmux into .bashrc
+  lineinfile:
+    dest: "{{ user_home.stdout }}/.bashrc"
+    regexp: '^tmux'
+    state: present
+    line: 'tmux list-sessions'
+  when: '"root" not in user_home.stdout'
+  become: true
+
