@@ -12,6 +12,11 @@ mailhubport: 587
 
 timezone: Europe/Amsterdam
 
+_wants_crontab: true
+_wants_dnsmasq: true
+_wants_git: false
+_wants_ansible: false
+
 # stored in 'group_vars/vault.yaml':
 #emailpassword: 
 #id_rsa:

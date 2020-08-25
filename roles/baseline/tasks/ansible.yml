@@ -26,6 +26,7 @@
   with_fileglob: "/tmp/ansible-completion/*.bash"
   loop_control:
     loop_var: file_item
+  when: '"root" not in user_home.stdout'
   become: true
 
 - name: remove /tmp/ansible-completion

@@ -9,9 +9,11 @@
   tags: aliasses
 
 - include: cronjobs.yml
+  when: _wants_crontab|bool == true
   tags: cronjobs.nl
 
 - include: dnsmasq.yml
+  when: _wants_dnsmasq|bool == true
   tags: dnsmasq
 
 - include: sshconfig.yml
@@ -19,6 +21,7 @@
   tags: sshconfig
 
 - include: git.yml
+  when: _wants_git|bool == true
   loop: "{{ accounts }}"
   tags: git
 
@@ -44,6 +47,7 @@
   tags: vimsettings
 
 - include: ansible.yml
+  when: _wants_ansible|bool == true
   loop: "{{ accounts }}"
   tags: ansible
     
