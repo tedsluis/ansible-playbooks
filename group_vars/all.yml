@@ -1,0 +1,22 @@
+# global settings
+ansible_python_interpreter: /usr/bin/python3
+
+_domain: bachstraat20
+
+gitusername: tedsluis
+gitemailaddress: ted.sluis@gmail.com
+
+emailaddress: ted.sluis@gmail.com
+mailhubhost: smtp.gmail.com
+mailhubport: 587
+
+timezone: Europe/Amsterdam
+
+# stored in 'group_vars/vault.yaml':
+#emailpassword: 
+#id_rsa:
+#id_rsa_pub:
+#dockerio_username:
+#dockerio_token: 
+#pihole_password:
+

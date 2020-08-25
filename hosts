@@ -1,45 +1,14 @@
-[raspbian]
-pihole _ip_address='192.168.1.17'
-
-[raspbian:vars]
-ansible_user=pi
-accounts='["root", "pi"]'
-TLS_CA_File='/etc/ssl/certs/ca-certificates.crt'
-_etc_vimrc='/etc/vim/vimrc'
-_raspi_configtxt='/boot/config.txt'
-
-[fedora]
-fed143  _ip_address='192.168.11.143'
-fed149  _ip_address='192.168.11.149'
-fed157  _ip_address='192.168.11.157'
-fed159  _ip_address='192.168.11.159'
-
-[fedora:vars]
-ansible_user=tedsluis
-accounts='["root", "tedsluis"]'
-TLS_CA_File='/etc/ssl/certs/ca-bundle.trust.crt'
-_etc_vimrc='/etc/vimrc'
-_raspi_configtxt='/boot/efi/config.txt'
-
 [all:children]
 fedora
 raspbian
 
-[all:vars]
-gitusername=tedsluis
-gitemailaddress=ted.sluis@gmail.com
+[raspbian]
+pihole      _ip_address='192.168.1.17'
 
-emailaddress=ted.sluis@gmail.com
-mailhubhost=smtp.gmail.com
-mailhubport=587
+[fedora]
+fed143      _ip_address='192.168.11.143'
+fed149      _ip_address='192.168.11.149'
+fed157      _ip_address='192.168.11.157'
+fed159      _ip_address='192.168.11.159'
 
-timezone=Europe/Amsterdam
-
-# stored in groupv_vars/vault.yaml
-# emailpassword: 
-# id_rsa:
-# id_rsa_pub:
-# dockerio_username:
-# dockerio_token: 
-# pihole_password:
 
