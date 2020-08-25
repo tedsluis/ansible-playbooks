@@ -24,12 +24,17 @@
   changed_when: false
   register: user_home
 
-- name: Insert tmux into .bashrc
-  lineinfile:
-    dest: "{{ user_home.stdout }}/.bashrc"
-    regexp: '^tmux'
-    state: present
-    line: 'tmux list-sessions'
-  when: '"root" not in user_home.stdout'
+- name: "insert tmux in to {{ user_home.stdout }}/.bashrc"
   become: true
+  blockinfile:
+    create: true
+    dest: "{{ user_home.stdout }}/.bashrc"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0775
+    block: |
+      if [[ ! "$TERM" =~ "screen" ]]; then
+           tmux attach -t default || tmux new -s default
+      fi
+  when: '"root" not in user_home.stdout'
 
