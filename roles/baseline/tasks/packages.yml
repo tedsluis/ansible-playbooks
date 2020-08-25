@@ -45,7 +45,7 @@
     - net-tools 
     - podman
     - rsync
-#    - ssmtp
+    - ssmtp
     - tmux
     - vim
     - wget
@@ -76,7 +76,6 @@
     - curl
     - git 
     - jq
-      #- mailutils
     - net-tools 
     - podman
     - rsync
