@@ -57,3 +57,8 @@
 - include: raspi-config.yml
   tags: raspi-config
 
+- include: sshagent.yml
+  when: _wants_sshagent|bool == true
+  loop: "{{ accounts }}"
+  tags: sshagent
+

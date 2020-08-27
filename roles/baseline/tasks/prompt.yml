@@ -33,6 +33,8 @@
 - name: "Add bash prompt using {{ user_home.stdout }}/.bashrc"
   blockinfile:
     dest: "{{ user_home.stdout }}/.bashrc"
+    marker: "# {mark} -- ansible managed block bash prompt --"
+    insertbefore: '^#\sBEGIN\s--\sansible\smanaged\sblock'
     block: |
       if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
          GIT_PROMPT_THEME=Custom

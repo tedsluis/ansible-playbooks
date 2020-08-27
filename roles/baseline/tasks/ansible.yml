@@ -68,7 +68,7 @@
   blockinfile:
     create: true
     dest: "{{ user_home.stdout }}/.vimrc"
-    marker: '"' 
+    marker: '" {mark} -- ansible managed block ansible-vim plugin --' 
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0774
