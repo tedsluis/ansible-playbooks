@@ -23,7 +23,7 @@
     marker: "# {mark} -- ansible managed block tmux --"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 775
+    mode: 0664
     block: |
       if [[ ! "$TERM" =~ "screen" ]]; then
            tmux attach -t default || tmux new -s default

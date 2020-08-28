@@ -31,5 +31,5 @@
     path: "{{ user_home.stdout }}/.bashrc"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: '0644'
+    mode: '0664'
   become: true

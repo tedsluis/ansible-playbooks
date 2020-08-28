@@ -102,6 +102,7 @@
   copy: 
     content: "{{ ansible_facts }}" 
     dest: "/tmp/ansible_facts.txt"
+  become: true
 
 # Send test mail
 - name: "Send test e-mail from {{ ansible_hostname }} to {{ emailaddress }}, attaching ansible facts."

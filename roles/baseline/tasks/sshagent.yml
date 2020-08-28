@@ -15,7 +15,7 @@
     marker: "# {mark} -- ansible managed block ssh-agent --"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 0775
+    mode: 0664
     block: |
       function start_agent {
            echo "Initialising new SSH agent..."
@@ -28,7 +28,8 @@
            /usr/bin/ssh-add $HOME/.ssh/id_rsa;
       } # Source SSH settings, if applicable
       if [ -z $TMUX ];then
-           if [[ $(ps aux | grep ssh-agent | grep -v grep | grep -c daniel) == "0" ]];then
+           _USER=$(echo ${{ user_home.stdout }} | tr '/',  '\n' | tail -n 1)
+           if [[ $(ps aux | grep ssh-agent | grep -v grep | grep -c ${_USER}) == "0" ]];then
                 start_agent;
            else
          .      ~/.ssh/agentsock
