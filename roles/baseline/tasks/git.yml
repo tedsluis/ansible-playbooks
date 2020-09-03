@@ -1,15 +1,12 @@
 ---
-# These task will do the git configuration.
 
-- name: "Get home directory {{ item }}."
+- name: "get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
   register: user_home
 
-# http://docs.ansible.com/ansible/file_module.html
-# Creates ~/git directory
-- name: "Creates {{ user_home.stdout }}/git directory."
+- name: "creates {{ user_home.stdout }}/git directory."
   file: 
     path: "{{ user_home.stdout }}/git" 
     state: directory 
@@ -18,16 +15,12 @@
     mode: 0774
   become: true
 
-# http://docs.ansible.com/ansible/stat_module.html
-# Check if .gitconfig exists
-- name: "Check if {{ user_home.stdout }}/.gitconfig exists."
+- name: "check if {{ user_home.stdout }}/.gitconfig exists."
   stat: 
     path: "{{ user_home.stdout }}/.gitconfig"
   register: stategitconfig
   become: true
 
-# http://docs.ansible.com/ansible/file_module.html
-# Touch .gitconfig if not exists
 - name: "Touch {{ user_home.stdout }}/.gitconfig if not exists."
   file: 
     path: "{{ user_home.stdout }}/.gitconfig"
@@ -38,8 +31,6 @@
   when: stategitconfig.stat.exists is undefined or stategitconfig.stat.exists == False 
   become: true
 
-# http://docs.ansible.com/ansible/lineinfile_module.html
-# Add [user] section to .gitconfig
 - name: "Add [user] section to {{ user_home.stdout }}/.gitconfig"
   lineinfile:
     dest: "{{ user_home.stdout }}/.gitconfig"
@@ -49,8 +40,7 @@
     line: '[user]'
   become: true
 
-# Add 'name = username' to .gitconfig
-- name: "Add 'name = {{ gitusername }}' {{ user_home.stdout }}/.gitconfig"
+- name: "add 'name = {{ gitusername }}' {{ user_home.stdout }}/.gitconfig"
   lineinfile:
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: 'name'
@@ -59,8 +49,7 @@
     line: "name = {{ gitusername }}"
   become: true
 
-# Add 'email = emailaddress' to .gitconfig
-- name: "Add 'email = {{ gitemailaddress }}' to {{ user_home.stdout }}/.gitconfig"
+- name: "add 'email = {{ gitemailaddress }}' to {{ user_home.stdout }}/.gitconfig"
   lineinfile:
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: 'email'
@@ -69,8 +58,7 @@
     line: "email = {{ gitemailaddress }}"
   become: true
 
-# Add section [push] to .gitconfig
-- name: "Add section [push] to {{ user_home.stdout }}/.gitconfig"
+- name: "add section [push] to {{ user_home.stdout }}/.gitconfig"
   lineinfile:
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: '\[push\]'
@@ -79,8 +67,7 @@
     line: '[push]'
   become: true
 
-# Add 'default = matching' to .gitconfig
-- name: "Add 'default = matching' to {{ user_home.stdout }}/.gitconfig"
+- name: "add 'default = matching' to {{ user_home.stdout }}/.gitconfig"
   lineinfile:
     dest: "{{ user_home.stdout }}/.gitconfig"
     regexp: 'default'

@@ -2,4 +2,18 @@ _hostname: fed149
 _ip_address: '192.168.11.149'
 _wants_ansible: true
 _wants_git: true
+_wants_private_key: true
 _wants_sshagent: true
+
+_lv_host:
+  - pv: /dev/sdb
+    vg: vg_data
+    lv: lv_podman
+    mount: "/var/lib/containers"
+    size: "15"
+  - pv: /dev/sdb
+    vg: vg_data
+    lv: lv_libvirt
+    mount: "/var/lib/libvirt"
+    size: "25"
+

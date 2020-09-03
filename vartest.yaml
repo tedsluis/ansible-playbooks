@@ -1,9 +1,9 @@
 #!/usr/bin/env ansible-playbook
 
-- name: Baseline
+- name: vartest
   hosts: 
-    - all
+    - fed149
   vars:
     ansible_user: ansible
   roles:
-  - baseline
+    - vartest

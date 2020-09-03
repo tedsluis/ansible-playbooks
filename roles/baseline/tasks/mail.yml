@@ -1,110 +1,33 @@
 ---
-# This task will do the mail configuration for mail.
 
-# Get mail password
 - name: "Include Ansible secrets to get emailpassword."
   include_vars: group_vars/vault.yaml
 
-# http://docs.ansible.com/ansible/lineinfile_module.html
-
-# Configure mailhub= in /etc/ssmtp/ssmtp.conf
-- name: "Configure mailhub={{ mailhubhost }}:{{ mailhubport }} in /etc/ssmtp/ssmtp.conf."
+- name: "Configure /etc/ssmtp/ssmtp.conf."
   lineinfile:
     dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^mailhub='
+    regexp: "^{{ item.regexp }}"
     state: present
-    insertafter: '#\s*mailhub='
-    line: "mailhub={{ mailhubhost }}:{{ mailhubport }}"
+    insertafter: '^#\s*{{ item.insertafter }}'
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ mailhubhost }}:{{ mailhubport }}'  }
+    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ emailaddress }}"                  }
+    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ emailpassword }}"                 }
+    - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                         }
+    - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                              }
+    - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                   }
+    - { regexp: 'RewriteDomain=',    insertafter: 'RewriteDomain=',     line: 'RewriteDomain=gmail.com'                      }
+    - { regexp: 'Hostname=',         insertafter: 'Hostname=',          line: 'Hostname=localhost'                           }
+    - { regexp: 'TLS_CA_File=',      insertafter: 'TLS_CA_File=',       line: "TLS_CA_File={{ TLS_CA_File }}"                }
   become: true
 
-# Configure AuthUser= in /etc/ssmtp/ssmtp.conf
-- name: "Configure AuthUser={{ emailaddress }} in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^AuthUser='
-    state: present
-    insertafter: '#\s*AuthUser='
-    line: "AuthUser={{ emailaddress }}"
-  become: true
-
-# Configure AuthPass= in /etc/ssmtp/ssmtp.conf
-- name: "Configure AuthPass=........ in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^AuthPass='
-    state: present
-    insertafter: '#\s*AuthPass='
-    line: "AuthPass={{ emailpassword }}"
-  become: true
-
-# Configure FromLineOverride=YES in /etc/ssmtp/ssmtp.conf
-- name: "Configure FromLineOverride=YES in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^FromLineOverride='
-    state: present
-    insertafter: '#\s*FromLineOverride='
-    line: 'FromLineOverride=YES'
-  become: true
-
-# Configure UseSTARTTLS=YES in /etc/ssmtp/ssmtp.conf
-- name: "Configure UseSTARTTLS=YES in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^UseSTARTTLS='
-    state: present
-    insertafter: '#\s*UseSTARTTLS='
-    line: 'UseSTARTTLS=YES'
-  become: true
-
-# Configure UseTLS=YES in /etc/ssmtp/ssmtp.conf
-- name: "Configure UseTLS=YES in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^UseTLS='
-    state: present
-    insertafter: '#\s*UseTLS='
-    line: 'UseTLS=YES'
-  become: true
-
-# Configure RewriteDomain=gmail.com in /etc/ssmtp/ssmtp.conf
-- name: "Configure RewriteDomain=gmail.com in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^RewriteDomain='
-    state: present
-    insertafter: '#\s*RewriteDomain='
-    line: 'RewriteDomain=gmail.com'
-  become: true
-
-# Configure Hostname=localhost in /etc/ssmtp/ssmtp.conf
-- name: "Configure Hostname=localhost in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^Hostname='
-    state: present
-    insertafter: '#\s*Hostname='
-    line: 'Hostname=localhost'
-  become: true
-
-# Configure TLS_CA_File in /etc/ssmtp/ssmtp.conf
-- name: "Configure TLS_CA_File={{ TLS_CA_File }} in /etc/ssmtp/ssmtp.conf."
-  lineinfile:
-    dest: '/etc/ssmtp/ssmtp.conf'
-    regexp: '^TLS_CA_File='
-    state: present
-    insertafter: '#\s*TLS_CA_File='
-    line: "TLS_CA_File={{ TLS_CA_File }}"
-  become: true
-
-# Write Ansible facts to tmp file
 - name: "Write Ansible facts to /tmp/ansible_facts.txt"
   copy: 
     content: "{{ ansible_facts }}" 
     dest: "/tmp/ansible_facts.txt"
   become: true
 
-# Send test mail
 - name: "Send test e-mail from {{ ansible_hostname }} to {{ emailaddress }}, attaching ansible facts."
   mail:
     host: "{{ mailhubhost }}"

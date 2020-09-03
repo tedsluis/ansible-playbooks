@@ -13,16 +13,21 @@
   file:
     path: "{{ user_home.stdout }}/.ssh"
     state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0700
   become: true
 
 - name: "create {{ user_home.stdout }}/.ssh/id_rsa"
-  template:
-    src: templates/id_rsa
+  copy:
+    content: "{{ id_rsa }}"
+    #dest: "/tmp/id_rsa"
     dest: "{{ user_home.stdout}}/.ssh/id_rsa"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 0600
+    mode: 0400
   become: true
+  when: _wants_private_key|bool == true
 
 - name: "create {{ user_home.stdout }}/.ssh/id_rsa.pub"
   copy:
@@ -39,7 +44,7 @@
     dest: "{{ user_home.stdout}}/.ssh/authorized_keys"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 0700
+    mode: 0644
   become: true
 
 - name: "create {{ user_home.stdout }}/.ssh/cofig"
@@ -53,6 +58,7 @@
 
 - name: "configure {{ user_home.stdout }}/.ssh/cofig"
   become: true
+  when: _wants_private_key|bool == true
   blockinfile:
     create: true
     dest: "{{ user_home.stdout }}/.ssh/config"
@@ -64,4 +70,5 @@
           Hostname github.com
           User tedsluis
           IdentityFile ~/.ssh/id_rsa
+
 

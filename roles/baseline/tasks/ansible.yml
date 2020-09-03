@@ -6,14 +6,11 @@
   changed_when: false
   register: user_home
 
-# https://github.com/dysosmus/ansible-completion
-- name: "clone git@github.com:dysosmus/ansible-completion.git to /tmp/ansible-completion/"
+- name: "clone https://github.com/dysosmus/ansible-completion.git to /tmp/ansible-completion/"
   git:
-    repo:  git@github.com:dysosmus/ansible-completion.git 
+    repo:  https://github.com/dysosmus/ansible-completion.git
     dest: "/tmp/ansible-completion"
     depth: 1
-    accept_hostkey: yes
-    key_file: "{{ user_home.stdout }}/.ssh/id_rsa"
   become: true
 
 - name: copy /tmp/ansible-completion/*.bash to /etc/bash_completion.d/
@@ -35,7 +32,6 @@
     state: absent
   become: true
   
-# https://github.com/junegunn/vim-plug
 - name: create directory vim autoload
   file:
     path:  "{{ user_home.stdout }}/{{ directory_item }}"
@@ -62,7 +58,6 @@
     mode: 0774
   become: true
   
-# https://github.com/pearofducks/ansible-vim
 - name: install vim syntax highlighting plugin for Ansible
   become: true
   blockinfile:
@@ -88,7 +83,7 @@
   become: true
   become_user: "{{ item }}"
 
-- name: Insert ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt into .bashrc
+- name: insert ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt into .bashrc
   lineinfile:
     dest: "{{ user_home.stdout }}/.bashrc"
     regexp: '^export\sANSIBLE_VAULT_PASSWORD_FILE'

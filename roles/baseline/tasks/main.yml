@@ -1,6 +1,9 @@
 ---
 # tasks file for baseline
 
+- include: localesettings.yml
+  tags: localesettings
+
 - include: packages.yml
   tags: packages
 

@@ -1,0 +1,17 @@
+---
+
+- name: set system locale language
+  shell: |
+    localectl set-locale en_US.UTF-8
+  become: true
+
+- name: set keyboard layout
+  shell: |
+    localectl set-keymap us-intl
+  become: true
+
+- name: set x11 keyboard layout
+  shell: |
+    localectl set-x11-keymap us
+  become: true
+

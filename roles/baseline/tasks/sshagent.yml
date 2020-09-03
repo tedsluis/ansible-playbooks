@@ -1,6 +1,5 @@
 ---
-# Get home directory
-- name: "Get home directory {{ item }}."
+- name: "get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
@@ -28,7 +27,7 @@
            /usr/bin/ssh-add $HOME/.ssh/id_rsa;
       } # Source SSH settings, if applicable
       if [ -z $TMUX ];then
-           _USER=$(echo ${{ user_home.stdout }} | tr '/',  '\n' | tail -n 1)
+           _USER=$(echo "{{ user_home.stdout }}" | tr '/',  '\n' | tail -n 1)
            if [[ $(ps aux | grep ssh-agent | grep -v grep | grep -c ${_USER}) == "0" ]];then
                 start_agent;
            else

@@ -1,10 +1,7 @@
 ---
 # These task will do the vim configuration.
 
-# http://docs.ansible.com/ansible/lineinfile_module.html
-
-# Set vim syntax highlighting 
-- name: "Set vim syntax no (globaly) in {{ _etc_vimrc }}"
+- name: "set vim syntax no (globaly) in {{ _etc_vimrc }}"
   lineinfile:
     dest: "{{ _etc_vimrc }}"
     regexp: '^\s*"?syntax o'

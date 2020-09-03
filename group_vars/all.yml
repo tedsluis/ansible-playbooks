@@ -17,7 +17,36 @@ _wants_ansible: false
 _wants_crontab: true
 _wants_dnsmasq: true
 _wants_git: false
+_wants_private_key: false
 _wants_sshagent: false
+
+_lv_group:
+  - pv: /dev/sda
+    vg: vg_system
+    lv: lv_root
+    mount: "/"
+    size: "10"
+  - pv: /dev/sda
+    vg: vg_system
+    lv: lv_home
+    mount: "/home"
+    size: "10"
+  - pv: /dev/sda
+    vg: vg_system
+    lv: lv_var
+    mount: "/var"
+    size: "2"
+  - pv: /dev/sdb
+    vg: vg_data
+    lv: lv_podman
+    mount: "/var/lib/containers"
+    size: "10"
+  - pv: /dev/sdb
+    vg: vg_data
+    lv: lv_libvirt
+    mount: "/var/lib/libvirt"
+    size: "20"
+
 
 # stored in 'group_vars/vault.yaml':
 #emailpassword: 

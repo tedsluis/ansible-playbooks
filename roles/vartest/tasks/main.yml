@@ -1,0 +1,14 @@
+---
+- debug:
+    var: _lv_host
+
+- debug:
+    var: _lv_group
+
+- include_tasks: test-task.yml
+  loop: "{{ _lv_host }}"
+  loop_control:
+      loop_var: outer_item
+      
+- debug:
+    var: _lv_group

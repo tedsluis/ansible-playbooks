@@ -1,4 +1,4 @@
-# These tasks will set the default command prompt.
+---
 
 - name: "Get home directory {{ item }}."
   shell: >
@@ -6,19 +6,24 @@
   changed_when: false
   register: user_home
 
-# Clone https://github.com/tedsluis/bash-git-prompt
-- name: "Clone bash-git-prompt to {{ user_home.stdout }}/.bash-git-prompt"
+- name: "Clone https://github.com/tedsluis/bash-git-prompt.git to {{ user_home.stdout }}/.bash-git-prompt"
   git:
-    repo: git@github.com:tedsluis/bash-git-prompt.git
+    repo: https://github.com/tedsluis/bash-git-prompt.git
     dest: "{{ user_home.stdout }}/.bash-git-prompt"
     depth: 1
-    accept_hostkey: yes
     force: yes
-    key_file: "{{ user_home.stdout }}/.ssh/id_rsa"
   become: true
-  become_user: "{{ item }}"
 
-# Copies .git-prompt-colors.sh to ~/.git-prompt-colors.sh
+- name: set permissions on files
+  file:
+    path: "{{ user_home.stdout }}/.bash-git-prompt"
+    state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0774
+    recurse: true
+  become: true
+  
 - name: "Copies .git-prompt-colors.sh to {{ user_home.stdout }}/.git-prompt-colors.sh"
   copy:
     src: 'files/.git-prompt-colors.sh'
@@ -28,9 +33,7 @@
     mode: 0774
   become: true
 
-# Add git branch name to bash prompt
-# https://docs.ansible.com/ansible/blockinfile_module.html
-- name: "Add bash prompt using {{ user_home.stdout }}/.bashrc"
+- name: "Add git branch name to bash prompt using {{ user_home.stdout }}/.bashrc"
   blockinfile:
     dest: "{{ user_home.stdout }}/.bashrc"
     marker: "# {mark} -- ansible managed block bash prompt --"

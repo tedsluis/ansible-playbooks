@@ -7,7 +7,6 @@
   changed_when: false
   register: user_home
 
-# http://docs.ansible.com/ansible/lineinfile_module.html
 # Add aliases to .bashrc
 - name: Insert alias ll into .bashrc
   lineinfile:
