@@ -42,4 +42,4 @@
     attach: "/tmp/ansible_facts.txt"
     headers: "Reply-To={{ emailaddress }}"
     charset: us-ascii
-  delegate_to: localhost  
+  #delegate_to: localhost  
