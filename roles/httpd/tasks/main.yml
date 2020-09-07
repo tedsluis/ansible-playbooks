@@ -1,0 +1,69 @@
+---
+
+- name: create apache httpd group, gid 1034
+  group:
+    name: apache
+    state: present
+    gid: 1034
+  become: true
+
+- name: create apache httpd user, uid 1034
+  user:
+    name: apache
+    comment: apache user for httpd
+    uid: 1034
+    groups: apache
+    create_home: false
+    shell: /bin/nologin
+  become: true
+
+- name: port 1034 is open
+  firewalld:
+    port: 30001
+    permanent: true
+    state: enabled
+    immediate: true
+  become: true
+
+- name: create apache httpd directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/etc/httpd",         owner: "root", group: "root", mode: "0775" }
+    - { directory: "/var/lib/https",     owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/https/conf",owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/https/www", owner: "httpd",group: "httpd",mode: "0775" }
+
+- name: install podman packages
+  dnf:
+    name:
+      - podman
+      - podman-compose
+    state: present
+  become: true
+
+- name: copy podman-compose file for httpd
+  template:
+    src: podman-compose.yml.j2
+    dest: /etc/httpd/docker-compose.yml
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: restart podman-compose
+
+- name: pull apache httpd image
+  shell: |
+    podman pull docker.io/httpd:latest
+  become: true
+  notify: restart podman-compose
+
+- name: Start podman-compose httpd
+  command: podman-compose -f /etc/httpd/docker-compose.yml up -d
+  become: true
+

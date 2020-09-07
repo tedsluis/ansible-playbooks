@@ -52,4 +52,18 @@ EOT
 ```
 To update the plug-ins, use *:PlugUpdate* in VIM.
   
- 
+## Firewall ports
+
+* 3000  gitea 
+* 30001 apache httpd
+
+## Users & uids
+
+* 1033 git 
+* 1034 httpd
+
+## Groups & gid
+
+* 1033 git 
+* 1034 httpd
+

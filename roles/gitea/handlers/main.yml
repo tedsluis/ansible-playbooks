@@ -1,0 +1,6 @@
+---
+# handlers file for restart gitea
+- name: restart podman-compose
+  shell: |
+     podman-compose -f /data/gitea/podman-compose.yml down
+     podman-compose -f /data/gitea/podman-compose.yml up -d

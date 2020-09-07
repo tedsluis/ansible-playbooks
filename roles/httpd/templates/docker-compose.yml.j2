@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+  server:
+    image: docker.io/httpd:latest
+    restart: always
+    volumes:
+      - /var/lib/httpd/www:/usr/local/apache2/htdocs:z
+      - /var/lib/httpd/conf:/usr/local/apache2/conf:z
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "30001:30001"
+

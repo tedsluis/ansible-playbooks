@@ -1,0 +1,9 @@
+#!/usr/bin/env ansible-playbook
+
+- name: gitea
+  hosts: 
+    - fed143
+  vars:
+    ansible_user: ansible
+  roles:
+  - gitea
