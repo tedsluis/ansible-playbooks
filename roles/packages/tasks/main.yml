@@ -1,0 +1,32 @@
+---
+
+- name: Add _all_packages
+  set_fact:
+    _packages: "{{ _all_packages | unique }}"
+  when: _all_packages is defined
+
+- name: Add _gitea_packages
+  set_fact:
+    _packages: "{{ (_packages + _gitea_packages) | unique }}"
+  when: _gitea_packages is defined
+
+- name: Add _httpd_packages
+  set_fact:
+    _packages: "{{ (_packages + _httpd_packages) | unique }}"
+  when: _httpd_packages is defined
+
+- name: Add _hostvar_packages
+  set_fact:
+    _packages: "{{ (_packages + _hostvar_packages) | unique }}"
+  when: _hostvar_packages is defined
+
+- name: show packages 
+  debug:
+    msg: "PACKAGE={{item}}"
+  with_items: "{{_packages}}"
+
+- name: "install packages"
+  dnf:
+    name: "{{_packages}}"
+    state: present
+  become: true

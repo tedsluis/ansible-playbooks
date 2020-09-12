@@ -1,0 +1,10 @@
+---
+_httpd_firewall:
+  - { port: '30001',proto: 'tcp' }
+_httpd_groups:
+  - { group: 'httpd',gid: '1034' }
+_httpd_users:
+  - { user: 'httpd',comment: 'user for apache httpd',uid: '1034',groups: 'httpd',create_home: 'false',shell: '/bin/nologin' }
+_httpd_packages:
+  - podman
+  - podman-compose

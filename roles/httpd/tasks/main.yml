@@ -1,30 +1,5 @@
 ---
 
-- name: create apache httpd group, gid 1034
-  group:
-    name: apache
-    state: present
-    gid: 1034
-  become: true
-
-- name: create apache httpd user, uid 1034
-  user:
-    name: apache
-    comment: apache user for httpd
-    uid: 1034
-    groups: apache
-    create_home: false
-    shell: /bin/nologin
-  become: true
-
-- name: port 1034 is open
-  firewalld:
-    port: 30001
-    permanent: true
-    state: enabled
-    immediate: true
-  become: true
-
 - name: create apache httpd directories
   file:
     path: "{{item.directory}}"
@@ -34,23 +9,44 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/etc/httpd",         owner: "root", group: "root", mode: "0775" }
-    - { directory: "/var/lib/https",     owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/https/conf",owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/https/www", owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/etc/podman-compose",owner: "root", group: "root", mode: "0775" }
+    - { directory: "/var/lib/httpd",     owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/conf",owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/www", owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/www/health", owner: "httpd",group: "httpd",mode: "0775" }
 
-- name: install podman packages
-  dnf:
-    name:
-      - podman
-      - podman-compose
-    state: present
+- name: copy httpd.conf
+  template:
+    src: httpd.conf.j2
+    dest: /var/lib/httpd/conf/httpd.conf
+    owner: httpd
+    group: httpd
+    mode: 0664
+  become: true
+  notify: restart podman-compose
+
+- name: create index.html
+  copy:
+    content: '<!DOCTYPE html><html>hello</html>'
+    dest: /var/lib/httpd/www/index.html
+    owner: httpd
+    group: httpd
+    mode: 0664
+  become: true
+  
+- name: create health check
+  copy:
+    src: index.html
+    dest: /var/lib/httpd/www/health/index.html
+    owner: httpd
+    group: httpd
+    mode: 0664
   become: true
 
 - name: copy podman-compose file for httpd
   template:
-    src: podman-compose.yml.j2
-    dest: /etc/httpd/docker-compose.yml
+    src: httpd.yml.j2
+    dest: /etc/podman-compose/httpd.yml
     owner: root
     group: root
     mode: 0664
@@ -64,6 +60,7 @@
   notify: restart podman-compose
 
 - name: Start podman-compose httpd
-  command: podman-compose -f /etc/httpd/docker-compose.yml up -d
+  command: |
+    podman-compose -f /etc/podman-compose/httpd.yml up -d
   become: true
 

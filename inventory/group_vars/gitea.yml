@@ -1,0 +1,13 @@
+---
+_gitea_appname: gitea
+_gitea_domain: localhost
+_gitea_sshdomain: localhost
+_gitea_firewall:
+  - { port: '3000',proto: 'tcp' }
+_gitea_groups:
+  - { group: 'git',gid: '1033' }
+_gitea_users:
+  - { user: 'git',comment: 'user for gitea',uid: '1033',groups: 'git',create_home: 'true',shell: '/bin/bash' }
+_gitea_packages:
+  - podman
+  - podman-compose

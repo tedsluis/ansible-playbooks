@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body onload="javascript:myFunction()">
+<p id="test"></p>
+<script>
+function myFunction() {
+  var d  = new Date();
+  var ms = d.getMilliseconds();
+  var s  = d.getSeconds();
+  var m  = d.getMinutes();
+  var h  = d.getHours();
+  var dy = d.getDay();
+  var mt = d.getMonth();
+  var y  = d.getFullYear();
+  document.getElementById("test").innerHTML = y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms + ' ok 200';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+---
+- name: set dummy _all_groups
+  set_fact:
+    _all_groups: 
+      - { group: 'dummy' }
+  when: _all_groups is undefined
+  
+- name: Add _all_groups
+  set_fact:
+    _groups: "{{ _all_groups | unique }}"
+
+- name: Add _gitea_groups
+  set_fact:
+    _groups: "{{ (_groups + _gitea_groups) | unique }}"
+  when: _gitea_groups is defined
+
+- name: Add _httpd_groups
+  set_fact:
+    _groups: "{{ (_groups + _httpd_groups) | unique }}"
+  when: _httpd_groups is defined
+
+- name: Add _hostvar_groups
+  set_fact:
+    _groups: "{{ (_groups + _hostvar_groups) | unique }}"
+  when: _hostvar_groups is defined
+
+- name: show groups and gid
+  debug:
+    msg: "GROUP={{item.group}} GID={{item.gid}}"
+  with_items: "{{_groups}}"
+  when: item.group != "dummy"
+
+- name: create groups
+  group:
+    name: "{{item.group}}"
+    state: present
+    gid: "{{item.gid}}"
+  become: true
+  with_items: "{{_groups}}"
+  when: item.group != "dummy"
+
+- name: Set dummy _all_users
+  set_fact:
+    _all_users:
+      - { user: 'dummy' } 
+  when: _all_users is undefined
+
+- name: Add _all_users
+  set_fact:
+    _users: "{{ _all_users | unique }}"
+
+- name: Add _gitea_users
+  set_fact:
+    _users: "{{ (_users + _gitea_users) | unique }}"
+  when: _gitea_users is defined
+
+- name: Add _httpd_users
+  set_fact:
+    _users: "{{ (_users + _httpd_users) | unique }}"
+  when: _httpd_users is defined
+
+- name: Add _hostvar_users
+  set_fact:
+    _users: "{{ (_users + _hostvar_users) | unique }}"
+  when: _hostvar_users is defined
+
+- name: show users and uid
+  debug:
+    msg: "USER={{item.user}} COMMENT={{item.comment}} UID={{item.uid}} GROUPS={{item.groups}} CREATE_HOME={{item.create_home|default('yes')}} SHELL={{item.shell|default('/bin/bash')}}"
+  with_items: "{{_users}}"
+  when: item.user != "dummy"
+
+- name: create users
+  user:
+    name: "{{item.user}}"
+    comment: "{{item.comment}}"
+    uid: "{{item.uid}}"
+    groups: "{{item.groups}}"
+    create_home: "{{item.create_home|default('yes')}}"
+    shell: "{{item.shell|default('/bin/bash')}}"
+  become: true
+  with_items: "{{_users}}"
+  when: item.user != "dummy"
