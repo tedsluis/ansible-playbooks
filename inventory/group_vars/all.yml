@@ -6,9 +6,11 @@ _domain: bachstraat20
 
 _all_firewall:
   - { port: '22',proto: 'tcp' }
+
 _all_packages:
   - wget
   - curl
+
 gitusername: tedsluis
 gitemailaddress: ted.sluis@gmail.com
 

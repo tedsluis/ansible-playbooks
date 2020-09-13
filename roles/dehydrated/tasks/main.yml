@@ -1,0 +1,66 @@
+---
+
+- name: create apache httpd directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/etc/dehydrated",        owner: "root",group: "root",mode: "0775" }
+    - { directory: "/root/dehydrated",       owner: "root",group: "root",mode: "0664" }
+    - { directory: "/root/dehydrated/certs", owner: "root",group: "root",mode: "0660" }
+    - { directory: "/var/lib/www/dehydrated",owner: "root",group: "root",mode: "0664" }
+
+# https://github.com/dehydrated-io/dehydrated
+- name: download dehydrated binairy
+  get_url:
+    url: https://raw.githubusercontent.com/dehydrated-io/dehydrated/master/dehydrated
+    dest: /usr/bin/
+    owner: root
+    group: root
+    mode: 0775
+  become: true
+
+# https://github.com/walcony/letsencrypt-DuckDNS-hook
+- name: download dehydrated binairy
+  get_url:
+    url: https://github.com/walcony/letsencrypt-DuckDNS-hook/blob/master/hook.sh
+    dest: /etc/dehydrated/hook.sh
+    owner: root
+    group: root
+    mode: 0775
+  become: true
+
+- name: create /etc/dehydrated/config
+  copy:
+    src: config
+    dest: /etc/dehydrated/config
+    owner: httpd
+    group: httpd
+    mode: 0664
+  become: true
+  notify: check dehydrated
+  
+- name: create /etc/dehydrated/domains.txt
+  template:
+    src: domains.txt.j2
+    dest: /etc/dehydrated/domains.txt
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: check dehydrated
+
+- name: "Include Ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create dehydrated cronjob
+  cron:
+    name: "check dehydrated"
+    hour: "2"
+    job: "export DUCKDNS_TOKEN='{{_duckdns_token}}';/usr/bin/dehydrated --file '/etc/dehydrated/config' -c -t 'dns-01' -k '/etc/dehydrated/hook.sh'"
+  become: true
+
