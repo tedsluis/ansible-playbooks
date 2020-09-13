@@ -24,7 +24,6 @@ services:
       - gitea
     volumes:
       - /var/lib/gitea:/data:z
-      #- /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "3000:3000"
