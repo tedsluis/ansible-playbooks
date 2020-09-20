@@ -1,5 +1,10 @@
 # Notes
 
+* remove firewall ports
+* remove users and groups
+* remove configuration
+
+
 * PKI server + CFSSL
 * NFS server
 * Proxy server
