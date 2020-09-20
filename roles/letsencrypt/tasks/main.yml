@@ -1,0 +1,56 @@
+---
+
+- name: "include ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create letsencrypt directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/letsencrypt",owner: "1035",group: "1035",mode: "0664" }
+
+- name: "pull docker.io/linuxserver/swag:{{_letsencrypt_image_tag}} image"
+  shell: |
+    podman pull docker.io/linuxserver/swag:{{_letsencrypt_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/letsencrypt-swag.service
+  template:
+    src: letsencrypt-swag.service.j2
+    dest: /etc/systemd/system/letsencrypt-swag.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  with_items: "{{_letsencrypt_users}}"
+  notify: _restart_letsencrypt_swag
+
+- name: start and enable letsencrypt-swag.service
+  systemd:
+    name: letsencrypt-swag
+    state: started
+    enabled: true
+  become: true
+
+- name: letsencrypt-swag container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=letsencrypt-swag'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

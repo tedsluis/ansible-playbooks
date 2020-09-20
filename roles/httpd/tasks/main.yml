@@ -1,6 +1,6 @@
 ---
 
-- name: create apache httpd directories
+- name: create httpd directories
   file:
     path: "{{item.directory}}"
     owner: "{{item.owner}}"
@@ -9,11 +9,11 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/etc/podman-compose",owner: "root", group: "root", mode: "0775" }
-    - { directory: "/var/lib/httpd",     owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/conf",owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/www", owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/www/health", owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd",           owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/conf",      owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/www",       owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/logs",      owner: "httpd",group: "httpd",mode: "0775" }
+    - { directory: "/var/lib/httpd/www/health",owner: "httpd",group: "httpd",mode: "0775" }
 
 - name: copy httpd.conf
   template:
@@ -23,11 +23,11 @@
     group: httpd
     mode: 0664
   become: true
-  notify: restart podman-compose
+  notify: _restart_httpd
 
 - name: create index.html
   copy:
-    content: '<!DOCTYPE html><html>hello</html>'
+    content: '<!DOCTYPE html><html>agent installed...</html>'
     dest: /var/lib/httpd/www/index.html
     owner: httpd
     group: httpd
@@ -43,24 +43,43 @@
     mode: 0664
   become: true
 
-- name: copy podman-compose file for httpd
+- name: "pull docker.io/httpd:latest:{{_httpd_image_tag}} image"
+  shell: |
+    podman pull docker.io/httpd:latest:{{_httpd_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/httpd.service
   template:
-    src: httpd.yml.j2
-    dest: /etc/podman-compose/httpd.yml
+    src: httpd.service.j2
+    dest: /etc/systemd/system/httpd.service
     owner: root
     group: root
     mode: 0664
   become: true
-  notify: restart podman-compose
+  with_items: "{{_httpd_users}}"
+  notify: _restart_httpd
 
-- name: pull apache httpd image
+- name: start and enable httpd.service
+  systemd:
+    name: httpd
+    state: started
+    enabled: true
+  become: true
+  
+- name: httpd podman container httpd state
   shell: |
-    podman pull docker.io/httpd:latest
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=httpd'
+  register: _container_state
   become: true
-  notify: restart podman-compose
 
-- name: Start podman-compose httpd
-  command: |
-    podman-compose -f /etc/podman-compose/httpd.yml up -d
-  become: true
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+
 

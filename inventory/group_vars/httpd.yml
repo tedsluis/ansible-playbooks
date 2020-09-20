@@ -7,4 +7,4 @@ _httpd_users:
   - { user: 'httpd',comment: 'user for apache httpd',uid: '1034',groups: 'httpd',create_home: 'false',shell: '/bin/nologin' }
 _httpd_packages:
   - podman
-  - podman-compose
+_http_image_tag: 2.4.46

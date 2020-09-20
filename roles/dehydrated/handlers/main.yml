@@ -1,7 +1,0 @@
----
-
-- name: check dehydrated
-  shell: |
-    export DUCKDNS_TOKEN='{{_duckdns_token}}';/usr/bin/dehydrated --file '/etc/dehydrated/config' -c -t 'dns-01' -k '/etc/dehydrated/hook.sh'
-  become: true
-

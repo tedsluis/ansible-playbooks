@@ -1,0 +1,29 @@
+[Unit]
+Description=httpd
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=httpd \
+                              -p 30001:30001 \
+                              -v /var/lib/httpd/www:/usr/local/apache2/htdocs:z \
+                              -v /var/lib/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:z \
+                              -v /var/lib/httpd/logs:/usr/local/apache2/logs:z \
+                              -v /etc/localtime:/etc/localtime:ro \
+                              --restart unless-stopped \
+                              docker.io/httpd:{{_hpptd_image_tag}}
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

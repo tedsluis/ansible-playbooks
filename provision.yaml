@@ -12,10 +12,10 @@
   - auth
   - firewall
   - packages
+  - role: letsencrypt
+    when: "'letsencrypt' in group_names"
   - role: httpd
     when: "'httpd' in group_names"
-  - role: dehydrated
-    when: "'dehydrated' in group_names"
-  #  - role: gitea
+    #- role: gitea
     #when: "'gitea' in group_names"
 

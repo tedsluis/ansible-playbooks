@@ -1,0 +1,14 @@
+---
+
+_letsencrypt_domain: 'bachstraat20.duckdns.org'
+_letsencrypt_firewall:
+  - { port: '30443',proto: 'tcp' }
+_letsencrypt_groups:
+  - { group: 'letsencrypt',gid: '1035' }
+_letsencrypt_users:
+  - { user: 'letsencrypt',comment: 'user for swag letsencrypt',uid: '1035',groups: 'letsencrypt',create_home: 'false',shell: '/bin/nologin' }
+_letsencrypt_image_tag: arm64v8-latest
+_letsencrypt_packages:
+  - podman
+_letsencrypt_staging: false
+

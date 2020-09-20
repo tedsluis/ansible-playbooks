@@ -1,0 +1,24 @@
+---
+
+- name: stop letsencrypt-swag.service
+  listen: _restart_letsencrypt_swag
+  systemd:
+    name: letsencrypt-swag
+    state: stopped
+  become: true
+  
+- name: daemon reload letsencrypt-swag.service
+  listen: _restart_letsencrypt_swag
+  systemd:
+    name: letsencrypt-swag
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start letsencrypt-swag.service
+  listen: _restart_letsencrypt_swag
+  systemd:
+    name: letsencrypt-swag
+    state: started
+  become: true
+

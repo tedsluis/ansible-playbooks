@@ -1,6 +1,0 @@
----
-_dehydrated_domains:
-  - { short: "bachstraat20",     fqdn: "bachstraat20.duckdns.org" }
-  - { short: "git",              fqdn: "git.bachstraat20" }
-  - { short: "web",              fqdn: "web.bachstraat20" }
-

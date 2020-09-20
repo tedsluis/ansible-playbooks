@@ -11,14 +11,14 @@ _all_packages:
   - wget
   - curl
 
-gitusername: tedsluis
-gitemailaddress: ted.sluis@gmail.com
+_git_username: tedsluis
+_git_mailaddress: ted.sluis@gmail.com
 
-emailaddress: ted.sluis@gmail.com
-mailhubhost: smtp.gmail.com
-mailhubport: 587
+_mail_address: ted.sluis@gmail.com
+_mail_hubhost: smtp.gmail.com
+_mail_hubport: 587
 
-timezone: Europe/Amsterdam
+_timezone: Europe/Amsterdam
 
 _wants_ansible: false
 _wants_crontab: true
@@ -26,33 +26,6 @@ _wants_dnsmasq: true
 _wants_git: false
 _wants_private_key: false
 _wants_sshagent: false
-
-_lv_group:
-  - pv: /dev/sda
-    vg: vg_system
-    lv: lv_root
-    mount: "/"
-    size: "10"
-  - pv: /dev/sda
-    vg: vg_system
-    lv: lv_home
-    mount: "/home"
-    size: "10"
-  - pv: /dev/sda
-    vg: vg_system
-    lv: lv_var
-    mount: "/var"
-    size: "2"
-  - pv: /dev/sdb
-    vg: vg_data
-    lv: lv_podman
-    mount: "/var/lib/containers"
-    size: "10"
-  - pv: /dev/sdb
-    vg: vg_data
-    lv: lv_libvirt
-    mount: "/var/lib/libvirt"
-    size: "20"
 
 
 # stored in 'group_vars/vault.yaml':
