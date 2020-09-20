@@ -21,8 +21,6 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -e DUCKDNSTOKEN={{_duckdns_token}} \
                               -e EMAIL={{_mail_address}} \
                               -e STAGING={{_letsencrypt_staging}} \
-                              -p 30080:80 \
-                              -p 30443:443 \
                               -v /var/lib/letsencrypt:/config:z \
                               --restart unless-stopped \
                               docker.io/linuxserver/swag:{{_letsencrypt_image_tag}}
