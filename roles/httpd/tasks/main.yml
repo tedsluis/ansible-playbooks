@@ -43,9 +43,9 @@
     mode: 0664
   become: true
 
-- name: "pull docker.io/httpd:latest:{{_httpd_image_tag}} image"
+- name: "pull docker.io/httpd:{{_httpd_image_tag}} image"
   shell: |
-    podman pull docker.io/httpd:latest:{{_httpd_image_tag}}
+    podman pull docker.io/httpd:{{_httpd_image_tag}}
   register: _image_pull
   become: true
 

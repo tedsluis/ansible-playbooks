@@ -17,7 +17,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -v /var/lib/httpd/logs:/usr/local/apache2/logs:z \
                               -v /etc/localtime:/etc/localtime:ro \
                               --restart unless-stopped \
-                              docker.io/httpd:{{_hpptd_image_tag}}
+                              docker.io/httpd:{{_httpd_image_tag}}
 
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
 PIDFile=/%t/%n-pid
