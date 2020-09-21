@@ -89,6 +89,126 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 
 </details>
 
+## Prepare raspberry firmware for mass storage usb storage
+
+Boot with raspios image and perform a full-upgrade.
+Specificy *beta*, *critical* or *stable* in the file below:
+```bash
+pi@raspberrypi:~ $ sudo vi /etc/default/rpi-eeprom-update
+```
+Check for updates:
+```bash
+pi@raspberrypi:i~ $ sudo rpi-eeprom-update 
+BCM2711 detected
+VL805 firmware in bootloader EEPROM
+*** UPDATE AVAILABLE ***
+BOOTLOADER: update available
+CURRENT: Thu  3 Sep 12:11:43 UTC 2020 (1599135103)
+ LATEST: Wed 28 Oct 17:32:40 UTC 2020 (1603906360)
+ FW DIR: /lib/firmware/raspberrypi/bootloader/beta
+VL805: up-to-date
+CURRENT: 000138a1
+ LATEST: 000138a1
+```
+Apply update:
+```bash
+pi@raspberrypi:/lib/firmware/raspberrypi/bootloader/beta $ sudo rpi-eeprom-update -a
+BCM2711 detected
+VL805 firmware in bootloader EEPROM
+*** INSTALLING EEPROM UPDATES ***
+BOOTLOADER: update available
+CURRENT: Thu  3 Sep 12:11:43 UTC 2020 (1599135103)
+ LATEST: Wed 28 Oct 17:32:40 UTC 2020 (1603906360)
+ FW DIR: /lib/firmware/raspberrypi/bootloader/beta
+VL805: up-to-date
+CURRENT: 000138a1
+ LATEST: 000138a1
+BOOTFS /boot
+EEPROM updates pending. Please reboot to apply the update.
+```
+Reboot en login again.
+
+Select a eeprom version:
+```bash
+pi@raspberrypi:~ $ cp /lib/firmware/raspberrypi/bootloader/critical/pieeprom-2020-09-03.bin .
+```
+Or download one from github:
+```bash
+pi@raspberry:~ $ wget https://github.com/raspberrypi/rpi-eeprom/raw/master/firmware/beta/pieeprom-2020-10-28.bin
+```
+List versions:
+```bash
+pi@raspberrypi:~ $ ls -l 
+total 1540
+-rw-r--r-- 1 pi pi 524288 Oct 30 15:22 pieeprom-2020-09-03.bin
+-rw-r--r-- 1 pi pi 524288 Oct 30 10:49 pieeprom-2020-10-28.bin
+```
+Get boot config settings from eeprom:
+```bash
+pi@raspberrypi:~ $ rpi-eeprom-config pieeprom-2020-09-03.bin > bootconf.txt
+```
+Show boot config settings:
+```bash
+pi@raspberrypi:~ $ cat bootconf.txt
+[all]
+BOOT_UART=0
+WAKE_ON_GPIO=1
+POWER_OFF_ON_HALT=0
+DHCP_TIMEOUT=45000
+DHCP_REQ_TIMEOUT=4000
+TFTP_FILE_TIMEOUT=30000
+ENABLE_SELF_UPDATE=1
+DISABLE_HDMI=0
+BOOT_ORDER=0xf41
+```
+Edit boot config settings:
+```bash
+pi@raspberrypi:~ $ vi bootconf.txt
+```
+Create new eeprom with boot config settings:
+```bash
+pi@raspberrypi:~ $ rpi-eeprom-config --out pieeprom-new.bin --config bootconf.txt pieeprom-2020-09-03.bin 
+```
+Show new eeprom + boot settings:
+```
+pi@raspberrypi:~ $ ls -l 
+total 1540
+-rw-r--r-- 1 pi pi    278 Oct 30 15:21 bootconf.txt
+-rw-r--r-- 1 pi pi 524288 Oct 30 15:22 pieeprom-2020-09-03.bin
+-rw-r--r-- 1 pi pi 524288 Oct 30 10:49 pieeprom-2020-10-28.bin
+-rw-r--r-- 1 pi pi 524288 Oct 30 14:45 pieeprom-new.bin
+```
+Apply eeprom + boot settings:
+```bash
+pi@raspberrypi:~ $ sudo rpi-eeprom-update -d -f ./pieeprom-new.bin
+BCM2711 detected
+VL805 firmware in bootloader EEPROM
+*** INSTALLING ./pieeprom-new.bin  ***
+BOOTFS /boot
+EEPROM update pending. Please reboot to apply the update.
+```
+Reboot raspberry to apply update and login again.
+
+Show new boot config settings:
+pi@raspberrypi:~ $ vcgencmd bootloader_config
+[all]
+BOOT_UART=0
+WAKE_ON_GPIO=1
+POWER_OFF_ON_HALT=0
+DHCP_TIMEOUT=45000
+DHCP_REQ_TIMEOUT=4000
+TFTP_FILE_TIMEOUT=30000
+TFTP_IP=
+TFTP_PREFIX=0
+BOOT_ORDER=0xf41               <------ boot order is sdcard, usb mass storage
+SD_BOOT_MAX_RETRIES=3
+NET_BOOT_MAX_RETRIES=5
+USB_MSD_PWR_OFF_TIME=0
+USB_MSD_DISCOVER_TIMEOUT=20
+[none]
+FREEZE_VERSION=0
+```
+
 ## more......
 
 https://github.com/dysosmus/ansible-completion
