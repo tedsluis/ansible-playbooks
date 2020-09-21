@@ -21,10 +21,12 @@
     when: "'nfsclient' in group_names"
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
-  - role: pihole
-    when: "'pihole' in group_names"
+#  - role: pihole
+#    when: "'pihole' in group_names"
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
+  - role: jenkins
+    when: "'jenkins' in group_names"
   - role: httpd
     when: "'httpd' in group_names"
   - role: postgres

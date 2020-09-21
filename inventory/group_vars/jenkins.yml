@@ -1,7 +1,8 @@
 ---
+_jenkins_base_url: jenkins.bachstraat20.duckdns.org
 _jenkins_firewall:
   - 5000/tcp
-  - 8080/tcp
+  - 8443/tcp
 _jenkins_groups:
   - { group: 'jenkins',gid: '1037' }
 _jenkins_users:
@@ -17,5 +18,18 @@ _jenkins_plugins:
   - pipeline-stage-view:latest
   - timestamper:latest
   - ws-cleanup:latest
-
-
+_packages_for_jenkins:
+  - ansible 
+  - ca-certificates 
+  - curl 
+  - git 
+  - java-cacerts
+  - jq
+  - openssl 
+  - openssh-client 
+  - python 
+  - rsync 
+  - sudo 
+  - tar 
+  - wget 
+  

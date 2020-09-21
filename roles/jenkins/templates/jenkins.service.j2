@@ -11,10 +11,10 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               --cidfile /%t/%n-cid \
                               -d \
                               --name=jenkins \
-                              -p 8080:8080 \
+                              -p 8443:8443 \
                               -p 50000:50000 \
                               -v /var/lib/jenkins/data:/var/jenkins_home:z \
-                              -v /var/lib/jenkins/certs:/certs/client:ro \
+                              -v /var/lib/jenkins/certs:/certs:z \
                               --restart unless-stopped \
                               jenkins:{{_jenkins_image_tag}}
 

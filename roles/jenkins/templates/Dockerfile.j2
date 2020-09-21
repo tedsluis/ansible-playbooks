@@ -1,5 +1,13 @@
 FROM docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
 
+USER root
+
+RUN apk add --no-cache {% for package in _packages_for_jenkins %} {{ package }} {% endfor %} 
+
+RUN /usr/sbin/update-ca-certificates
+
+USER jenkins
+
 # install jenkins plugins
 COPY ./plugins.txt /usr/share/jenkins/plugins
 RUN while read i ; \ 
@@ -9,4 +17,7 @@ RUN while read i ; \
 # allows to skip Jenkins setup wizard
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
+ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8443 --httpsKeyStore=/var/jenkins_home/keystore/jenkins.jks --httpsKeyStorePassword="{{_jenkins_passphrase}}"
+
+EXPOSE 8443
 
