@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
-<body onload="javascript:myFunction()">
-<p id="test"></p>
-<br><br>
-URLs:<br>
-<a href="http://{{item.url}}:{{item.http_port  }}/">http://{{item.url}}:{{item.http_port  }}/</a><br>
-<a href="https://{{item.url}}:{{item.https_port}}/">https://{{item.url}}:{{item.https_port}}/</a><br><br>
-HEALTH CHECK:<br>
-<a href="http://{{item.url}}:{{item.http_port  }}/health">http://{{item.url}}:{{item.http_port  }}/health</a><br>
-<a href="https://{{item.url}}:{{item.https_port}}/health">https://{{item.url}}:{{item.https_port}}/health</a></html>
-
-<script>
-function myFunction() {
-  var d  = new Date();
-  var ms = d.getMilliseconds();
-  var s  = d.getSeconds();
-  var m  = d.getMinutes();
-  var h  = d.getHours();
-  var dy = d.getDate();
-  var mt = d.getMonth()+1;
-  var y  = d.getFullYear();
-  document.getElementById("test").innerHTML ='SITE NAME: {{item.sitename}}: ' + y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms + '   HTTP STATUS CODE 200 OK';
-}
-</script>
-</body>
+  <body onload="javascript:myFunction()">
+  PAGE NAME: {{item[1].pagename}}<br><br>
+  SITE NAME: {{item[0].sitename}}<br><br>
+  URLs:<br>
+  <a href="http://{{item[0].url}}:{{item[0].http_port  }}/">http://{{item[0].url}}:{{item[0].http_port  }}/</a><br>
+  <a href="https://{{item[0].url}}:{{item[0].https_port}}/">https://{{item[0].url}}:{{item[0].https_port}}/</a><br><br>
+  HEALTH CHECK:<br>
+  <a href="http://{{item[0].url}}:{{item[0].http_port  }}/health">http://{{item[0].url}}:{{item[0].http_port  }}/health</a><br>
+  <a href="https://{{item[0].url}}:{{item[0].https_port}}/health">https://{{item[0].url}}:{{item[0].https_port}}/health</a><br><br>
+  <p id="healthcheck"></p>
+    <script>
+      function myFunction() {
+        var d  = new Date();
+        var ms = d.getMilliseconds();
+        var s  = d.getSeconds();
+        var m  = d.getMinutes();
+        var h  = d.getHours();
+        var dy = d.getDate();
+        var mt = d.getMonth()+1;
+        var y  = d.getFullYear();
+        document.getElementById("healthcheck").innerHTML ='HTTP STATUS CODE 200 OK -- ' + y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms;
+      }
+    </script>
+  </body>
 </html>
