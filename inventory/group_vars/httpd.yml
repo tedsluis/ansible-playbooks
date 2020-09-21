@@ -1,6 +1,7 @@
 ---
 _httpd_firewall:
   - { port: '30001',proto: 'tcp' }
+  - { port: '30002',proto: 'tcp' }
 _httpd_groups:
   - { group: 'httpd',gid: '1034' }
 _httpd_users:

@@ -5,7 +5,7 @@ _letsencrypt_groups:
   - { group: 'letsencrypt',gid: '1035' }
 _letsencrypt_users:
   - { user: 'letsencrypt',comment: 'user for swag letsencrypt',uid: '1035',groups: 'letsencrypt',create_home: 'false',shell: '/bin/nologin' }
-_letsencrypt_image_tag: arm64v8-latest
+_letsencrypt_image_tag: 1.8.0-ls11
 _letsencrypt_packages:
   - podman
 _letsencrypt_staging: false

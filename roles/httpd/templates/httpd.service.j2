@@ -1,26 +1,30 @@
 [Unit]
-Description=httpd
+Description=httpd-{{item[0].sitename}}
 Wants=network.target
 After=network-online.target
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
-ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
-ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
-                              --cidfile /%t/%n-cid \
+ExecStartPre=-/usr/bin/rm -f /%t/%n-{{item[0].sitename}}-pid /%t/%n-{{item[0].sitename}}-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-{{item[0].sitename}}-pid  \
+                              --cidfile /%t/%n-{{item[0].sitename}}-cid \
                               -d \
-                              --name=httpd \
-                              -p 30001:30001 \
-                              -v /var/lib/httpd/www:/usr/local/apache2/htdocs:z \
-                              -v /var/lib/httpd/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:z \
-                              -v /var/lib/httpd/logs:/usr/local/apache2/logs:z \
+                              --name=httpd-{{item[0].sitename}} \
+                              -p {{item[0].http_port }}:{{item[0].http_port }} \
+                              -p {{item[0].https_port}}:{{item[0].https_port}} \
+                              -v /var/lib/httpd-{{item[0].sitename}}/www:/usr/local/apache2/htdocs:z \
+                              -v /var/lib/httpd-{{item[0].sitename}}/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:z \
+                              -v /var/lib/httpd-{{item[0].sitename}}/conf/extra/httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf:z \
+                              -v /var/lib/httpd-{{item[0].sitename}}/conf/server.crt:/usr/local/apache2/conf/server.crt:z \
+                              -v /var/lib/httpd-{{item[0].sitename}}/conf/server.key:/usr/local/apache2/conf/server.key:z \
+                              -v /var/lib/httpd-{{item[0].sitename}}/logs:/usr/local/apache2/logs:z \
                               -v /etc/localtime:/etc/localtime:ro \
                               --restart unless-stopped \
                               docker.io/httpd:{{_httpd_image_tag}}
 
-ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
-PIDFile=/%t/%n-pid
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-{{item[0].sitename}}-cid`"
+PIDFile=/%t/%n-{{item[0].sitename}}-pid
 KillMode=none
 Type=forking
 

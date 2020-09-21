@@ -1,24 +1,27 @@
 ---
 
-- name: stop httpd.service
+- name: stop httpd-<sitename>.service
   listen: _restart_httpd
   systemd:
-    name: httpd
+    name: "httpd-{{item.sitename}}"
     state: stopped
+  with_items: "{{_httpd_sites}}"
   become: true
   
-- name: daemon reload httpd.service
+- name: daemon reload httpd-<sitename>.service
   listen: _restart_httpd
   systemd:
-    name: httpd
+    name: "httpd-{{item.sitename}}"
     state: stopped
     daemon_reload: true
+  with_items: "{{_httpd_sites}}"
   become: true
 
-- name: start httpd.service
+- name: start httpd-<sitename>.service
   listen: _restart_httpd
   systemd:
-    name: httpd
+    name: "httpd-{{item.sitename}}"
     state: started
+  with_items: "{{_httpd_sites}}"
   become: true
 

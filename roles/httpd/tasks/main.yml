@@ -1,47 +1,96 @@
 ---
 
-- name: create httpd directories
+- set_fact:
+    _httpd_sites:
+      - {sitename: 'test', url: 'fed143.bachstraat20.duckdns.org', http_port: '30080', https_port: '30443' }
+      - {sitename: 'dev',  url: 'fed143.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
+
+- set_fact:
+    _httpd_directories:
+      - { directory: "",           owner: "httpd",group: "httpd",mode: "0775" }
+      - { directory: "/conf",      owner: "httpd",group: "httpd",mode: "0775" }
+      - { directory: "/conf/extra",owner: "httpd",group: "httpd",mode: "0775" }
+      - { directory: "/www",       owner: "httpd",group: "httpd",mode: "0775" }
+      - { directory: "/logs",      owner: "httpd",group: "httpd",mode: "0775" }
+      - { directory: "/www/health",owner: "httpd",group: "httpd",mode: "0775" }
+
+- name: create /var/lib/httpd-<sitename>/* directories for each site
   file:
-    path: "{{item.directory}}"
-    owner: "{{item.owner}}"
-    group: "{{item.group}}"
-    mode: "{{item.mode}}"
+    path: "/var/lib/httpd-{{item[0].sitename}}{{item[1].directory}}"
+    owner: "{{item[1].owner}}"
+    group: "{{item[1].group}}"
+    mode: "{{item[1].mode}}"
     state: directory
   become: true
-  with_items:
-    - { directory: "/var/lib/httpd",           owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/conf",      owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/www",       owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/logs",      owner: "httpd",group: "httpd",mode: "0775" }
-    - { directory: "/var/lib/httpd/www/health",owner: "httpd",group: "httpd",mode: "0775" }
+  with_nested:
+    - "{{_httpd_sites}}"
+    - "{{_httpd_directories}}"
 
-- name: copy httpd.conf
+- set_fact:
+    _httpd_configfiles:
+      - {file: "httpd.conf", path: "conf"}
+      - {file: "httpd-ssl.conf", path: "conf/extra"}
+      
+- name: copy /var/lib/httpd-<sitename>/ configuration files for each site
   template:
-    src: httpd.conf.j2
-    dest: /var/lib/httpd/conf/httpd.conf
+    src: '{{item[1].file}}.j2'
+    dest: '/var/lib/httpd-{{item[0].sitename}}/{{item[1].path}}/{{item[1].file}}'
     owner: httpd
     group: httpd
     mode: 0664
+  become: true
+  with_nested:
+    - "{{_httpd_sites}}"
+    - "{{_httpd_configfiles}}"
+  notify: _restart_httpd
+
+- set_fact:
+    _httpd_keys:
+      - { src: 'privkey.pem',   dest: 'server.key' }
+      - { src: 'fullchain.pem', dest: 'server.crt' }
+
+- name: copy /var/lib/httpd-<sitename>/conf/ certificate files
+  copy:
+    remote_src: true
+    src: '/var/lib/letsencrypt/keys/letsencrypt/{{item[1].src}}'
+    dest: '/var/lib/httpd-{{item[0].sitename}}/conf/{{item[1].dest}}'
+    owner: httpd
+    group: httpd
+    mode: 0664
+  with_nested:
+    - "{{_httpd_sites}}"
+    - "{{_httpd_keys}}"
   become: true
   notify: _restart_httpd
 
-- name: create index.html
+- name: create /var/lib/httpd-<sitename>/www/index.html
   copy:
-    content: '<!DOCTYPE html><html>agent installed...</html>'
-    dest: /var/lib/httpd/www/index.html
+    content: >
+      <!DOCTYPE html><html>Placeholder<br><br>
+      SITE NAME:
+      {{item.sitename}}<br><br>
+      URLs:<br>
+      <a href="http://{{item.url}}:{{item.http_port  }}/">http://{{item.url}}:{{item.http_port  }}/</a><br>
+      <a href="https://{{item.url}}:{{item.https_port}}/">https://{{item.url}}:{{item.https_port}}/</a><br><br>
+      HEALTH CHECK:<br>
+      <a href="http://{{item.url}}:{{item.http_port  }}/health">http://{{item.url}}:{{item.http_port  }}/health</a><br>
+      <a href="https://{{item.url}}:{{item.https_port}}/health">https://{{item.url}}:{{item.https_port}}/health</a></html>
+    dest: '/var/lib/httpd-{{item.sitename}}/www/index.html'
     owner: httpd
     group: httpd
     mode: 0664
   become: true
+  with_items: "{{_httpd_sites}}"
   
 - name: create health check
   copy:
     src: index.html
-    dest: /var/lib/httpd/www/health/index.html
+    dest: '/var/lib/httpd-{{item.sitename}}/www/health/index.html'
     owner: httpd
     group: httpd
     mode: 0664
   become: true
+  with_items: "{{_httpd_sites}}"
 
 - name: "pull docker.io/httpd:{{_httpd_image_tag}} image"
   shell: |
@@ -52,28 +101,32 @@
 - debug:
     var: _image_pull
 
-- name: create /etc/systemd/system/httpd.service
+- name: create /etc/systemd/system/httpd-<sitename>.service
   template:
     src: httpd.service.j2
-    dest: /etc/systemd/system/httpd.service
+    dest: '/etc/systemd/system/httpd-{{item[0].sitename}}.service'
     owner: root
     group: root
     mode: 0664
   become: true
-  with_items: "{{_httpd_users}}"
+  with_nested: 
+    - "{{_httpd_sites}}"
+    - "{{_httpd_users}}"
   notify: _restart_httpd
 
-- name: start and enable httpd.service
+- name: start and enable httpd-<sitename>.service
   systemd:
-    name: httpd
+    name: 'httpd-{{item.sitename}}'
     state: started
     enabled: true
+  with_items: "{{_httpd_sites}}"
   become: true
   
 - name: httpd podman container httpd state
   shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=httpd'
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=httpd-{{item.sitename}}'
   register: _container_state
+  with_items: "{{_httpd_sites}}"
   become: true
 
 - debug:
