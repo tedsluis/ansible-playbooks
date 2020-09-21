@@ -57,40 +57,28 @@
     owner: httpd
     group: httpd
     mode: 0664
+  become: true
   with_nested:
     - "{{_httpd_sites}}"
     - "{{_httpd_keys}}"
-  become: true
   notify: _restart_httpd
 
-- name: create /var/lib/httpd-<sitename>/www/index.html
-  copy:
-    content: >
-      <!DOCTYPE html><html>Placeholder<br><br>
-      SITE NAME:
-      {{item.sitename}}<br><br>
-      URLs:<br>
-      <a href="http://{{item.url}}:{{item.http_port  }}/">http://{{item.url}}:{{item.http_port  }}/</a><br>
-      <a href="https://{{item.url}}:{{item.https_port}}/">https://{{item.url}}:{{item.https_port}}/</a><br><br>
-      HEALTH CHECK:<br>
-      <a href="http://{{item.url}}:{{item.http_port  }}/health">http://{{item.url}}:{{item.http_port  }}/health</a><br>
-      <a href="https://{{item.url}}:{{item.https_port}}/health">https://{{item.url}}:{{item.https_port}}/health</a></html>
-    dest: '/var/lib/httpd-{{item.sitename}}/www/index.html'
-    owner: httpd
-    group: httpd
-    mode: 0664
-  become: true
-  with_items: "{{_httpd_sites}}"
-  
-- name: create health check
-  copy:
+- set_fact:
+    _httpd_pages:
+      - { pagename: 'root web site page holder', path: 'index.html' }
+      - { pagename: 'health check',              path: 'health/index.html' }
+
+- name: create index.html and health/index.html
+  template:
     src: index.html
-    dest: '/var/lib/httpd-{{item.sitename}}/www/health/index.html'
+    dest: '/var/lib/httpd-{{item[0].sitename}}/www/{{item[1].path}}'
     owner: httpd
     group: httpd
     mode: 0664
   become: true
-  with_items: "{{_httpd_sites}}"
+  with_nested: 
+    - "{{_httpd_sites}}"
+    - "{{_httpd_pages}}"
 
 - name: "pull docker.io/httpd:{{_httpd_image_tag}} image"
   shell: |
