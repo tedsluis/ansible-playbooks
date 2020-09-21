@@ -190,6 +190,7 @@ EEPROM update pending. Please reboot to apply the update.
 Reboot raspberry to apply update and login again.
 
 Show new boot config settings:
+```bash
 pi@raspberrypi:~ $ vcgencmd bootloader_config
 [all]
 BOOT_UART=0
