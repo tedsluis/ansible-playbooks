@@ -1,0 +1,60 @@
+---
+
+- name: create podman network
+  shell: |
+    podman network create {{item.podman_network}}
+  become: true
+  with_item: "{{_postgres_instances}}"
+
+- name: create /var/lib/postgres-<name>/* directories for each postgres container
+  file:
+    path: "/var/lib/postgres-{{item.name}}"
+    owner: postgres
+    group: postgres
+    mode: 0775
+    state: directory
+  become: true
+  with_items: "{{_postgres_instances}}"
+
+- name: "pull docker.io/postgres:{{_postgres_image_tag}} image"
+  shell: |
+    podman pull docker.io/postgres:{{_postgres_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/postgres-<name>.service
+  template:
+    src: postgres.service.j2
+    dest: '/etc/systemd/system/postgres-{{item.name}}.service'
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items: "{{_postgres_instances}}"
+  notify: _restart_postgres
+
+- name: start and enable postgres-<name>.service
+  systemd:
+    name: 'postgres-{{item.name}}'
+    state: started
+    enabled: true
+  become: true
+  with_items: "{{_postgres_instances}}"
+  
+- name: postgres podman container postgres state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=postgres-{{item.name}}'
+  register: _container_state
+  become: true
+  with_items: "{{_postgres_instances}}"
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+
+

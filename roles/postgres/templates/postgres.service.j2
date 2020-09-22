@@ -1,0 +1,32 @@
+[Unit]
+Description=postgress-{{item.name}}
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-{{item.name}}-pid /%t/%n-{{item.name}}-cid
+ExecStart=/usr/bin/podman run \
+      --conmon-pidfile /%t/%n-{{item.name}}-pid  \
+      --cidfile /%t/%n-{{item.name}}-cid \
+      -d \
+      --name postgres-{{item.name}} \
+      ---expose {{item.port|default('5432')}} \
+      --network {{item.podman_network|default('default')}} \
+      -e POSTGRES_USER={{item.user|default('postgres')}} \
+      -e POSTGRES_PASSWORD={{lookup('vars',item.user)|default('postgres')}} \
+      -e POSTGRES_DB={{item.dbname|default('postgres')}} \
+      -e TZ={{_timezone}} \
+      -v /var/lib/postgres-{{item.name}}:/var/lib/postgresql/data:z \
+      --restart unless-stopped \
+      docker.io/postgres:{{_postgres_image_tag}}
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-{{item.name}}-cid`"
+PIDFile=/%t/%n-{{item.name}}-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

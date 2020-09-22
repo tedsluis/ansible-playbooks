@@ -55,17 +55,29 @@ To update the plug-ins, use *:PlugUpdate* in VIM.
 ## Firewall ports
 <details>
 <summary>Firewall ports</summary>
-* 3000  gitea 
-* 30001 apache httpd
+
+| port  | service            |
+|-------|--------------------|
+| 22    | ssh                |
+| 3000  | gitea              |
+| 5432  | postgres default   |
+| 30080 | apache httpd http  |
+| 30443 | apache httpd https |
+| 31080 | apache httpd http  |
+| 31433 | apache httpd https |
+
 </details>
 
 ## Users & uids
 
-* 1033 git 
+* 1033 gitea 
 * 1034 httpd
+* 1035 letsencrypt
+* 1036 postgres
 
 ## Groups & gid
 
-* 1033 git 
+* 1033 gitea 
 * 1034 httpd
-
+* 1035 letsencrypt
+* 1036 postgres

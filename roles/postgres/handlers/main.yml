@@ -1,0 +1,27 @@
+---
+
+- name: stop postgres-<name>.service
+  listen: _restart_postgres
+  systemd:
+    name: "postgres-{{item.name}}"
+    state: stopped
+  with_items: "{{_postgres_instances}}"
+  become: true
+  
+- name: daemon reload postgres-<name>.service
+  listen: _restart_postgres
+  systemd:
+    name: "postgres-{{item.name}}"
+    state: stopped
+    daemon_reload: true
+  with_items: "{{_postgres_instances}}"
+  become: true
+
+- name: start postgres-<name>.service
+  listen: _restart_postgres
+  systemd:
+    name: "postgres-{{item.name}}"
+    state: started
+  with_items: "{{_postgres_instances}}"
+  become: true
+

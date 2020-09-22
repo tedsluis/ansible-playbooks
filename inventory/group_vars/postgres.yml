@@ -1,0 +1,8 @@
+_postgres_image_tag: 9.6
+_postgres_groups: 
+  - { group: 'postgres',gid: '1036' }
+_postgres_users: 
+  - { user: 'postgres',comment: 'user for postgres',uid: '1036',groups: 'postgres',create_home: 'false',shell: '/bin/nologin' }
+_postgres_packages: 
+  - podman
+
