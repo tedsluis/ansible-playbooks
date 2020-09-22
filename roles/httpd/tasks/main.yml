@@ -1,11 +1,7 @@
 ---
 
-- set_fact:
-    _httpd_sites:
-      - {sitename: 'test', url: 'fed143.bachstraat20.duckdns.org', http_port: '30080', https_port: '30443' }
-      - {sitename: 'dev',  url: 'fed143.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
-
-- set_fact:
+- name: set fact httpd directories
+  set_fact:
     _httpd_directories:
       - { directory: "",           owner: "httpd",group: "httpd",mode: "0775" }
       - { directory: "/conf",      owner: "httpd",group: "httpd",mode: "0775" }
