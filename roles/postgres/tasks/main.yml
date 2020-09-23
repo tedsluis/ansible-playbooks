@@ -1,10 +1,10 @@
 ---
 
-- name: create podman network
+- name: create podman network if not exists
   shell: |
-    podman network create {{item.podman_network}}
+    if [[ $(podman network ls --format "{{ '{{' }}.Names{{ '}}' }}"  --filter 'name={{item.podman_network}}') == "" ]]; then podman network create {{item.podman_network}}; fi
   become: true
-  with_item: "{{_postgres_instances}}"
+  with_items: "{{_postgres_instances}}"
 
 - name: create /var/lib/postgres-<name>/* directories for each postgres container
   file:

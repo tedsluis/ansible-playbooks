@@ -16,6 +16,8 @@
     when: "'letsencrypt' in group_names"
   - role: httpd
     when: "'httpd' in group_names"
+  - role: postgres
+    when: "'postgres' in group_names"
     #- role: gitea
     #when: "'gitea' in group_names"
 

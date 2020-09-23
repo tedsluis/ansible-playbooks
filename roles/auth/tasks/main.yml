@@ -19,6 +19,11 @@
     _groups: "{{ (_groups + _httpd_groups) | unique }}"
   when: _httpd_groups is defined
 
+- name: Add _postgres_groups
+  set_fact:
+    _groups: "{{ (_groups + _postgres_groups) | unique }}"
+  when: _postgres_groups is defined
+
 - name: Add _hostvar_groups
   set_fact:
     _groups: "{{ (_groups + _hostvar_groups) | unique }}"
@@ -58,6 +63,11 @@
   set_fact:
     _users: "{{ (_users + _httpd_users) | unique }}"
   when: _httpd_users is defined
+  
+- name: Add _postgres_users
+  set_fact:
+    _users: "{{ (_users + _postgres_users) | unique }}"
+  when: _postgres_users is defined
 
 - name: Add _hostvar_users
   set_fact:

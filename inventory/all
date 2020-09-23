@@ -5,14 +5,14 @@ gitea
 httpd
 
 [raspbian]
-pihole     # _ip_address='192.168.1.17'
+pihole
 
 [fedora]
-fed143     # _ip_address='192.168.11.143'
-fed149     # _ip_address='192.168.11.149'
-fed157     # _ip_address='192.168.11.157'
-fed159     # _ip_address='192.168.11.159'
-fed160     # _ip_address='192.168.11.160'
+fed143
+fed149
+fed157
+fed159
+fed160
 
 [httpd]
 fed143
@@ -21,4 +21,7 @@ fed143
 fed143
 
 [letsencrypt]
+fed143
+
+[postgres]
 fed143

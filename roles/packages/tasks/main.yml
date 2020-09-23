@@ -14,6 +14,11 @@
   set_fact:
     _packages: "{{ (_packages + _httpd_packages) | unique }}"
   when: _httpd_packages is defined
+  
+- name: Add _postgres_packages
+  set_fact:
+    _packages: "{{ (_packages + _postgres_packages) | unique }}"
+  when: _postgres_packages is defined
 
 - name: Add _hostvar_packages
   set_fact:
