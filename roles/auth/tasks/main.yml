@@ -1,39 +1,24 @@
 ---
-- name: set dummy _all_groups
-  set_fact:
-    _all_groups: 
-      - { group: 'dummy' }
-  when: _all_groups is undefined
-  
-- name: Add _all_groups
-  set_fact:
-    _groups: "{{ _all_groups | unique }}"
 
-- name: Add _gitea_groups
+- name: define _groups
   set_fact:
-    _groups: "{{ (_groups + _gitea_groups) | unique }}"
-  when: _gitea_groups is defined
+    _groups: 
+      - { group: '' }
 
-- name: Add _httpd_groups
-  set_fact:
-    _groups: "{{ (_groups + _httpd_groups) | unique }}"
-  when: _httpd_groups is defined
+- name: add groups
+  set_fact: 
+    _groups: 
+      - "{{(_groups+lookup('vars',item))|flatten|unique}}"
+  with_items: "{{ lookup('varnames', '.+_groups$').split(',') }}"
 
-- name: Add _postgres_groups
-  set_fact:
-    _groups: "{{ (_groups + _postgres_groups) | unique }}"
-  when: _postgres_groups is defined
-
-- name: Add _hostvar_groups
-  set_fact:
-    _groups: "{{ (_groups + _hostvar_groups) | unique }}"
-  when: _hostvar_groups is defined
+- debug:
+    var: _groups
 
 - name: show groups and gid
   debug:
     msg: "GROUP={{item.group}} GID={{item.gid}}"
   with_items: "{{_groups}}"
-  when: item.group != "dummy"
+  when: item.group != ""
 
 - name: create groups
   group:
@@ -42,43 +27,28 @@
     gid: "{{item.gid}}"
   become: true
   with_items: "{{_groups}}"
-  when: item.group != "dummy"
+  when: item.group != ""
 
-- name: Set dummy _all_users
+- name: define _users
   set_fact:
-    _all_users:
-      - { user: 'dummy' } 
-  when: _all_users is undefined
+    _users: 
+      - { user: '' }
 
-- name: Add _all_users
-  set_fact:
-    _users: "{{ _all_users | unique }}"
-
-- name: Add _gitea_users
-  set_fact:
-    _users: "{{ (_users + _gitea_users) | unique }}"
-  when: _gitea_users is defined
-
-- name: Add _httpd_users
-  set_fact:
-    _users: "{{ (_users + _httpd_users) | unique }}"
-  when: _httpd_users is defined
+- name: Find several related variables that end specific way
+  debug: msg="ITEM={{item}}+>{{ lookup('vars',item)}}"
+  with_items: "{{ lookup('varnames', '.+_users$').split(',') }}"
   
-- name: Add _postgres_users
-  set_fact:
-    _users: "{{ (_users + _postgres_users) | unique }}"
-  when: _postgres_users is defined
-
-- name: Add _hostvar_users
-  set_fact:
-    _users: "{{ (_users + _hostvar_users) | unique }}"
-  when: _hostvar_users is defined
+- name: add users
+  set_fact: 
+    _users: 
+      - "{{(_users+lookup('vars',item))|flatten|unique}}"
+  with_items: "{{ lookup('varnames', '.+_users$').split(',') }}"
 
 - name: show users and uid
   debug:
     msg: "USER={{item.user}} COMMENT={{item.comment}} UID={{item.uid}} GROUPS={{item.groups}} CREATE_HOME={{item.create_home|default('yes')}} SHELL={{item.shell|default('/bin/bash')}}"
   with_items: "{{_users}}"
-  when: item.user != "dummy"
+  when: item.user != ""
 
 - name: create users
   user:
@@ -90,4 +60,4 @@
     shell: "{{item.shell|default('/bin/bash')}}"
   become: true
   with_items: "{{_users}}"
-  when: item.user != "dummy"
+  when: item.user != ""

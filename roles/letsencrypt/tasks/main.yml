@@ -12,7 +12,7 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/letsencrypt",owner: "1035",group: "1035",mode: "0664" }
+    - { directory: "/var/lib/letsencrypt",owner: "letsencrypt",group: "letsencrypt",mode: "0664" }
 
 - name: "pull docker.io/linuxserver/swag:{{_letsencrypt_image_tag}} image"
   shell: |
