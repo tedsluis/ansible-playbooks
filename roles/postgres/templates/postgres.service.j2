@@ -15,7 +15,7 @@ ExecStart=/usr/bin/podman run \
       --expose {{item.port|default('5432')}} \
       --network {{item.podman_network|default('default')}} \
       -e POSTGRES_USER={{item.user|default('postgres')}} \
-      -e POSTGRES_PASSWORD={{lookup('vars',item.password)|default('postgres')}} \
+      -e POSTGRES_PASSWORD={{lookup('vars',item.password_var)|default('postgres')}} \
       -e POSTGRES_DB={{item.dbname|default('postgres')}} \
       -e TZ={{_timezone}} \
       -v /var/lib/postgres-{{item.name}}:/var/lib/postgresql/data:z \

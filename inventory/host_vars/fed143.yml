@@ -6,6 +6,6 @@ _httpd_sites:
   - {sitename: 'dev',  url: 'fed143.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
 
 _postgres_instances:
-  - { name: 'gitea', podman_network: 'gitea', port: '5432',user: 'giteadb', password: '_postgres_giteadb', dbname: 'gitea' }
+  - { name: 'gitea', podman_network: 'gitea', port: '5432',user: 'giteadb', password_var: '_postgres_password_giteadb', dbname: 'gitea' }
 
 

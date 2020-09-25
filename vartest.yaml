@@ -1,9 +1,0 @@
-#!/usr/bin/env ansible-playbook
-
-- name: vartest
-  hosts: 
-    - fed149
-  vars:
-    ansible_user: ansible
-  roles:
-    - vartest
