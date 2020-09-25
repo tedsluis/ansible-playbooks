@@ -9,9 +9,11 @@
     ansible_user: ansible
 
   roles:
+  # common roles -- run on all hosts
   - users-and-groups
   - firewall
   - packages
+  # group based roles
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
   - role: httpd
