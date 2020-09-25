@@ -1,31 +1,26 @@
 ---
 
-- name: Add _all_firewall
+- name: define _firewall
   set_fact:
-    _firewall: "{{ _all_firewall | unique }}"
-  when: _all_firewall is defined
+    _firewall:
+      - { port: '' }
 
-- name: Add _gitea_firewall
+- name: add _*_firewall
   set_fact:
-    _firewall: "{{ (_firewall + _gitea_firewall) | unique }}"
-  when: _gitea_firewall is defined
+    _firewall:
+      - "{{(_firewall+lookup('vars',item))|flatten|unique}}"
+  with_items: "{{ lookup('varnames', '.+_firewall$').split(',') }}"
 
-- name: Add _httpd_firewall
-  set_fact:
-    _firewall: "{{ (_firewall + _httpd_firewall) | unique }}"
-  when: _httpd_firewall is defined
+- debug:
+    var: _firewall
 
-- name: Add _hostvar_firewall
-  set_fact:
-    _firewall: "{{ (_firewall + _hostvar_firewall) | unique }}"
-  when: _hostvar_firewall is defined
-    
 - name: show ports and protocols
   debug:
     msg: "PORT={{item.port}} PROTO={{item.proto}}"
   with_items: "{{_firewall}}"
+  when: item.port != ""
 
-- name: "open firewall ports" 
+- name: open firewall ports 
   firewalld:
     port: "{{item.port}}/{{item.proto}}"
     permanent: true
@@ -33,3 +28,5 @@
     immediate: true
   become: true
   with_items: "{{_firewall}}"
+  when: item.port != ""
+

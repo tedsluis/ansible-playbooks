@@ -9,7 +9,7 @@
     ansible_user: ansible
 
   roles:
-  - auth
+  - users-and-groups
   - firewall
   - packages
   - role: letsencrypt

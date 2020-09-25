@@ -5,7 +5,7 @@
     _groups: 
       - { group: '' }
 
-- name: add groups
+- name: add _*_groups
   set_fact: 
     _groups: 
       - "{{(_groups+lookup('vars',item))|flatten|unique}}"
@@ -34,11 +34,7 @@
     _users: 
       - { user: '' }
 
-- name: Find several related variables that end specific way
-  debug: msg="ITEM={{item}}+>{{ lookup('vars',item)}}"
-  with_items: "{{ lookup('varnames', '.+_users$').split(',') }}"
-  
-- name: add users
+- name: add _*_users
   set_fact: 
     _users: 
       - "{{(_users+lookup('vars',item))|flatten|unique}}"

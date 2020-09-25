@@ -1,29 +1,17 @@
 ---
 
-- name: Add _all_packages
+- name: define _packages
   set_fact:
-    _packages: "{{ _all_packages | unique }}"
-  when: _all_packages is defined
+    _packages: []
 
-- name: Add _gitea_packages
-  set_fact:
-    _packages: "{{ (_packages + _gitea_packages) | unique }}"
-  when: _gitea_packages is defined
+- debug:
+    msg: "{{_packages+lookup('vars',item)}}"
+  with_items: "{{ lookup('varnames', '.+_packages$').split(',') }}"
 
-- name: Add _httpd_packages
+- name: add _*_packages
   set_fact:
-    _packages: "{{ (_packages + _httpd_packages) | unique }}"
-  when: _httpd_packages is defined
-  
-- name: Add _postgres_packages
-  set_fact:
-    _packages: "{{ (_packages + _postgres_packages) | unique }}"
-  when: _postgres_packages is defined
-
-- name: Add _hostvar_packages
-  set_fact:
-    _packages: "{{ (_packages + _hostvar_packages) | unique }}"
-  when: _hostvar_packages is defined
+    _packages: "{{(_packages+lookup('vars',item))|unique}}"
+  with_items: "{{ lookup('varnames', '.+_packages$').split(',') }}"
 
 - name: show packages 
   debug:
