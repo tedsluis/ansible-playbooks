@@ -15,19 +15,25 @@ Deploys a postgres container:
 
 ## dependecies
 
-* host belongs to inventory group *postgres* with *inventory/group_vars/postgres.yml*
-* role *dnsmask*
+* host must belongs to inventory group *postgres* with *inventory/group_vars/postgres.yml*
+* *dnsmask*
+* *users-and-groups* role
+* *packages* role
 
 ## group_vars, host_vars and vault vars.
 
-| var name                        | var type                            | description                             |
-|---------------------------------|-------------------------------------|-----------------------------------------|
-| _postgres_image_tag             | inventory/group_vars/postgres.yml   | docker image tag postgres:<tag>         |
-| _postgres_instance.name         | inventory/hostvar_vars/somehost.yml | postgress instance name                 |
-| _postgres_instance.port         | inventory/hostvar_vars/somehost.yml | port exposed in podman network          |
-| _postgres_instance.network      | inventory/hostvar_vars/somehost.yml | podman network name                     |
-| _postgres_instance.user         | inventory/hostvar_vars/somehost.yml | postgres user                           |
-| _postgres_instance.dbname       | inventory/hostvar_vars/somehost.yml | postgres database name                  |
-| _postgres_instance.password_var | inventory/hostvar_vars/somehost.yml | postgres password variable in vault.yml |
-| _postgress_password_someuser    | inventory/group_vars/vault.yml      | postgres password someuser              |
+| var name                        | var type                            | description                               |
+|---------------------------------|-------------------------------------|-------------------------------------------|
+| _postgres_image_tag             | inventory/group_vars/postgres.yml   | docker image tag postgres:<tag>           |
+| _postgres_instance              | inventory/hostvar_vars/somehost.yml | postgress instance propperties, see below |
+| _postgress_password_someuser    | inventory/group_vars/vault.yml      | postgres password someuser                |
 
+```bash
+_postgres_instance:
+  - { name: '<some instance name>', port: '5432', podman_network: '<somename>', dbname: 'some db name', password_var: '_postgress_password_someuser' }
+```
+
+notes: 
+
+* *password_var* stores the ansible vault variable name were that password can be found.
+* the port is only exposed in the podman network, not outside the host.
