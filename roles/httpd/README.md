@@ -1,5 +1,12 @@
 # Httpd apache
 
+## description
+Deploys a httpd apache container:
+
+* persistent storage mounts /var/lib/httpd-\<instancename\>/ 
+* exposes http/https ports 
+* serves a placeholder and health pages
+
 ## documentation
 
 * https://github.com/apache/httpd
@@ -7,18 +14,22 @@
 
 ## dependecies
 
-* host belongs to inventory group *httpd* with *inventory/group_vars/httpd.yml*
-* letsencrypt role for keys
+* host must belong to inventory group *httpd* with *inventory/group_vars/httpd.yml*
+* *users-and-groups* role
+* *firewall* role
+* *letsencrypt* role for keys
 
-## vars 
+## group_vars, host_vars and vault vars
 
-| var                     | source                              | description                             |
-|-------------------------|-------------------------------------|-----------------------------------------|
-| _httpd_image_tag        | inventory/group_vars/httpd.yml      | docker image tag httpd:<tag>            |
-| _httpd_users            | inventory/group_vars/httpd.yml      | uid/gid used to run container           |
-| _httpd_sites.sitenames  | inventory/hostvar_vars/somehost.yml | sitename                                |
-| _httpd_sites.url        | inventory/hostvar_vars/somehost.yml | dns record that points to host          |
-| _httpd_sites.http_port  | inventory/hostvar_vars/somehost.yml | http port                               |
-| _httpd_sites.https_port | inventory/hostvar_vars/somehost.yml | https port                              |
+| var name         | var source                          | description                                              |
+|------------------|-------------------------------------|----------------------------------------------------------|
+| _httpd_image_tag | inventory/group_vars/httpd.yml      | docker image tag httpd:<tag>                             |
+| _httpd_users     | inventory/group_vars/httpd.yml      | uid/gid used to run container, see users_and_groups role |
+| _httpd_sites     | inventory/hostvar_vars/somehost.yml | httpd site parameters, see below                         |
 
 
+```bash
+_httpd_sites:
+  - { sitename: 'somename', url: 'www.somedomainname.duckdns.org', http_port: '30080', https_port: '30443' }
+  - { sitename: 'somename', url: 'www.somedomainname.duckdns.org', http_port: '31080', https_port: '31443' }
+```
