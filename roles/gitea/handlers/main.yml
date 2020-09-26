@@ -1,7 +1,25 @@
 ---
-# handlers file for restart gitea
-- name: restart podman-compose
-  shell: |
-    podman-compose -f /etc/podman-compose/gitea.yml down
-    podman-compose -f /etc/podman-compose/gitea.yml up -d
-  become:true
+
+- name: stop gitea.service
+  listen: _restart_gitea
+  systemd:
+    name: gitea
+    state: stopped
+  become: true
+  
+- name: daemon reload gitea.service
+  listen: _restart_gitea
+  systemd:
+    name: gitea
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start gitea.service
+  listen: _restart_gitea
+  systemd:
+    name: gitea
+    state: started
+  become: true
+
+

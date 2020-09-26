@@ -11,3 +11,8 @@ _gitea_users:
   - { user: 'git',comment: 'user for gitea',uid: '1033',groups: 'git',create_home: 'true',shell: '/bin/bash' }
 _gitea_packages:
   - podman
+_gitea_properties:
+    - { appname: 'gitea', podman_network: 'gitea', ui_port: '3000', domain: 'git.somedomain.duckdns.org', sshdomain: 'git.somedomain.duckdn.org', uid: '1033', gui: '1033', db_port: '5432', db_host: 'giteadb', db_name: 'giteadb', db_user: 'giteadb', password_var: '_postgres_password_giteadb' } 
+_postgres_instances:
+  - { name: 'gitea', podman_network: 'gitea', port: '5432',user: 'giteadb', password_var: '_postgres_password_giteadb', dbname: 'giteadb' }
+
