@@ -1,5 +1,12 @@
 # Letsencrypt swag
 
+## description
+Deploys a letsencrypt swag container:
+
+* persistent storage mount /var/lib/letsencrypt/
+* generates letsencrypt wildcard certificate for duckdns.org sub domain
+* keys will be stored in /var/lib/letsencript/keys/
+
 ## documentation
 
 * https://github.com/linuxserver/docker-swag
@@ -8,11 +15,14 @@
 ## dependecies
 
 * duckdns account, domain and token [https://www.duckdns.org](https://www.duckdns.org/faqs.jsp)
-* host belongs to inventory group *letsencrypt* with *inventory/group_vars/letsencrypt.yml*
+* host must belong to inventory group *letsencrypt* with *inventory/group_vars/letsencrypt.yml*
+* *firewall* role
+* *users-and-groups* role
+* *packages* role
 
-## vars 
+## group_vars, host_vars and vault vars.
 
-| var                    | source                               | description                             |
+| var name               | var source                           | description                             |
 |------------------------|--------------------------------------|-----------------------------------------|
 | _duckdns_token         | inventory/group_vars/vault.yaml      | your duckdn token                       |
 | _letsencrypt_domain    | inventory/group_vars/letsencrypt.yml | your wildcard domain                    |
