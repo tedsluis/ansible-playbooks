@@ -22,10 +22,10 @@ ExecStart=/usr/bin/podman run \
       -e USER_UID={{item.uid}} \
       -e USER_GID={{item.gid}} \
       -e DB_TYPE=postgres \
-      -e DB_HOST={{item.db_host|default('db')}}:{{item.db_port|default('5432')}} \
+      -e DB_HOST={{item.db_host|default('postgres-gitea')}}:{{item.db_port|default('5432')}} \
       -e DB_NAME={{item.db_name|default('giteadb')}} \
-      -e DB_USER={{item.db_user|default('gitea')}} \
-      -e DB_PASSWD={{lookup('vars',item.password_var)|default('gitea')}} \
+      -e DB_USER={{item.db_user|default('giteadb')}} \
+      -e DB_PASSWD={{lookup('vars',item.password_var)|default('giteadb')}} \
       -v /var/lib/gitea:/data:z \
       -v /etc/localtime:/etc/localtime:ro \
       --restart unless-stopped \
