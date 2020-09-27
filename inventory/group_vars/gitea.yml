@@ -14,7 +14,18 @@ _gitea_packages:
   - dnsmasq
 _gitea_admin_user: tedsluis
 _gitea_properties:
-  - { appname: 'gitea', podman_network: 'gitea', ui_port: '3000', domain: 'git.bachstraat20.duckdns.org', sshdomain: 'git.bachstraat20.duckdn.org', uid: '1033', gid: '1033', db_port: '5432', db_host: 'postgres-gitea', db_name: 'giteadb', db_user: 'giteadb', password_var: '_postgres_password_giteadb' } 
+  - appname: 'gitea'
+    podman_network: 'gitea'
+    ui_port: '3000'
+    domain: 'git.bachstraat20.duckdns.org'
+    sshdomain: 'git.bachstraat20.duckdn.org'
+    uid: '1033'
+    gid: '1033'
+    db_port: '5432'
+    db_host: 'postgres-gitea'
+    db_name: 'giteadb'
+    db_user: 'giteadb'
+    password_var: '_postgres_password_giteadb'
 _postgres_instances:
   - { name: 'gitea', podman_network: 'gitea', port: '5432',user: 'giteadb', password_var: '_postgres_password_giteadb', dbname: 'giteadb' }
 

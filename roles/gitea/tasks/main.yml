@@ -1,0 +1,140 @@
+---
+
+- name: "include ansible secrets to get postgres password"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create gitea directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    recurse: true
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/gitea",           owner: "git", group: "git", mode: "0775" }
+    - { directory: "/var/lib/gitea/gitea",     owner: "git", group: "git", mode: "0775" }
+    - { directory: "/var/lib/gitea/gitea/conf",owner: "git", group: "git", mode: "0775" }
+
+- name: pull gitea & postgress images
+  shell: |
+    podman pull docker.io/gitea/gitea:{{_gitea_image_tag}}
+  become: true
+  register: _image_pull
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/gitea.service
+  template:
+    src: gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items: "{{_gitea_properties}}"
+  notify: _restart_gitea
+
+- name: create /var/lib/gitea/gitea/conf/app.ini
+   template:
+     src: app.ini.j2
+     dest: /var/lib/gitea/gitea/conf/app.ini
+     owner: git
+     group: git
+     mode: 0664
+   become: true
+   notify: _restart_gitea
+
+- name: Fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  run_once: yes
+  fetch: 
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}" 
+    dest: "/tmp/" 
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: Copy keys to /var/lib/gitea/gitea/conf/
+  copy: 
+    src: "/tmp/{{item}}" 
+    dest: /var/lib/gitea/gitea/conf/
+    owner: git
+    group: git
+    mode: 0660
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+  notify: _restart_gitea
+
+- name: start and enable gitea.service
+  systemd:
+    name: gitea
+    state: started
+    enabled: true
+  become: true
+
+- name: gitea container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=gitea'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: set permissions gitea directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    recurse: true
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/gitea",           owner: "git", group: "git", mode: "0775" }
+
+- name: trigger handelers
+  meta: flush_handlers
+
+- name: "/var/lib/gitea/gitea/conf/app.ini replace RUN_USER=git with RUN_USER=root"
+  lineinfile:
+    path: /var/lib/gitea/gitea/conf/app.ini
+    regexp: '^RUN_USER'
+    line: RUN_USER = root
+    owner: git
+    group: git
+    mode: '0775'
+  become: true
+
+- name: "pause until https://{{_gitea_properties.domain}}:{{_gitea_properties.ui_port}}/ is reachable"
+  uri:
+    url: "https://{{_gitea_properties.domain}}:{{_gitea_properties.ui_port}}/"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 60 # 60 * 5 seconds = 5 minutes
+  delay: 5 # Every 5 seconds
+
+- name: set gitea root user and password
+  shell: |
+    podman exec gitea /usr/local/bin/gitea admin create-user --admin --username {{_gitea_admin_user}} --password {{_gitea_admin_password}} --email {{_mailaddress}} || echo "user already exist..."
+    podman exec gitea /usr/local/bin/gitea admin change-password --username {{_gitea_admin_user}} --password {{_gitea_admin_password}} 
+
+- name: "/var/lib/gitea/gitea/conf/app.ini replace RUN_USER=root with RUN_USER=git"
+  lineinfile:
+    path: /var/lib/gitea/gitea/conf/app.ini
+    regexp: '^RUN_USER'
+    line: RUN_USER = git
+    owner: git
+    group: git
+    mode: '0775'
+  become: true
+
+
