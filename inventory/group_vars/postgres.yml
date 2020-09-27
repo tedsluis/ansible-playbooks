@@ -5,4 +5,5 @@ _postgres_users:
   - { user: 'postgres',comment: 'user for postgres',uid: '1036',groups: 'postgres',create_home: 'false',shell: '/bin/nologin' }
 _postgres_packages: 
   - podman
+  - dnsmasq
 
