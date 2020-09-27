@@ -38,14 +38,14 @@
   notify: _restart_gitea
 
 - name: create /var/lib/gitea/gitea/conf/app.ini
-   template:
-     src: app.ini.j2
-     dest: /var/lib/gitea/gitea/conf/app.ini
-     owner: git
-     group: git
-     mode: 0664
-   become: true
-   notify: _restart_gitea
+  template:
+    src: app.ini.j2
+    dest: /var/lib/gitea/gitea/conf/app.ini
+    owner: git
+    group: git
+    mode: 0664
+  become: true
+  notify: _restart_gitea
 
 - name: Fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
   run_once: yes
