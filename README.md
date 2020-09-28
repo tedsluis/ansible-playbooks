@@ -38,19 +38,19 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 
 ## Roles
 
-| roles                                      | readme                                               |
-|--------------------------------------------|------------------------------------------------------|
-| [baseline](roles/baseline)                 | [baseline](roles/baseline/README.md)                 |
-| [dnsmasq](roles/dnsmasq)                   | [dnsmasq](roles/dnsmasq/README.md)                   |
-| [firewall](roles/firewall)                 | [firewall](roles/firewall/README.md)                 |
-| [gitea](roles/gitea)                       | [gitea](roles/gitea/README.md)                       |
-| [httpd](roles/httpd)                       | [httpd](roles/httpd/README.md)                       |
-| [letsencrypt](roles/letsencrypt)           | [letsencrypt](roles/letsencrypt/README.md)           |
-| [packages](roles/packages)                 | [packages](roles/packages/README.md)                 |
-| [pihole](roles/pihole)                     | [pihole](roles/pihole/README.md)                     |
-| [postgres](roles/postgres)                 | [postgres](roles/postgres/README.md)                 |
-| [rocketchat](roles/rocketchat)             | [rocketchat](roles/rocketchat/README.md)             |
-| [users-and-groups](roles/users-and-groups) | [users-and-groups](roles/users-and-groups/README.md) |
+| roles                                            | readme                                                               |
+|--------------------------------------------------|----------------------------------------------------------------------|
+| [roles/baseline](roles/baseline)                 | [roles/baseline/README.md](roles/baseline/README.md)                 |
+| [roles/dnsmasq](roles/dnsmasq)                   | [roles/dnsmasq/README.md](roles/dnsmasq/README.md)                   |
+| [roles/firewall](roles/firewall)                 | [roles/firewall/README.md](roles/firewall/README.md)                 |
+| [roles/gitea](roles/gitea)                       | [roles/gitea/README.md](roles/gitea/README.md)                       |
+| [roles/httpd](roles/httpd)                       | [roles/httpd/README.md](roles/httpd/README.md)                       |
+| [roles/letsencrypt](roles/letsencrypt)           | [roles/letsencrypt/README.md](roles/letsencrypt/README.md)           |
+| [roles/packages](roles/packages)                 | [roles/packages/README.md](roles/packages/README.md)                 |
+| [roles/pihole](roles/pihole)                     | [roles/pihole/README.md](roles/pihole/README.md)                     |
+| [roles/postgres](roles/postgres)                 | [roles/postgres/README.md](roles/postgres/README.md)                 |
+| [roles/rocketchat](roles/rocketchat)             | [roles/rocketchat/README.md](roles/rocketchat/README.md)             |
+| [roles/users-and-groups](roles/users-and-groups) | [roles/users-and-groups/README.md](roles/users-and-groups/README.md) |
 
 
 ## Firewall ports
