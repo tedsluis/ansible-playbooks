@@ -38,19 +38,19 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 
 ## Roles
 
-| roles                                            | readme                                                               |
-|--------------------------------------------------|----------------------------------------------------------------------|
-| [roles/baseline](roles/baseline)                 | [roles/baseline/README.md](roles/baseline/README.md)                 |
-| [roles/dnsmasq](roles/dnsmasq)                   | [roles/dnsmasq/README.md](roles/dnsmasq/README.md)                   |
-| [roles/firewall](roles/firewall)                 | [roles/firewall/README.md](roles/firewall/README.md)                 |
-| [roles/gitea](roles/gitea)                       | [roles/gitea/README.md](roles/gitea/README.md)                       |
-| [roles/httpd](roles/httpd)                       | [roles/httpd/README.md](roles/httpd/README.md)                       |
-| [roles/letsencrypt](roles/letsencrypt)           | [roles/letsencrypt/README.md](roles/letsencrypt/README.md)           |
-| [roles/packages](roles/packages)                 | [roles/packages/README.md](roles/packages/README.md)                 |
-| [roles/pihole](roles/pihole)                     | [roles/pihole/README.md](roles/pihole/README.md)                     |
-| [roles/postgres](roles/postgres)                 | [roles/postgres/README.md](roles/postgres/README.md)                 |
-| [roles/rocketchat](roles/rocketchat)             | [roles/rocketchat/README.md](roles/rocketchat/README.md)             |
-| [roles/users-and-groups](roles/users-and-groups) | [roles/users-and-groups/README.md](roles/users-and-groups/README.md) |
+| roles                                            | readme                                                               | group_vars                                                                     |
+|--------------------------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| [roles/baseline](roles/baseline)                 | [roles/baseline/README.md](roles/baseline/README.md)                 |                                                                                |
+| [roles/dnsmasq](roles/dnsmasq)                   | [roles/dnsmasq/README.md](roles/dnsmasq/README.md)                   |                                                                                |
+| [roles/firewall](roles/firewall)                 | [roles/firewall/README.md](roles/firewall/README.md)                 |                                                                                |
+| [roles/gitea](roles/gitea)                       | [roles/gitea/README.md](roles/gitea/README.md)                       | [inventory/group_vars/gitea.yml](inventory/group_vars/gitea.yml)               |
+| [roles/httpd](roles/httpd)                       | [roles/httpd/README.md](roles/httpd/README.md)                       | [inventory/group_vars/httpd.yml](inventory/group_vars/httpd.yml)               |
+| [roles/letsencrypt](roles/letsencrypt)           | [roles/letsencrypt/README.md](roles/letsencrypt/README.md)           | [inventory/group_vars/letsencrypt.yml](inventory/group_vars/letsencrypt.yml)   |
+| [roles/packages](roles/packages)                 | [roles/packages/README.md](roles/packages/README.md)                 |                                                                                |
+| [roles/pihole](roles/pihole)                     | [roles/pihole/README.md](roles/pihole/README.md)                     | [inventory/group_vars/pihole.yml](inventory/group_vars/pihole.yml)             |
+| [roles/postgres](roles/postgres)                 | [roles/postgres/README.md](roles/postgres/README.md)                 | [inventory/group_vars/postgres.yml](inventory/group_vars/postgres.yml)         |
+| [roles/rocketchat](roles/rocketchat)             | [roles/rocketchat/README.md](roles/rocketchat/README.md)             | [inventory/group_vars/rocketchet.yml](inventory/group_vars/rocketchat.yml)     |
+| [roles/users-and-groups](roles/users-and-groups) | [roles/users-and-groups/README.md](roles/users-and-groups/README.md) |                                                                                |
 
 
 ## Firewall ports
