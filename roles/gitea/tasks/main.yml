@@ -34,7 +34,6 @@
     group: root
     mode: 0664
   become: true
-  with_items: "{{_gitea_properties}}"
   notify: _restart_gitea
 
 - name: create /var/lib/gitea/gitea/conf/app.ini
@@ -76,13 +75,19 @@
     name: gitea
     state: started
     enabled: true
+    daemon_reload: true
   become: true
 
 - name: gitea container state
   shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=gitea'
-  register: _container_state
+    podman ps -a --format "status={{ '{{' }}.Status{{ '}}' }}  name={{ '{{' }}.Names{{ '}}' }}  id={{ '{{' }}.ID{{ '}}' }}" --filter 'name=gitea'
   become: true
+  register: _container_state
+  until: 
+    - _container_state.stdout.find("status=UP") 
+    - _container_state.stdout.find("name=gitea")
+  retries: 60 # 60 * 2 seconds = 2 minutes
+  delay: 2 # Every 2 seconds
 
 - debug:
     var: _container_state
@@ -102,6 +107,16 @@
 - name: trigger handelers
   meta: flush_handlers
 
+- name: "pause until gitea is reachable"
+  uri:
+    url: "https://{{_gitea_properties.domain}}:{{_gitea_properties.ui_port}}/"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 60 # 60 * 5 seconds = 5 minutes
+  delay: 5 # Every 5 seconds
+
 - name: "/var/lib/gitea/gitea/conf/app.ini replace RUN_USER=git with RUN_USER=root"
   lineinfile:
     path: /var/lib/gitea/gitea/conf/app.ini
@@ -112,20 +127,15 @@
     mode: '0775'
   become: true
 
-- name: "pause until https://{{_gitea_properties.domain}}:{{_gitea_properties.ui_port}}/ is reachable"
-  uri:
-    url: "https://{{_gitea_properties.domain}}:{{_gitea_properties.ui_port}}/"
-    follow_redirects: none
-    method: GET
-  register: _result
-  until: _result.status == 200
-  retries: 60 # 60 * 5 seconds = 5 minutes
-  delay: 5 # Every 5 seconds
-
 - name: set gitea root user and password
   shell: |
-    podman exec gitea /usr/local/bin/gitea admin create-user --admin --username {{_gitea_admin_user}} --password {{_gitea_admin_password}} --email {{_mailaddress}} || echo "user already exist..."
+    podman exec gitea /usr/local/bin/gitea admin create-user --admin --username {{_gitea_admin_user}} --password {{_gitea_admin_password}} --email {{_mail_address}} || echo "user already exist..."
     podman exec gitea /usr/local/bin/gitea admin change-password --username {{_gitea_admin_user}} --password {{_gitea_admin_password}} 
+  become: true
+  register: _gitea_root_user
+
+- debug:
+    var: _gitea_root_user
 
 - name: "/var/lib/gitea/gitea/conf/app.ini replace RUN_USER=root with RUN_USER=git"
   lineinfile:

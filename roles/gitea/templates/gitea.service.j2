@@ -12,20 +12,21 @@ ExecStart=/usr/bin/podman run \
       --cidfile /%t/%n-cid \
       -d \
       --name=gitea \
-      --network {{item.podman_network|default('gitea')}} \
-      -p "3000:{{item.ui_port|default('3000')}}" \
+      --network {{_gitea_properties.podman_network|default('gitea')}} \
+      -p "3000:{{_gitea_properties.ui_port|default('3000')}}" \
       -p "222:22" \
-      -e APP_NAME={{item.appname|default("gitea")}} \
-      -e DOMAIN={{item.domain|default('localhost')}} \
-      -e SSH_DOMAIN={{item.sshdomain|default('localhost')}} \
+      -e APP_NAME={{_gitea_properties.appname|default("gitea")}} \
+      -e DOMAIN={{_gitea_properties.domain|default('localhost')}} \
+      -e SSH_DOMAIN={{_gitea_properties.sshdomain|default('localhost')}} \
       -e DISABLE_REGISTRATION=true \
-      -e USER_UID={{item.uid}} \
-      -e USER_GID={{item.gid}} \
+      -e USER_UID={{_gitea_properties.uid}} \
+      -e USER_GID={{_gitea_properties.gid}} \
       -e DB_TYPE=postgres \
-      -e DB_HOST={{item.db_host|default('postgres-gitea')}}:{{item.db_port|default('5432')}} \
-      -e DB_NAME={{item.db_name|default('giteadb')}} \
-      -e DB_USER={{item.db_user|default('giteadb')}} \
-      -e DB_PASSWD={{lookup('vars',item.password_var)|default('giteadb')}} \
+      -e DB_HOST={{_gitea_properties.db_host|default('postgres-gitea')}}:{{_gitea_properties.db_port|default('5432')}} \
+      -e DB_NAME={{_gitea_properties.db_name|default('giteadb')}} \
+      -e DB_USER={{_gitea_properties.db_user|default('giteadb')}} \
+      -e DB_PASSWD={{lookup('vars',_gitea_properties.password_var)|default('giteadb')}} \
+      -e PASSWORD_COMPLEXITY=off \
       -v /var/lib/gitea:/data:z \
       -v /etc/localtime:/etc/localtime:ro \
       --restart unless-stopped \

@@ -1,6 +1,6 @@
-APP_NAME = gitea
+APP_NAME = {{_gitea_properties.appname|default('gitea')}}
 RUN_MODE = prod
-RUN_USER = git
+RUN_USER = {{_gitea_properties.run_user}}
 
 [repository]
 ROOT = /data/git/repositories
@@ -13,17 +13,17 @@ TEMP_PATH = /data/gitea/uploads
 
 [server]
 APP_DATA_PATH    = /data/gitea
-DOMAIN           = git.bachstraat20.duckdns.org
-SSH_DOMAIN       = git.bachstraat20.duckdns.org
-HTTP_PORT        = 3000
+DOMAIN           = {{_gitea_properties.domain|default('localhost')}}
+SSH_DOMAIN       = {{_gitea_properties.sshdomain|default('localhost')}}
+HTTP_PORT        = {{_gitea_properties.ui_port|default('3000')}}
 PROTOCOL         = https
-ROOT_URL         = https://git.bachstraat20.duckdns.org:3000/
+ROOT_URL         = https://{{_gitea_properties.domain|default('localhost')}}:{{_gitea_properties.ui_port|default('3000')}}/
 DISABLE_SSH      = false
 SSH_PORT         = 22
 SSH_LISTEN_PORT  = 22
 LFS_START_SERVER = true
 LFS_CONTENT_PATH = /data/git/lfs
-LFS_JWT_SECRET   = cmICO_ighqT53u03u7NOw_84cZ_lR6wndDGa-_82WKo
+LFS_JWT_SECRET   = {{_gitea_lfs_jwt_secret}}
 OFFLINE_MODE     = false
 CERT_FILE        = /data/gitea/conf/fullchain.pem
 KEY_FILE         = /data/gitea/conf/privkey.pem
@@ -31,10 +31,10 @@ KEY_FILE         = /data/gitea/conf/privkey.pem
 [database]
 PATH     = /data/gitea/gitea.db
 DB_TYPE  = postgres
-HOST     = postgres-gitea:5432
-NAME     = giteadb
-USER     = giteadb
-PASSWD   = d7j3a42l9
+HOST     = {{_gitea_properties.db_host|default('postges-gitea')}}:{{_gitea_properties.db_port|default('5432')}}
+NAME     = {{_gitea_properties.db_name|default('giteadb')}}
+USER     = {{_gitea_properties.db_user|default('giteadb')}}
+PASSWD   = {{lookup('vars',_gitea_properties.password_var)|default('giteadb')}}
 SCHEMA   = 
 SSL_MODE = disable
 CHARSET  = utf8
@@ -64,6 +64,7 @@ LEVEL     = info
 INSTALL_LOCK   = true
 SECRET_KEY     = {{_gitea_secret_key}}
 INTERNAL_TOKEN = {{_gitea_internal_token}}
+PASSWORD_COMPLEXITY = off
 
 [service]
 DISABLE_REGISTRATION              = flase
@@ -75,17 +76,17 @@ ENABLE_CAPTCHA                    = false
 DEFAULT_KEEP_EMAIL_PRIVATE        = false
 DEFAULT_ALLOW_CREATE_ORGANIZATION = true
 DEFAULT_ENABLE_TIMETRACKING       = true
-NO_REPLY_ADDRESS                  = noreply.localhost
+NO_REPLY_ADDRESS                  = noreply.{{_gitea_properties.domain|default('localhost')}}
 
 [oauth2]
 JWT_SECRET = {{_gitea_jwt_secret}}
 
 [mailer]
 ENABLED = true
-HOST    = smtp.gmail.com:587
-FROM    = ted.sluis@gmail.com
-USER    = ted.sluis@gmail.com
-PASSWD  = {{_emailpassword}}
+HOST    = {{_mail_hubhost}}:{{_mail_hubport}}
+FROM    = {{_mail_address}}
+USER    = {{_mail_address}}
+PASSWD  = {{_mail_password}}
 
 [openid]
 ENABLE_OPENID_SIGNIN = true
