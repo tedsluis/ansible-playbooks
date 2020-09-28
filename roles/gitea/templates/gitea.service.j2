@@ -13,11 +13,13 @@ ExecStart=/usr/bin/podman run \
       -d \
       --name=gitea \
       --network {{_gitea_properties.podman_network|default('gitea')}} \
-      -p "3000:{{_gitea_properties.ui_port|default('3000')}}" \
-      -p "222:22" \
+      -p "{{_gitea_properties.ui_port|default('3000')}}:{{_gitea_properties.ui_port|default('3000')}}" \
+      -p "{{_gitea_properties.ssh_port|default('2222')}}:{{_gitea_properties.ssh_port|default('2222')}}" \
       -e APP_NAME={{_gitea_properties.appname|default("gitea")}} \
       -e DOMAIN={{_gitea_properties.domain|default('localhost')}} \
       -e SSH_DOMAIN={{_gitea_properties.sshdomain|default('localhost')}} \
+      -e HTTP_PORT={{_gitea_properties.ui_port|default('3000')}} \
+      -e SSH_LISTEN_PORT={{_gitea_properties.ssh_port|default('2222')}} \
       -e DISABLE_REGISTRATION=true \
       -e USER_UID={{_gitea_properties.uid}} \
       -e USER_GID={{_gitea_properties.gid}} \
