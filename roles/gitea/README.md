@@ -40,6 +40,7 @@ _gitea_properties:
   appname: 'gitea'
   podman_network: 'gitea'
   ui_port: '3000'
+  ssh_port: '2222'
   domain: 'git.somedomain.duckdns.org'
   sshdomain: 'git.somedomain.duckdn.org'
   run_user: 'git'
