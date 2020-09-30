@@ -3,7 +3,8 @@
 ## description
 Deploys a gitea container:
 
-* expose https ui with letsencrypt certificate
+* supports https (default port 3000) and ssh (default port 2222)
+* supports secure ssl/tls using letsencrypt certificate
 * persistent storage mount /var/lib/gitea/
 
 ## documentation
@@ -18,7 +19,9 @@ Deploys a gitea container:
 * host must belong to inventory group *postgres* with *inventory/group_vars/postgres.yml*
 * *dnsmasq* role
 * *firewall* role
+* *letsencrypt* role
 * *packages* role
+* *postgres* role
 * *users-and-groups* role
 
 ## group_vars, host_vars and vault vars.
@@ -53,4 +56,8 @@ _gitea_properties:
   password_var: '_postgres_password_giteadb'
 ```
 
+## notes
 
+* create a dns record for the *domain* and *sshdomain*.
+* for SSH, add public key(s) and update/resync for the site admin dashboard.
+* 
