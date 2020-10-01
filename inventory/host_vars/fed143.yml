@@ -1,9 +1,11 @@
 _hostname: fed143
 _ip_address: '192.168.11.143'
-
+_httpd_firewall:
+  - { port: '30080',proto: 'tcp' }
+  - { port: '30443',proto: 'tcp' }
+  - { port: '31080',proto: 'tcp' }
+  - { port: '31443',proto: 'tcp' }
 _httpd_sites:
-  - {sitename: 'test', url: 'fed143.bachstraat20.duckdns.org', http_port: '30080', https_port: '30443' }
-  - {sitename: 'dev',  url: 'fed143.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
-
-
+  - {sitename: 'test', url: 'home.bachstraat20.duckdns.org', http_port: '30080', https_port: '30443' }
+  - {sitename: 'dev',  url: 'home.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
 
