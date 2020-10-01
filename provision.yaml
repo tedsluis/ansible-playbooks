@@ -10,9 +10,9 @@
 
   roles:
   # common roles -- run on all hosts
+  - packages
   - users-and-groups
   - firewall
-  - packages
   - dnsmasq
   # group based roles
   - role: letsencrypt
