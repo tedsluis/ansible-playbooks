@@ -5,7 +5,7 @@ ansible_user: ansible
 _domain: bachstraat20.duckdns.org
 
 _all_firewall:
-  - { port: '22',proto: 'tcp' }
+  - 22/tcp
 
 _all_packages:
   - curl

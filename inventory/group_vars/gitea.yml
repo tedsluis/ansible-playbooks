@@ -1,8 +1,8 @@
 ---
 _gitea_admin_user: tedsluis
 _gitea_firewall:
-  - { port: '3000',proto: 'tcp' }
-  - { port: '2222',proto: 'tcp' }
+  - 3000/tcp
+  - 2222/tcp
 _gitea_groups:
   - { group: 'git',gid: '1033' }
 _gitea_image_tag: 1
