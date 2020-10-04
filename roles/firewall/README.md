@@ -6,10 +6,10 @@ Gether and merge ports with protocols from  _\<somename\>_firewall variables fro
 
 ## group_vars en host_vars
 
-| var name           | var type                            | description                             |
-|--------------------|-------------------------------------|-----------------------------------------|
-| _somename_firewall | inventory/group_vars/somegroup.yml  | firewall settings that facts a group    |
-| _somename_firewall | inventory/hostvar_vars/somehost.yml | firewall settings that facts a host     |
+| var name           | var type                            | description                     |
+|--------------------|-------------------------------------|---------------------------------|
+| _somename_firewall | inventory/group_vars/somegroup.yml  | firewall settings that group    |
+| _somename_firewall | inventory/hostvar_vars/somehost.yml | firewall settings that host     |
 
 
 ```bash
