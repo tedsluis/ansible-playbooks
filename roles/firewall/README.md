@@ -14,7 +14,9 @@ Gether and merge ports with protocols from  _\<somename\>_firewall variables fro
 
 ```bash
 _somename_firewall:
-  - { port: '<number>', proto: '[tcp/udp]' }
-  - { port: '<number>', proto: '[tcp/udp]' }
-  - { port: '<number>', proto: '[tcp/udp]' }
+  - <port number>/<protocol>
+  -1234/tcp
+  -3456/udp
 ```
+
+note: ports that should not be open will be closed!
