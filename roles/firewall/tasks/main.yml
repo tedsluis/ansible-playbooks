@@ -2,31 +2,35 @@
 
 - name: define _firewall
   set_fact:
-    _firewall:
-      - { port: '' }
+    _firewall: []
 
 - name: add _*_firewall
   set_fact:
-    _firewall:
-      - "{{(_firewall+lookup('vars',item))|flatten|unique}}"
+    _firewall: "{{(_firewall+lookup('vars',item))|unique}}"
   with_items: "{{ lookup('varnames', '.+_firewall$').split(',') }}"
 
-- debug:
-    var: _firewall
-
-- name: show ports and protocols
-  debug:
-    msg: "PORT={{item.port}} PROTO={{item.proto}}"
-  with_items: "{{_firewall}}"
-  when: item.port != ""
-
+- name: get open ports
+  shell: |
+    firewall-cmd --list-all | grep -P '^\s+ports:' | tr ' ' '\n' | grep -P '^\d+\/(tcp|udp)'
+  become: true
+  register: _open_ports
+  
 - name: open firewall ports 
   firewalld:
-    port: "{{item.port}}/{{item.proto}}"
+    port: "{{item}}"
     permanent: true
     state: enabled
     immediate: true
   become: true
   with_items: "{{_firewall}}"
-  when: item.port != ""
+
+- name: close firewall ports that should not be open
+  firewalld:
+    port: "{{item}}"
+    permanent: true
+    state: disabled
+    immediate: true
+  become: true
+  with_items: "{{_open_ports.stdout_lines}}"
+  when: item not in _firewall
 
