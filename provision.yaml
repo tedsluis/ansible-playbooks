@@ -12,6 +12,7 @@
   # common roles -- run on all hosts
   - packages
   - users-and-groups
+  - ssh-keys-and-config
   - firewall
   - dnsmasq
   # group based roles

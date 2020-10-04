@@ -29,6 +29,10 @@ _mail_hubport: 587
 
 _timezone: Europe/Amsterdam
 
+_all_sshkeys:
+  - { key_name: 'id_rsa.pub', key_type: 'public_key',     key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
+  - { key_name: 'id_rsa.pub', key_type: 'authorized_key', key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
+
 _wants_ansible: false
 _wants_crontab: true
 _wants_dnsmasq: true

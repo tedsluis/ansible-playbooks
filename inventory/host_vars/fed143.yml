@@ -8,4 +8,7 @@ _httpd_firewall:
 _httpd_sites:
   - {sitename: 'test', url: 'home.bachstraat20.duckdns.org', http_port: '30080', https_port: '30443' }
   - {sitename: 'dev',  url: 'home.bachstraat20.duckdns.org', http_port: '31080', https_port: '31443' }
+_fed143_sshkeys:
+  - { key_name: 'id_rsa',     key_type: 'private_key',    key_var: '_id_rsa',     owner: 'tedsluis',  group: 'tedsluis', ssh_user: '*',        ssh_hostname: 'git.bachstraat20.duckdns.org' }
+  - { key_name: 'id_rsa',     key_type: 'private_key',    key_var: '_id_rsa',     owner: 'tedsluis',  group: 'tedsluis', ssh_user: 'tedsluis', ssh_hostname: 'github.com' }
 

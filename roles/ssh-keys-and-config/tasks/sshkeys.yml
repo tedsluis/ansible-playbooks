@@ -1,0 +1,76 @@
+---
+
+- name: "get home directory {{item.owner}}"
+  getent:
+    database: passwd
+    key: "{{item.owner}}"
+    split: ":"
+
+- set_fact:
+    _home_directory: "{{getent_passwd[item.owner][4]}}"
+
+- name: "create {{_home_directory}}/.ssh directory"
+  file:
+    path: "{{_home_directory}}/.ssh"
+    state: directory
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: '0700'
+  become: true
+
+- name: "add private key {{_home_directory}}/.ssh/{{item.key_name}}"
+  copy:
+    content: "{{lookup('vars',item.key_var)}}"
+    dest: "{{_home_directory}}/.ssh/{{item.key_name}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: '0600'
+  when: item.key_type == "private_key"
+  become: true
+
+- name: "add public key {{_home_directory}}/.ssh/{{item.key_name}}"
+  copy:
+    content: "{{lookup('vars',item.key_var)}}"
+    dest: "{{_home_directory}}/.ssh/{{item.key_name}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: '0644'
+  when: item.key_type == "public_key"
+  become: true
+
+- name: "add public key to {{_home_directory}}/.ssh/authorized_keys"
+  lineinfile:
+    create: true
+    path: "{{_home_directory}}/.ssh/authorized_keys"
+    regexp: "{{lookup('vars',item.key_var)}}"
+    line: "{{lookup('vars',item.key_var)}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: '0644'
+  when: item.key_type == "authorized_key"
+  become: true
+
+- name: "create {{_home_directory}}/.ssh/cofig"
+  file:
+    path: "{{_home_directory}}/.ssh/config"
+    state: touch
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: '0744'
+  become: true
+
+- name: "configure {{_home_directory}}/.ssh/cofig"
+  blockinfile:
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK -- {{item.key_name}} for hostname {{item.ssh_hostname}} and user {{item.ssh_user}}"
+    dest: "{{_home_directory}}/.ssh/config"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: 0744
+    block: |
+      Host {{item.ssh_hostname}}
+          Hostname {{item.ssh_hostname}}
+          User {{item.ssh_user}}
+          IdentityFile ~/.ssh/{{item.key_name}}
+  when: item.key_type == "private_key"
+  become: true

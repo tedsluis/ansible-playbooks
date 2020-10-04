@@ -1,0 +1,29 @@
+---
+
+- name: "include Ansible secrets to get rsa keys."
+  include_vars: inventory/group_vars/vault.yaml
+
+
+- name: define _ssh_keys
+  set_fact:
+    _ssh_keys: []
+
+- name: add _*_sshkeys
+  set_fact:
+    _ssh_keys:
+      - "{{(_ssh_keys+lookup('vars',item))|flatten|unique}}"
+  with_items: "{{lookup('varnames', '.+_sshkeys$').split(',')}}"
+
+- debug:
+    var: _ssh_keys
+
+- name: show ssh key propperties
+  debug:
+    msg: "KEY_NAME={{item.key_name}} KEY_TYPE={{item.key_type}} KEY_VAR={{item.key_var}} OWNER={{item.owner}} GROUP={{item.group}} SSH_USER={{item.ssh_user|default('')}} SSH_HOSTNAME={{item.ssh_hostname|default('')}}"
+  with_items: "{{_ssh_keys}}"
+  when: item.key_name != ""
+
+- include: sshkeys.yml
+  with_items: "{{_ssh_keys}}"
+  when: item.key_name != ""
+
