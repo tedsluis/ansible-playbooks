@@ -2,8 +2,7 @@
 
 - name: define _groups
   set_fact:
-    _groups: 
-      - { group: '' }
+    _groups: []
 
 - name: add _*_groups
   set_fact: 
@@ -18,7 +17,6 @@
   debug:
     msg: "GROUP={{item.group}} GID={{item.gid}}"
   with_items: "{{_groups}}"
-  when: item.group != ""
 
 - name: create groups
   group:
@@ -27,12 +25,10 @@
     gid: "{{item.gid}}"
   become: true
   with_items: "{{_groups}}"
-  when: item.group != ""
 
 - name: define _users
   set_fact:
-    _users: 
-      - { user: '' }
+    _users: []
 
 - name: add _*_users
   set_fact: 
@@ -44,7 +40,6 @@
   debug:
     msg: "USER={{item.user}} COMMENT={{item.comment}} UID={{item.uid}} GROUPS={{item.groups}} CREATE_HOME={{item.create_home|default('yes')}} SHELL={{item.shell|default('/bin/bash')}}"
   with_items: "{{_users}}"
-  when: item.user != ""
 
 - name: create users
   user:
@@ -56,4 +51,3 @@
     shell: "{{item.shell|default('/bin/bash')}}"
   become: true
   with_items: "{{_users}}"
-  when: item.user != ""
