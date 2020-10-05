@@ -1,33 +1,39 @@
 ---
-# These task will configure aliases in '.bashrc'
 
-- name: "Get home directory {{ item }}."
+- name: "get home directory {{item.owner}}"
+  getent:
+    database: passwd
+    key: "{{item.owner}}"
+    split: ":"
+
+- set_fact:
+    _home_directory: "{{getent_passwd[item.owner][4]}}"
+
+- name: "get home directory {{ item }}."
   shell: >
     getent passwd {{ item }} | cut -d: -f6
   changed_when: false
-  register: user_home
+  register: _home_directory
 
-# Add aliases to .bashrc
-- name: Insert alias ll into .bashrc
+- name: insert alias ll into .bashrc
   lineinfile:
-    dest: "{{ user_home.stdout }}/.bashrc"
+    dest: "{{_home_directory}}/.bashrc"
     regexp: '^\s*alias ll='
     state: present
     line: 'alias ll="ls -ls --color"'
   become: true
 
-- name: Insert alias grep into .bashrc
+- name: insert alias grep into .bashrc
   lineinfile:
-    dest: "{{ user_home.stdout }}/.bashrc"
+    dest: "{{_home_directory}}/.bashrc"
     regexp: '^\s*alias grep='
     state: present
     line: 'alias grep="grep --color=auto"'
   become: true
     
-# Change file ownership, group and permissions
-- name: Change file ownership, group and permissions .bashrc
+- name: change file ownership, group and permissions .bashrc
   file:
-    path: "{{ user_home.stdout }}/.bashrc"
+    path: "{{_home_directory}}/.bashrc"
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: '0664'
