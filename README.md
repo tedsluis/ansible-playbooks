@@ -38,19 +38,20 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 
 ## Roles
 
-| roles                                      | readme                                        | inventory/group_vars/                                     |
-|--------------------------------------------|-----------------------------------------------|-----------------------------------------------------------|
-| [baseline](roles/baseline)                 | [README.md](roles/baseline/README.md)         |                                                           |
-| [dnsmasq](roles/dnsmasq)                   | [README.md](roles/dnsmasq/README.md)          |                                                           |
-| [firewall](roles/firewall)                 | [README.md](roles/firewall/README.md)         |                                                           |
-| [gitea](roles/gitea)                       | [README.md](roles/gitea/README.md)            | [gitea.yml](inventory/group_vars/gitea.yml)               |
-| [httpd](roles/httpd)                       | [README.md](roles/httpd/README.md)            | [httpd.yml](inventory/group_vars/httpd.yml)               |
-| [letsencrypt](roles/letsencrypt)           | [README.md](roles/letsencrypt/README.md)      | [letsencrypt.yml](inventory/group_vars/letsencrypt.yml)   |
-| [packages](roles/packages)                 | [README.md](roles/packages/README.md)         |                                                           |
-| [pihole](roles/pihole)                     | [README.md](roles/pihole/README.md)           | [pihole.yml](inventory/group_vars/pihole.yml)             |
-| [postgres](roles/postgres)                 | [README.md](roles/postgres/README.md)         | [postgres.yml](inventory/group_vars/postgres.yml)         |
-| [rocketchat](roles/rocketchat)             | [README.md](roles/rocketchat/README.md)       | [rocketchet.yml](inventory/group_vars/rocketchat.yml)     |
-| [users-and-groups](roles/users-and-groups) | [README.md](roles/users-and-groups/README.md) |                                                           |
+| roles                                      | readme                                          | inventory/group_vars/                                     |
+|--------------------------------------------|-------------------------------------------------|-----------------------------------------------------------|
+| [baseline](roles/baseline)                 | [README.md](roles/baseline/README.md)           |                                                           |
+| [dnsmasq](roles/dnsmasq)                   | [README.md](roles/dnsmasq/README.md)            |                                                           |
+| [firewall](roles/firewall)                 | [README.md](roles/firewall/README.md)           |                                                           |
+| [gitea](roles/gitea)                       | [README.md](roles/gitea/README.md)              | [gitea.yml](inventory/group_vars/gitea.yml)               |
+| [httpd](roles/httpd)                       | [README.md](roles/httpd/README.md)              | [httpd.yml](inventory/group_vars/httpd.yml)               |
+| [letsencrypt](roles/letsencrypt)           | [README.md](roles/letsencrypt/README.md)        | [letsencrypt.yml](inventory/group_vars/letsencrypt.yml)   |
+| [packages](roles/packages)                 | [README.md](roles/packages/README.md)           |                                                           |
+| [pihole](roles/pihole)                     | [README.md](roles/pihole/README.md)             | [pihole.yml](inventory/group_vars/pihole.yml)             |
+| [postgres](roles/postgres)                 | [README.md](roles/postgres/README.md)           | [postgres.yml](inventory/group_vars/postgres.yml)         |
+| [rocketchat](roles/rocketchat)             | [README.md](roles/rocketchat/README.md)         | [rocketchet.yml](inventory/group_vars/rocketchat.yml)     |
+| [ssh-keys-and-config](ssh-keys-and-config) | [README.md](roles/ssh-keys-and-config/README.md)|                                                           |
+| [users-and-groups](roles/users-and-groups) | [README.md](roles/users-and-groups/README.md)   |                                                           |
 
 
 ## Used port, users, groups
