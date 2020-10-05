@@ -6,4 +6,4 @@ _postgres_users:
 _postgres_packages: 
   - podman
   - dnsmasq
-
+_wants_dnsmasq: true

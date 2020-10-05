@@ -28,4 +28,4 @@ _gitea_properties:
   password_var: '_postgres_password_giteadb'
 _postgres_instances:
   - { name: 'gitea', podman_network: 'gitea', port: '5432',user: 'giteadb', password_var: '_postgres_password_giteadb', dbname: 'giteadb' }
-
+_wants_dnsmasq: true

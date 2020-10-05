@@ -4,9 +4,6 @@
 - include: localesettings.yml
   tags: localesettings
 
-- include: packages.yml
-  tags: packages
-
 - include: aliasses.yml
   loop: "{{ accounts }}"
   tags: aliasses
@@ -14,14 +11,6 @@
 - include: cronjobs.yml
   when: _wants_crontab|bool == true
   tags: cronjobs.nl
-
-- include: dnsmasq.yml
-  when: _wants_dnsmasq|bool == true
-  tags: dnsmasq
-
-- include: sshconfig.yml
-  loop: "{{ accounts }}"
-  tags: sshconfig
 
 - include: git.yml
   when: _wants_git|bool == true
