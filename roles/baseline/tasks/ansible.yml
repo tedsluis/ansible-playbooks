@@ -1,13 +1,13 @@
 ---
 
-- name: "get home directory {{item.owner}}"
+- name: "get home directory {{item}}"
   getent:
     database: passwd
-    key: "{{item.owner}}"
+    key: "{{item}}"
     split: ":"
 
 - set_fact:
-    _home_directory: "{{getent_passwd[item.owner][4]}}"
+    _home_directory: "{{getent_passwd[item][4]}}"
 
 - name: "clone https://github.com/dysosmus/ansible-completion.git to /tmp/ansible-completion/"
   git:

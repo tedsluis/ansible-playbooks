@@ -1,19 +1,13 @@
 ---
 
-- name: "get home directory {{item.owner}}"
+- name: "get home directory {{item}}"
   getent:
     database: passwd
-    key: "{{item.owner}}"
+    key: "{{item}}"
     split: ":"
 
 - set_fact:
-    _home_directory: "{{getent_passwd[item.owner][4]}}"
-
-- name: "get home directory {{ item }}."
-  shell: >
-    getent passwd {{ item }} | cut -d: -f6
-  changed_when: false
-  register: _home_directory
+    _home_directory: "{{getent_passwd[item][4]}}"
 
 - name: insert alias ll into .bashrc
   lineinfile:
