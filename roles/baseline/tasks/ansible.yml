@@ -1,10 +1,13 @@
 ---
 
-- name: "get home directory {{ item }}."
-  shell: >
-    getent passwd {{ item }} | cut -d: -f6
-  changed_when: false
-  register: user_home
+- name: "get home directory {{item.owner}}"
+  getent:
+    database: passwd
+    key: "{{item.owner}}"
+    split: ":"
+
+- set_fact:
+    _home_directory: "{{getent_passwd[item.owner][4]}}"
 
 - name: "clone https://github.com/dysosmus/ansible-completion.git to /tmp/ansible-completion/"
   git:
@@ -23,7 +26,7 @@
   with_fileglob: "/tmp/ansible-completion/*.bash"
   loop_control:
     loop_var: file_item
-  when: '"root" not in user_home.stdout'
+  when: '"root" not in _home_directory'
   become: true
 
 - name: remove /tmp/ansible-completion
@@ -34,7 +37,7 @@
   
 - name: create directory vim autoload
   file:
-    path:  "{{ user_home.stdout }}/{{ directory_item }}"
+    path:  "{{ _home_directory }}/{{ directory_item }}"
     state: directory
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -47,12 +50,12 @@
 
 - name: download plug.vim
   shell: |
-    curl -fLo {{ user_home.stdout }}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo {{ _home_directory }}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   become: true
 
 - name: set permissions plug.vim
   file:
-    path: "{{ user_home.stdout }}/.vim/autoload/plug.vim"
+    path: "{{ _home_directory }}/.vim/autoload/plug.vim"
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0774
@@ -62,7 +65,7 @@
   become: true
   blockinfile:
     create: true
-    dest: "{{ user_home.stdout }}/.vimrc"
+    dest: "{{ _home_directory }}/.vimrc"
     marker: '" {mark} -- ansible managed block ansible-vim plugin --' 
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -85,7 +88,7 @@
 
 - name: insert ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt into .bashrc
   lineinfile:
-    dest: "{{ user_home.stdout }}/.bashrc"
+    dest: "{{ _home_directory }}/.bashrc"
     regexp: '^export\sANSIBLE_VAULT_PASSWORD_FILE'
     state: present
     line: 'export ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt'
