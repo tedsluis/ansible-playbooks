@@ -1,29 +1,32 @@
 ---
 
-- name: "get home directory {{ item }}."
-  shell: >
-    getent passwd {{ item }} | cut -d: -f6
-  changed_when: false
-  register: user_home
+- name: "get home directory {{item}}"
+  getent:
+    database: passwd
+    key: "{{item}}"
+    split: ":"
 
-- name: "creates {{ user_home.stdout }}/git directory."
+- set_fact:
+    _home_directory: "{{getent_passwd[item][4]}}"
+
+- name: "creates {{ _home_directory }}/git directory."
   file: 
-    path: "{{ user_home.stdout }}/git" 
+    path: "{{ _home_directory }}/git" 
     state: directory 
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0774
   become: true
 
-- name: "check if {{ user_home.stdout }}/.gitconfig exists."
+- name: "check if {{ _home_directory }}/.gitconfig exists."
   stat: 
-    path: "{{ user_home.stdout }}/.gitconfig"
+    path: "{{ _home_directory }}/.gitconfig"
   register: stategitconfig
   become: true
 
-- name: "Touch {{ user_home.stdout }}/.gitconfig if not exists."
+- name: "Touch {{ _home_directory }}/.gitconfig if not exists."
   file: 
-    path: "{{ user_home.stdout }}/.gitconfig"
+    path: "{{ _home_directory }}/.gitconfig"
     state: touch
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -31,45 +34,45 @@
   when: stategitconfig.stat.exists is undefined or stategitconfig.stat.exists == False 
   become: true
 
-- name: "Add [user] section to {{ user_home.stdout }}/.gitconfig"
+- name: "Add [user] section to {{ _home_directory }}/.gitconfig"
   lineinfile:
-    dest: "{{ user_home.stdout }}/.gitconfig"
+    dest: "{{ _home_directory }}/.gitconfig"
     regexp: '^\[user\]'
     state: present
     insertbefore: 'name'
     line: '[user]'
   become: true
 
-- name: "add 'name = {{ gitusername }}' {{ user_home.stdout }}/.gitconfig"
+- name: "add 'name = {{ _git_username }}' {{ _home_directory }}/.gitconfig"
   lineinfile:
-    dest: "{{ user_home.stdout }}/.gitconfig"
+    dest: "{{ _home_directory }}/.gitconfig"
     regexp: 'name'
     state: present
     insertafter: '\[user\]'
-    line: "name = {{ gitusername }}"
+    line: "name = {{ _git_username }}"
   become: true
 
-- name: "add 'email = {{ gitemailaddress }}' to {{ user_home.stdout }}/.gitconfig"
+- name: "add 'email = {{ _git_mailaddress }}' to {{ _home_directory }}/.gitconfig"
   lineinfile:
-    dest: "{{ user_home.stdout }}/.gitconfig"
+    dest: "{{ _home_directory }}/.gitconfig"
     regexp: 'email'
     state: present
     insertafter: 'name'
-    line: "email = {{ gitemailaddress }}"
+    line: "email = {{ _git_emailaddress }}"
   become: true
 
-- name: "add section [push] to {{ user_home.stdout }}/.gitconfig"
+- name: "add section [push] to {{ _home_directory }}/.gitconfig"
   lineinfile:
-    dest: "{{ user_home.stdout }}/.gitconfig"
+    dest: "{{ _home_directory }}/.gitconfig"
     regexp: '\[push\]'
     state: present
     insertafter: 'email'
     line: '[push]'
   become: true
 
-- name: "add 'default = matching' to {{ user_home.stdout }}/.gitconfig"
+- name: "add 'default = matching' to {{ _home_directory }}/.gitconfig"
   lineinfile:
-    dest: "{{ user_home.stdout }}/.gitconfig"
+    dest: "{{ _home_directory }}/.gitconfig"
     regexp: 'default'
     state: present
     insertafter: '\[push\]'
