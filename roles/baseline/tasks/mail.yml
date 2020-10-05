@@ -11,9 +11,9 @@
     insertafter: '^#\s*{{ item.insertafter }}'
     line: "{{ item.line }}"
   with_items:
-    - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ mailhubhost }}:{{ mailhubport }}'  }
-    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ emailaddress }}"                  }
-    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ emailpassword }}"                 }
+    - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ _mail_hubhost }}:{{ mail_hubport }}'  }
+    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ _email_address }}"                  }
+    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ _email_password }}"                 }
     - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                         }
     - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                              }
     - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                   }
@@ -28,18 +28,17 @@
     dest: "/tmp/ansible_facts.txt"
   become: true
 
-- name: "Send test e-mail from {{ ansible_hostname }} to {{ emailaddress }}, attaching ansible facts."
+- name: "Send test e-mail from {{ ansible_hostname }} to {{ _email_address }}, attaching ansible facts."
   mail:
-    host: "{{ mailhubhost }}"
-    port: "{{ mailhubport }}"
+    host: "{{ _mail_hubhost }}"
+    port: "{{ _mail_hubport }}"
     secure: starttls
-    username: "{{ emailaddress }}"
-    password: "{{ emailpassword }}"
+    username: "{{ _email_address }}"
+    password: "{{ _email_password }}"
     subject: Ansible-report {{ ansible_hostname }}
     body: "Ansible facts on host {{ ansible_hostname }} in attachment ansible_facts.txt."
-    from: "{{ emailaddress }}"
-    to: "{{ emailaddress }}"
+    from: "{{ _email_address }}"
+    to: "{{ _email_address }}"
     attach: "/tmp/ansible_facts.txt"
-    headers: "Reply-To={{ emailaddress }}"
+    headers: "Reply-To={{ _email_address }}"
     charset: us-ascii
-  #delegate_to: localhost  
