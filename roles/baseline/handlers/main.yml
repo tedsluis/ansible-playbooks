@@ -1,9 +1,2 @@
 ---
-# handlers file for baseline
-
-- name: restart dnsmasq
-  systemd:
-    state: restarted
-    name: dnsmasq
-  become: true
 
