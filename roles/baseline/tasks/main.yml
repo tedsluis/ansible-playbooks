@@ -2,55 +2,44 @@
 # tasks file for baseline
 
 - include: localesettings.yml
-  tags: localesettings
 
 - include: aliasses.yml
   loop: "{{ accounts }}"
-  tags: aliasses
 
 - include: cronjobs.yml
   when: _wants_crontab|bool == true
-  tags: cronjobs.nl
 
 - include: git.yml
   when: _wants_git|bool == true
   loop: "{{ accounts }}"
-  tags: git
 
 - include: hosts.yml
-  tags: hosts
     
 - include: motd.yml
-  tags: motd
 
 - include: prompt.yml
   loop: "{{ accounts }}"
-  tags: prompt
 
 - include: timezone.yml
-  tags: timezone
 
 - include: tmux.yml
   loop: "{{ accounts }}"
-  tags: tmux
 
 - include: vimsettings.yml
   loop: "{{ accounts }}"
-  tags: vimsettings
 
 - include: ansible.yml
   when: _wants_ansible|bool == true
   loop: "{{ accounts }}"
-  tags: ansible
     
 - include: mail.yml
-  tags: mail
+
+- include: motd.yml
+  loop: "{{ accounts }}"
 
 - include: raspi-config.yml
-  tags: raspi-config
 
 - include: sshagent.yml
   when: _wants_sshagent|bool == true
   loop: "{{ accounts }}"
-  tags: sshagent
 

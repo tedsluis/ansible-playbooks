@@ -1,17 +1,30 @@
 ---
-# motd login screen for raspberry
 
-# http://docs.ansible.com/ansible/copy_module.html
+- name: "get home directory {{item}}"
+  getent:
+    database: passwd
+    key: "{{item}}"
+    split: ":"
 
-# Copies motd.sh to /etc/profile.d/motd.sh
-- name: "Copies motd.sh to /etc/profile.d/motd.sh for raspbian only"
+- set_fact:
+    _home_directory: "{{getent_passwd[item][4]}}"
+
+- name: "copies motd.sh to {{_home_directory}}/.motd.sh"
   copy:
     src: 'files/motd.sh'
-    dest: '/etc/profile.d/motd.sh'
-    owner: pi
-    group: pi
+    dest: '{{_home_directory}}/.motd.sh'
+    owner: "{{item}}"
+    group: "{{item}}"
     mode: 0755
-  when: "'raspbian' in group_names"
   become: true
+
+- name: "add .motd.sh to {{_home_directory}}/.bashrc"
+  lineinfile:
+    path: "{{_home_directory}}/.bashrc"
+    regexp: '^{{_home_directory}}/.motd.sh'
+    line: {{_home_directory}}/.motd.sh
+    owner: "{{item}}"
+    group: "{{item}}"
+    mode: '0644'
 
 
