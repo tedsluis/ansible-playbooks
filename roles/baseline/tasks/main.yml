@@ -4,42 +4,42 @@
 - include: localesettings.yml
 
 - include: aliasses.yml
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: cronjobs.yml
   when: _wants_crontab|bool == true
 
 - include: git.yml
   when: _wants_git|bool == true
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: hosts.yml
     
 - include: motd.yml
 
 - include: prompt.yml
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: timezone.yml
 
 - include: tmux.yml
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: vimsettings.yml
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: ansible.yml
   when: _wants_ansible|bool == true
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
     
 - include: mail.yml
 
 - include: motd.yml
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
 - include: raspi-config.yml
 
 - include: sshagent.yml
   when: _wants_sshagent|bool == true
-  loop: "{{ accounts }}"
+  loop: "{{ _accounts }}"
 
