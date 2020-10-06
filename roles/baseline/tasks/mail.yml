@@ -1,6 +1,6 @@
 ---
 
-- name: "Include Ansible secrets to get emailpassword."
+- name: "include ansible secrets to get emailpassword."
   include_vars: group_vars/vault.yaml
 
 - name: "Configure /etc/ssmtp/ssmtp.conf."
@@ -12,14 +12,14 @@
     line: "{{ item.line }}"
   with_items:
     - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ _mail_hubhost }}:{{ mail_hubport }}'  }
-    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ _email_address }}"                  }
-    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ _email_password }}"                 }
-    - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                         }
-    - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                              }
-    - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                   }
-    - { regexp: 'RewriteDomain=',    insertafter: 'RewriteDomain=',     line: 'RewriteDomain=gmail.com'                      }
-    - { regexp: 'Hostname=',         insertafter: 'Hostname=',          line: 'Hostname=localhost'                           }
-    - { regexp: 'TLS_CA_File=',      insertafter: 'TLS_CA_File=',       line: "TLS_CA_File={{ TLS_CA_File }}"                }
+    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ _email_address }}"                   }
+    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ _email_password }}"                  }
+    - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                            }
+    - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                                 }
+    - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                      }
+    - { regexp: 'RewriteDomain=',    insertafter: 'RewriteDomain=',     line: 'RewriteDomain=gmail.com'                         }
+    - { regexp: 'Hostname=',         insertafter: 'Hostname=',          line: 'Hostname=localhost'                              }
+    - { regexp: 'TLS_CA_File=',      insertafter: 'TLS_CA_File=',       line: "TLS_CA_File={{ _tls_ca_file }}"                  }
   become: true
 
 - name: "Write Ansible facts to /tmp/ansible_facts.txt"
