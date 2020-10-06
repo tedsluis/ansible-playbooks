@@ -12,6 +12,7 @@
   # common roles
   - packages
   - users-and-groups
+  - baseline
   - ssh-keys-and-config
   - firewall
   - role: dnsmasq
