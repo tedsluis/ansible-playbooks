@@ -1,5 +1,4 @@
 ---
-# https://docs.ansible.com/ansible/timezone_module.html
 
 - name: "set timezone to {{ timezone }}"
   timezone:
