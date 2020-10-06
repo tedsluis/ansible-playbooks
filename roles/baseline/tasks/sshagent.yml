@@ -1,16 +1,20 @@
 ---
-- name: "get home directory {{ item }}."
-  shell: >
-    getent passwd {{ item }} | cut -d: -f6
-  changed_when: false
-  register: user_home
 
-- name: "insert ssh-agent in to {{ user_home.stdout }}/.bashrc"
+- name: "get home directory {{item}}"
+  getent:
+    database: passwd
+    key: "{{item}}"
+    split: ":"
+
+- set_fact:
+    _home_directory: "{{getent_passwd[item][4]}}"
+
+- name: "insert ssh-agent in to {{ _home_directory }}/.bashrc"
   become: true
   blockinfile:
     create: true
     insertbefore: '^#\sBEGIN\s--\sansible\smanaged\sblock\stmux\s--'
-    dest: "{{ user_home.stdout }}/.bashrc"
+    dest: "{{ _home_directory }}/.bashrc"
     marker: "# {mark} -- ansible managed block ssh-agent --"
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -27,8 +31,7 @@
            /usr/bin/ssh-add $HOME/.ssh/id_rsa;
       } # Source SSH settings, if applicable
       if [ -z $TMUX ];then
-           _USER=$(echo "{{ user_home.stdout }}" | tr '/',  '\n' | tail -n 1)
-           if [[ $(ps aux | grep ssh-agent | grep -v grep | grep -c ${_USER}) == "0" ]];then
+           if [[ $(ps aux | grep ssh-agent | grep -v grep | grep -c {{item}}) == "0" ]];then
                 start_agent;
            else
          .      ~/.ssh/agentsock
@@ -39,5 +42,5 @@
            /usr/bin/ssh-add $HOME/.ssh/id_rsa
       fi
       alias ssh='eval $(tmux show-env | /usr/bin/grep "^SSH_AGENT\|^SSH_AUTH_SOCK") && ssh'
-  when: '"root" not in user_home.stdout'
+  when: '"root" not in _home_directory'
 
