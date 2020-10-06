@@ -1,22 +1,25 @@
 ---
 
-- name: "Get home directory {{ item }}."
-  shell: >
-    getent passwd {{ item }} | cut -d: -f6
-  changed_when: false
-  register: user_home
+- name: "get home directory {{item}}"
+  getent:
+    database: passwd
+    key: "{{item}}"
+    split: ":"
 
-- name: "Clone https://github.com/tedsluis/bash-git-prompt.git to {{ user_home.stdout }}/.bash-git-prompt"
+- set_fact:
+    _home_directory: "{{getent_passwd[item][4]}}"
+
+- name: "Clone https://github.com/tedsluis/bash-git-prompt.git to {{ _home_directory }}/.bash-git-prompt"
   git:
     repo: https://github.com/tedsluis/bash-git-prompt.git
-    dest: "{{ user_home.stdout }}/.bash-git-prompt"
+    dest: "{{ _home_directory }}/.bash-git-prompt"
     depth: 1
     force: yes
   become: true
 
 - name: set permissions on files
   file:
-    path: "{{ user_home.stdout }}/.bash-git-prompt"
+    path: "{{ _home_directory }}/.bash-git-prompt"
     state: directory
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -24,18 +27,18 @@
     recurse: true
   become: true
   
-- name: "Copies .git-prompt-colors.sh to {{ user_home.stdout }}/.git-prompt-colors.sh"
+- name: "Copies .git-prompt-colors.sh to {{ _home_directory }}/.git-prompt-colors.sh"
   copy:
     src: 'files/.git-prompt-colors.sh'
-    dest: "{{ user_home.stdout }}/.git-prompt-colors.sh"
+    dest: "{{ _home_directory }}/.git-prompt-colors.sh"
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0774
   become: true
 
-- name: "Add git branch name to bash prompt using {{ user_home.stdout }}/.bashrc"
+- name: "Add git branch name to bash prompt using {{ _home_directory }}/.bashrc"
   blockinfile:
-    dest: "{{ user_home.stdout }}/.bashrc"
+    dest: "{{ _home_directory }}/.bashrc"
     marker: "# {mark} -- ansible managed block bash prompt --"
     insertbefore: '^#\sBEGIN\s--\sansible\smanaged\sblock'
     block: |
