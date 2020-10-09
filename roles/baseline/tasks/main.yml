@@ -16,6 +16,7 @@
 - include: hosts.yml
     
 - include: motd.yml
+  loop: "{{ _accounts }}"
 
 - include: prompt.yml
   loop: "{{ _accounts }}"
