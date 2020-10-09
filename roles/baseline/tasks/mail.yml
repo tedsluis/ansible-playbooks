@@ -1,7 +1,7 @@
 ---
 
 - name: "include ansible secrets to get emailpassword."
-  include_vars: group_vars/vault.yaml
+  include_vars: inventory/group_vars/vault.yaml
 
 - name: "Configure /etc/ssmtp/ssmtp.conf."
   lineinfile:
@@ -11,15 +11,15 @@
     insertafter: '^#\s*{{ item.insertafter }}'
     line: "{{ item.line }}"
   with_items:
-    - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ _mail_hubhost }}:{{ mail_hubport }}'  }
-    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ _email_address }}"                   }
-    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ _email_password }}"                  }
-    - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                            }
-    - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                                 }
-    - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                      }
-    - { regexp: 'RewriteDomain=',    insertafter: 'RewriteDomain=',     line: 'RewriteDomain=gmail.com'                         }
-    - { regexp: 'Hostname=',         insertafter: 'Hostname=',          line: 'Hostname=localhost'                              }
-    - { regexp: 'TLS_CA_File=',      insertafter: 'TLS_CA_File=',       line: "TLS_CA_File={{ _tls_ca_file }}"                  }
+    - { regexp: 'mailhub=',          insertafter: 'mailhub=',           line: 'mailhub={{ _mail_hubhost }}:{{ _mail_hubport }}'  }
+    - { regexp: 'AuthUser=',         insertafter: 'AuthUser=',          line: "AuthUser={{ _mail_address }}"                     }
+    - { regexp: 'AuthPass=',         insertafter: 'AuthPass=',          line: "AuthPass={{ _mail_password }}"                    }
+    - { regexp: 'FromLineOverride=', insertafter: 'FromLineOverride=',  line: 'FromLineOverride=YES'                             }
+    - { regexp: 'UseSTARTTLS=',      insertafter: 'UseSTARTTLS=',       line: 'UseSTARTTLS=YES'                                  }
+    - { regexp: 'UseTLS=',           insertafter: 'UseTLS=',            line: 'UseTLS=YES'                                       }
+    - { regexp: 'RewriteDomain=',    insertafter: 'RewriteDomain=',     line: 'RewriteDomain=gmail.com'                          }
+    - { regexp: 'Hostname=',         insertafter: 'Hostname=',          line: 'Hostname=localhost'                               }
+    - { regexp: 'TLS_CA_File=',      insertafter: 'TLS_CA_File=',       line: "TLS_CA_File={{ _tls_ca_file }}"                   }
   become: true
 
 - name: "Write Ansible facts to /tmp/ansible_facts.txt"
@@ -28,17 +28,17 @@
     dest: "/tmp/ansible_facts.txt"
   become: true
 
-- name: "Send test e-mail from {{ ansible_hostname }} to {{ _email_address }}, attaching ansible facts."
+- name: "Send test e-mail from {{ ansible_hostname }} to {{ _mail_address }}, attaching ansible facts."
   mail:
     host: "{{ _mail_hubhost }}"
     port: "{{ _mail_hubport }}"
     secure: starttls
-    username: "{{ _email_address }}"
-    password: "{{ _email_password }}"
+    username: "{{ _mail_address }}"
+    password: "{{ _mail_password }}"
     subject: Ansible-report {{ ansible_hostname }}
     body: "Ansible facts on host {{ ansible_hostname }} in attachment ansible_facts.txt."
-    from: "{{ _email_address }}"
-    to: "{{ _email_address }}"
+    from: "{{ _mail_address }}"
+    to: "{{ _mail_address }}"
     attach: "/tmp/ansible_facts.txt"
-    headers: "Reply-To={{ _email_address }}"
+    headers: "Reply-To={{ _mail_address }}"
     charset: us-ascii
