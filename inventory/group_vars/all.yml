@@ -1,12 +1,12 @@
 # global settings
 ansible_python_interpreter: /usr/bin/python3
 ansible_user: ansible
-
-_domain: bachstraat20.duckdns.org
-
+_accounts: '["root", "tedsluis"]'
+_all_sshkeys:
+  - { key_name: 'id_rsa.pub', key_type: 'public_key',     key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
+  - { key_name: 'id_rsa.pub', key_type: 'authorized_key', key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
 _all_firewall:
   - 22/tcp
-
 _all_packages:
   - curl
   - cronie
@@ -19,26 +19,21 @@ _all_packages:
   - tmux
   - vim
   - wget
-
+_etc_vimrc: '/etc/vimrc'
+_domain: bachstraat20.duckdns.org
 _git_username: tedsluis
 _git_mailaddress: ted.sluis@gmail.com
-
 _mail_address: ted.sluis@gmail.com
 _mail_hubhost: smtp.gmail.com
 _mail_hubport: 587
-
+_raspi_configtxt: '/boot/efi/config.txt'
 _timezone: Europe/Amsterdam
-
-_all_sshkeys:
-  - { key_name: 'id_rsa.pub', key_type: 'public_key',     key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
-  - { key_name: 'id_rsa.pub', key_type: 'authorized_key', key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
-
+_tls_ca_file: '/etc/ssl/certs/ca-bundle.trust.crt'
 _wants_ansible: false
 _wants_crontab: true
 _wants_dnsmasq: true
 _wants_git: false
 _wants_sshagent: false
-
 # stored in 'group_vars/vault.yaml':
 #emailpassword: 
 #id_rsa:

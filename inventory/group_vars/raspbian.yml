@@ -1,6 +1,0 @@
-ansible_user: pi
-accounts: '["root", "pi"]'
-TLS_CA_File: '/etc/ssl/certs/ca-certificates.crt'
-_etc_vimrc: '/etc/vim/vimrc'
-_raspi_configtxt: '/boot/config.txt'
-

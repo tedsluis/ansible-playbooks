@@ -1,18 +1,17 @@
 [all:children]
-fedora
-raspbian
 gitea
 httpd
-
-[raspbian]
+letsencrypt
 pihole
+postgres
 
-[fedora]
+[all]
 fed143
 fed149
 fed157
 fed159
 fed160
+pihole
 
 [httpd]
 fed143
@@ -22,6 +21,9 @@ fed143
 
 [letsencrypt]
 fed143
+
+[pihole]
+pihole
 
 [postgres]
 fed143
