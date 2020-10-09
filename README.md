@@ -59,16 +59,19 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 <details>
 <summary>firewall ports</summary>
 
-| port  | service            |
-|-------|--------------------|
-| 22    | ssh                |
-| 2222  | gitea ssh          |
-| 3000  | gitea              |
-| 5432  | postgres default   |
-| 30080 | apache httpd http  |
-| 30443 | apache httpd https |
-| 31080 | apache httpd http  |
-| 31433 | apache httpd https |
+| port  | service            | scope                 |
+|-------|--------------------|-----------------------|
+| 22    | ssh                | all hosts             |
+| 53    | dns                  pihole                |
+| 80    | http               | pihole                |
+| 443   | https              | pihole                |
+| 2222  | gitea ssh          | gitea                 |
+| 3000  | gitea              | gitea                 |
+| 5432  | postgres default   | inside podman network |
+| 30080 | apache httpd http  | on host fed143        |
+| 30443 | apache httpd https | on host fed143        |
+| 31080 | apache httpd http  | on host fed143        |
+| 31433 | apache httpd https | on host fed143        |
 
 </details>
 <details>
@@ -76,6 +79,9 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 
 | uid  | user        | guid | group       |
 |------|-------------|------|-------------|
+| 1000 | tedsluis    | 1000 | tedsluis    |
+| 1000 | pi          | 1000 | pi          |
+| 1001 | ansible     | 1001 | ansible     |
 | 1033 | gitea       | 1033 | gitea       |
 | 1034 | httpd       | 1034 | httpd       |
 | 1035 | letsencrypt | 1035 | letsencrypt |
