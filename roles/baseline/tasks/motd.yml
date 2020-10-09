@@ -22,9 +22,10 @@
   lineinfile:
     path: "{{_home_directory}}/.bashrc"
     regexp: '^{{_home_directory}}/.motd.sh'
-    line: {{_home_directory}}/.motd.sh
+    line: "{{_home_directory}}/.motd.sh"
     owner: "{{item}}"
     group: "{{item}}"
     mode: '0644'
+  become: true
 
 
