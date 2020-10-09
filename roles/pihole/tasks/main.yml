@@ -1,5 +1,4 @@
 ---
-# tasks file for rocketchat
 
 - include: network.yml
   tags: network

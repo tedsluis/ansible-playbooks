@@ -8,7 +8,7 @@ RestartSec=3
 Restart=always
 ExecStartPre=-/usr/bin/podman stop -t 2 pihole
 ExecStartPre=-/usr/bin/podman rm -f pihole
-ExecStartPre=/usr/bin/podman pull  {{ pihole_image_repo }}/{{ pihole_image_name }}:{{ pihole_image_version }}  
+ExecStartPre=/usr/bin/podman pull  {{_pihole_image_repo}}/{{_pihole_image_name}}:{{_pihole_image_version}}  
 ExecStart=/usr/bin/podman run \
                           --name pihole \
                           -p 53:53/tcp \
@@ -16,16 +16,17 @@ ExecStart=/usr/bin/podman run \
                           -p 67:67 \
                           -p 80:80 \
                           -p 443:443 \
-                          -e TZ="Europe/Amsterdam" \
-                          -e WEBPASSWORD={{ pihole_password }} \
+                          -e TZ={{_timezone}} \
+                          -e ADMIN_EMAIL={{_mail_address}} \
+                          -e WEBPASSWORD={{_pihole_password}} \
                           -e DNS1="8.8.8.8" \
                           -e DNS1="8.8.4.4" \
-                          -e ServerIP=192.168.1.17 \
+                          -e ServerIP={{_ip_address}} \
                           -v "/home/pi/etc-pihole/:/etc/pihole/" \
                           -v "/home/pi/etc-dnsmasq.d/:/etc/dnsmasq.d/" \
                           --dns=127.0.0.1 \
                           --dns=192.168.1.254 \
-                          {{ pihole_image_name }}:{{ pihole_image_version }}
+                          {{_pihole_image_name}}:{{_pihole_image_version}}
 
 ExecStop=-/usr/bin/docker stop -t 2 pihole
 ExecStopPost=-/usr/bin/docker rm -f pihole

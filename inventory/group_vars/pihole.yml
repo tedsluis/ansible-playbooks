@@ -1,0 +1,11 @@
+---
+
+_pihole_firewall:
+  - 53/tcp
+  - 53/udp
+  - 80/tcp
+  - 443/tcp
+
+_pihole_packages:
+  - podman
+

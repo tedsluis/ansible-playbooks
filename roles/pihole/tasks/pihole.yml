@@ -1,6 +1,7 @@
 ---
-- name: "Include Ansible secrets to get pihole password."
-  include_vars: group_vars/vault.yaml
+
+- name: "include Ansible secrets to get pihole password."
+  include_vars: inventory/group_vars/vault.yaml
 
 - name: create directories
   file:
