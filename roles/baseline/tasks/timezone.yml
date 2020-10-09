@@ -1,7 +1,7 @@
 ---
 
-- name: "set timezone to {{ timezone }}"
+- name: "set timezone to {{ _timezone }}"
   timezone:
-    name: "{{ timezone }}"
+    name: "{{ _timezone }}"
   become: true
 
