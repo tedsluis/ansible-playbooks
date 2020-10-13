@@ -3,7 +3,9 @@ RUN_MODE = prod
 RUN_USER = {{_gitea_properties.run_user}}
 
 [repository]
-ROOT = /data/git/repositories
+ROOT                        = /data/git/repositories
+ENABLE_PUSH_CREATE_USER     = true
+DEFAULT_PUSH_CREATE_PRIVATE = false
 
 [repository.local]
 LOCAL_COPY_PATH = /data/gitea/tmp/local-repo
