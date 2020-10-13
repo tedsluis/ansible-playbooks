@@ -1,0 +1,15 @@
+---
+_nfsserver_firewall:
+  - 111/tcp
+  - 2049/tcp
+_nfsserver_packages:
+  - nfs-utils
+_nfs_exports:
+  - path: /var/lib/nfsserver/data/tedsluis
+    owner: tedsluis
+    group: tedsluis
+    access: '*.bachstraat20.duckdns.org(rw,no_root_squash)'
+  - path: /var/lib/nfsserver/data/root 
+    owner: root
+    group: root
+    access: '*.bachstraat20.duckdns.org(rw,no_root_squash)'

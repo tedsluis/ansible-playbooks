@@ -1,0 +1,64 @@
+---
+
+- name: ensure rpcbind is running as configured.
+  service:
+    name: rpcbind
+    state: started
+    enabled: true
+
+- name: set owner, group and permissions on nfs paths.
+  file:
+    path: "{{ item.path }}" 
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode | default('0775') }}"
+  with_items: "{{ _nfs_exports }}"
+  when: _nfs_exports is defined
+
+- name: configure /etc/exports.ansible to compare.
+  template:
+    src: exports.j2
+    dest: /etc/exports.ansible
+  when: 
+    - _nfs_exports is defined
+  changed_when: false
+
+- name: get checksum of /etc/exports.ansible
+  stat:
+    path : /etc/exports.ansible
+  register: exp1
+  changed_when: false
+
+- name: get checksum of /etc/exports
+  stat:
+    path : /etc/exports
+  register: exp2
+  changed_when: false
+
+- name: configure /etc/exports when changed
+  template:
+    src: exports
+    dest: /etc/exports
+  when: 
+    - _nfs_exports is defined
+    - exp2.stat.checksum != exp1.stat.checksum
+  notify: _reload_nfs
+
+- name: remove tmp file /etc/exports.ansible
+  file:
+    path: /etc/exports.ansible
+    state: absent
+  changed_when: false
+  check_mode: false
+
+- name: ensure nfs is running.
+  service: 
+    name: nfs-server
+    state: started 
+    enabled: yes
+  when: _nfs_exports|length
+
+- name: trigger handelers
+  meta: flush_handlers
+
+
