@@ -8,7 +8,6 @@
     weekday: "1"
     job: "sudo dnf update -y && echo \"finished.\""
   become: true
-  when: inventory_hostname in groups['fedora']
 
 - name: schedule reboot cronjob every monday 11:30pm.
   cron:
