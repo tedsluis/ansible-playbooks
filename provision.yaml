@@ -9,7 +9,6 @@
     ansible_user: ansible
 
   roles:
-  # common roles
   - packages
   - users-and-groups
   - baseline
@@ -17,6 +16,8 @@
   - firewall
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
+  - role: pihole
+    when: "'pihole' in group_names"
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
   - role: httpd
