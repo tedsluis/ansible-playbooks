@@ -11,9 +11,12 @@
 
 - name: get open ports
   shell: |
-    firewall-cmd --list-all | grep -P '^\s+ports:' | tr ' ' '\n' | grep -P '^\d+\/(tcp|udp)'
+    firewall-cmd --list-all | grep -P '^\s+ports:' | tr ' ' '\n' | grep -P '^\d+\/(tcp|udp)' 
   become: true
   register: _open_ports
+  failed_when:
+    - _open_ports.rc != 0
+    - '"has no attribute" not in _open_ports.stdout'
   
 - name: open firewall ports 
   firewalld:
