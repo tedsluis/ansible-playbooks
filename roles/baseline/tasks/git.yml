@@ -52,13 +52,13 @@
     line: "name = {{ _git_username }}"
   become: true
 
-- name: "add 'email = {{ _git_mailaddress }}' to {{ _home_directory }}/.gitconfig"
+- name: "add 'email = {{ _git_mail_address }}' to {{ _home_directory }}/.gitconfig"
   lineinfile:
     dest: "{{ _home_directory }}/.gitconfig"
     regexp: 'email'
     state: present
     insertafter: 'name'
-    line: "email = {{ _git_emailaddress }}"
+    line: "email = {{ _git_mail_address }}"
   become: true
 
 - name: "add section [push] to {{ _home_directory }}/.gitconfig"
