@@ -3,7 +3,7 @@
 - name: provision
 
   hosts:
-    - fed143
+    - fed143,fed149
 
   vars:
     ansible_user: ansible
@@ -14,6 +14,8 @@
   - baseline
   - ssh-keys-and-config
   - firewall
+  - role: nfsserver
+    when: "'nfsserver' in group_names"
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
   - role: pihole

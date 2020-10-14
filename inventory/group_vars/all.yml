@@ -2,6 +2,12 @@
 ansible_python_interpreter: /usr/bin/python3
 ansible_user: ansible
 _accounts: '["root", "tedsluis"]'
+_all_groups:
+  - { group: 'tedsluis', gid: '1000' }
+  - { group: 'ansible',  gid: '1001' }
+_all_users:
+  - { user: 'tedsluis', comment: 'user tedsluis', uid: '1000', groups: 'tedsluis', create_home: 'true', shell: '/bin/bash' }
+  - { user: 'ansible',  comment: 'user ansible',  uid: '1001', groups: 'ansible',  create_home: 'true', shell: '/bin/bash' }
 _all_sshkeys:
   - { key_name: 'id_rsa.pub', key_type: 'public_key',     key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
   - { key_name: 'id_rsa.pub', key_type: 'authorized_key', key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
@@ -22,7 +28,7 @@ _all_packages:
 _etc_vimrc: '/etc/vimrc'
 _domain: bachstraat20.duckdns.org
 _git_username: tedsluis
-_git_mailaddress: ted.sluis@gmail.com
+_git_mail_address: ted.sluis@gmail.com
 _mail_address: ted.sluis@gmail.com
 _mail_hubhost: smtp.gmail.com
 _mail_hubport: 587

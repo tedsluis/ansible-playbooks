@@ -5,6 +5,7 @@
     name: rpcbind
     state: started
     enabled: true
+  become: true
 
 - name: set owner, group and permissions on nfs paths.
   file:
@@ -12,6 +13,8 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0775') }}"
+    state: directory
+  become: true
   with_items: "{{ _nfs_exports }}"
   when: _nfs_exports is defined
 
@@ -19,6 +22,7 @@
   template:
     src: exports.j2
     dest: /etc/exports.ansible
+  become: true
   when: 
     - _nfs_exports is defined
   changed_when: false
@@ -26,19 +30,22 @@
 - name: get checksum of /etc/exports.ansible
   stat:
     path : /etc/exports.ansible
+  become: true
   register: exp1
   changed_when: false
 
 - name: get checksum of /etc/exports
   stat:
     path : /etc/exports
+  become: true
   register: exp2
   changed_when: false
 
 - name: configure /etc/exports when changed
   template:
-    src: exports
+    src: exports.j2
     dest: /etc/exports
+  become: true
   when: 
     - _nfs_exports is defined
     - exp2.stat.checksum != exp1.stat.checksum
@@ -48,6 +55,7 @@
   file:
     path: /etc/exports.ansible
     state: absent
+  become: true
   changed_when: false
   check_mode: false
 
@@ -56,6 +64,7 @@
     name: nfs-server
     state: started 
     enabled: yes
+  become: true
   when: _nfs_exports|length
 
 - name: trigger handelers

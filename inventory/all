@@ -4,6 +4,7 @@ httpd
 letsencrypt
 pihole
 postgres
+nfsserver
 
 [all]
 fed143
@@ -13,10 +14,10 @@ fed159
 fed160
 pihole
 
-[httpd]
+[gitea]
 fed143
 
-[gitea]
+[httpd]
 fed143
 
 [letsencrypt]
@@ -27,3 +28,10 @@ pihole
 
 [postgres]
 fed143
+
+[nfsclient]
+fed143
+fed149
+
+[nfsserver]
+fed149
