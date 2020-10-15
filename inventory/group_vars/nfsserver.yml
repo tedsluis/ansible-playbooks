@@ -4,7 +4,7 @@ _nfsserver_firewall:
   - 2049/tcp
 _nfsserver_packages:
   - nfs-utils
-_nfs_exports:
+_nfsserver_exports:
   - path: /var/lib/nfsserver/data/tedsluis
     owner: tedsluis
     group: tedsluis
