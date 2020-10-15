@@ -1,4 +1,4 @@
 {{ansible_managed|comment}}
-{% for nfs in _nfs_exports %}
+{% for nfs in _nfsserver_exports %}
 {{nfs.path}}  {{nfs.access}}
 {% endfor %}

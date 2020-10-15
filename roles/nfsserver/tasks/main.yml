@@ -15,8 +15,8 @@
     mode: "{{ item.mode | default('0775') }}"
     state: directory
   become: true
-  with_items: "{{ _nfs_exports }}"
-  when: _nfs_exports is defined
+  with_items: "{{ _nfsserver_exports }}"
+  when: _nfsserver_exports is defined
 
 - name: configure /etc/exports.ansible to compare.
   template:
