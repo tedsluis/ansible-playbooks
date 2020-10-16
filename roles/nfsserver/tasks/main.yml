@@ -65,7 +65,7 @@
     state: started 
     enabled: yes
   become: true
-  when: _nfs_exports|length
+  when: _nfsserver_exports|length
 
 - name: trigger handelers
   meta: flush_handlers
