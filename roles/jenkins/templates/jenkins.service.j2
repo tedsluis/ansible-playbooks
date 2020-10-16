@@ -13,8 +13,8 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               --name=jenkins \
                               -p 8080:8080 \
                               -p 50000:50000 \
-                              -v jenkins-data:/var/jenkins_home \
-                              -v jenkins-docker-certs:/certs/client:ro \
+                              -v /var/lib/jenkins/data:/var/jenkins_home:z \
+                              -v /var/lib/jenkins/certs:/certs/client:ro \
                               --restart unless-stopped \
                               docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
 
