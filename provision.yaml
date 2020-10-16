@@ -16,6 +16,8 @@
   - firewall
   - role: nfsserver
     when: "'nfsserver' in group_names"
+  - role: nfsclient
+    when: "'nfsclient' in group_names"
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
   - role: pihole

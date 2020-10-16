@@ -1,0 +1,17 @@
+---
+_nfsclient_packages:
+  - nfs-utils
+_nfsclient_mounts:
+  - server: nfs.bachstraat20.duckdns.org
+    server_path: /var/lib/nfsserver/data/tedsluis
+    client_path: /home/tedsluis/share
+    owner: tedsluis
+    group: tedsluis
+    mode: "0775"
+  - server: nfs.bachstraat20.duckdns.org
+    server_path: /var/lib/nfsserver/data/root
+    client_path: /share
+    owner: root
+    group: root
+    mode: "0775"
+

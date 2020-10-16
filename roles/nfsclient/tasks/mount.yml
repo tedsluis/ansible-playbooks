@@ -1,0 +1,72 @@
+---
+- name: "get {{item.client_path}} path stats"
+  stat: 
+    path: "{{item.client_path}}"
+  become: true
+  register: dir
+
+
+- name: create dirs
+  file:
+    state: directory
+    path: "{{item.client_path}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+  become: true
+  when: not dir.stat.exists 
+
+- name: append exports if needed
+  delegate_to: "{{item.server}}"
+  replace:
+    path: /etc/exports
+    regexp: '^({{item.server_path}}\s+(?!.*\b{{inventory_hostname}}\b).*)$'
+    replace: '\1 {{inventory_hostname}}(rw,no_root_squash)'
+  become: true
+  register: _c
+
+- name: reload shares if host is added
+  delegate_to: "{{item.server}}"
+  command: exportfs -r
+  become: true
+  when: _c.changed
+
+- name: NFS is mounted {{item.client_path}}
+  mount:
+    fstype: nfs
+    path: "{{item.client_path}}"
+    src: "{{item.server}}:{{item.server_path}}"
+    state: mounted
+    opts: defaults
+    dump: '0'
+    passno: '0'
+  become: true
+  register: _mount
+  until: _mount is success
+  retries: 5
+  delay: 2
+  when: item.server_path is defined
+
+- name: NFS is unmounted {{item.client_path}} when changed
+  mount:
+    fstype: nfs
+    path: "{{item.client_path}}"
+    src: "{{item.server}}:{{item.server_path}}"
+    state: unmounted
+    opts: defaults
+    dump: '0'
+    passno: '0'
+  become: true
+  when: _mount.changed
+
+- name: NFS is mounted {{item.client_path}} when changed
+  mount:
+    fstype: nfs
+    path: "{{item.client_path}}"
+    src: "{{item.server}}:{{item.server_path}}"
+    state: mounted
+    opts: defaults
+    dump: '0'
+    passno: '0'
+  become: true
+  when: _mount.changed

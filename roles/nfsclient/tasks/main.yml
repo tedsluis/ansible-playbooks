@@ -1,0 +1,3 @@
+- name: nfs mounts
+  include: mount.yml
+  loop: "{{_nfsclient_mounts}}"
