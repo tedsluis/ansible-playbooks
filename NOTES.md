@@ -6,7 +6,6 @@
 * remove users and groups
 * remove packages
 * remove configuration
-* deploy nfs server
 * deploy proxy server
 * automatic dns registration using pihole
 * setup DHCP + PXE
@@ -14,7 +13,6 @@
 * deploy media wiki
 * sync gitea <-> github
 * deploy jenkins host
-* configure nfs client
 * deploy node exporter
 * deploy prometheus
 * deploy grafana
@@ -24,6 +22,8 @@
 
 ## done
 
+* configure nfs client
+* deploy nfs server
 * add firewall ports
 * add packages
 * add ssh keys and ssh config
