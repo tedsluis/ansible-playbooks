@@ -1,0 +1,57 @@
+---
+
+- name: "include ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create jenkins directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/jenkins"      ,owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
+    - { directory: "/var/lib/jenkins/data" ,owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
+    - { directory: "/var/lib/jenkins/certs",owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
+
+- name: "pull docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}} image"
+  shell: |
+    podman pull docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/jenkins.service
+  template:
+    src: jenkins.service.j2
+    dest: /etc/systemd/system/jenkins.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_jenkins
+
+- name: start and enable jenkins.service
+  systemd:
+    name: jenkins
+    state: started
+    enabled: true
+  become: true
+
+- name: jenkins container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=jenkins'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

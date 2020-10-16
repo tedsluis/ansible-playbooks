@@ -1,0 +1,25 @@
+---
+
+- name: stop jenkins.service
+  listen: _restart_jenkins
+  systemd:
+    name: jenkins
+    state: stopped
+  become: true
+  
+- name: daemon reload jenkins.service
+  listen: _restart_jenkins
+  systemd:
+    name: jenkins
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start jenkins.service
+  listen: _restart_jenkins
+  systemd:
+    name: jenkins
+    state: started
+  become: true
+
+

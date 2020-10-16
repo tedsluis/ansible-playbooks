@@ -1,0 +1,12 @@
+---
+_jenkins_firewall:
+  - 5000/tcp
+  - 8080/tcp
+_jenkins_groups:
+  - { group: 'jenkins',gid: '1037' }
+_jenkins_users:
+  - { user: 'jenkins',comment: 'user for jenkins',uid: '1037',groups: 'jenkins',create_home: 'false',shell: '/bin/nologin' }
+_jenkins_packages:
+  - podman
+_jenkins_image_tag: 2.250-alpine-arm64
+

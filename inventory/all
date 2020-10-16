@@ -20,6 +20,9 @@ fed143
 [httpd]
 fed143
 
+[jenkins]
+fed149
+
 [letsencrypt]
 fed143
 
