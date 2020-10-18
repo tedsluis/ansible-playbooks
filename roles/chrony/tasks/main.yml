@@ -1,0 +1,38 @@
+---
+- block:
+  - name: Make sure ntpd is disabled.
+    systemd:
+      name: ntpd
+      state: stopped
+      enabled: false
+    ignore_errors: true
+
+  - name: Ensure chronyd is present.
+    yum:
+      name: chrony
+      state: installed
+
+  - name: Set timezone CET
+    timezone:
+      name: CET
+
+  - name: ensure chronyd is unmasked
+    systemd:
+      name: chronyd
+      masked: no
+
+  - name: Enforce proper dso chrony.conf settings
+    template:
+      src: templates/chrony.conf.j2
+      dest: /etc/chrony.conf
+    notify: chronydHandler
+
+  - name: ensure chronyd is running and enabled
+    service:
+      name: chronyd
+      state: started
+      enabled: yes
+      
+  - meta: flush_handlers
+  tags: chrony
+  when: ansible_distribution_major_version != "6"
