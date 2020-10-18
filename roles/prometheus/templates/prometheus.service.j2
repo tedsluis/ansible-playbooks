@@ -1,0 +1,26 @@
+[Unit]
+Description=Prometheus
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=prometheus \
+                              -p 9090:9090 \
+                              -v /var/lib/prometheus/config:/etc/prometheus:z \
+                              --restart unless-stopped \
+                              docker.io/prom/prometheus:{{_prometheus_image_tag}}
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

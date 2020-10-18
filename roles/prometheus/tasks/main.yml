@@ -1,0 +1,56 @@
+---
+
+- name: "include ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create prometheus directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/prometheus"      ,owner: "prometheus" ,group: "prometheus" ,mode: "0775" }
+    - { directory: "/var/lib/prometheus/config" ,owner: "prometheus" ,group: "prometheus" ,mode: "0775" }
+
+- name: "pull docker.io/prom/prometheus:{{_prometheus_image_tag}} image"
+  shell: |
+    podman pull docker.io/prom/prometheus:{{_prometheus_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/systemd/system/prometheus.service
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_prometheus
+
+- name: start and enable prometheus.service
+  systemd:
+    name: prometheus
+    state: started
+    enabled: true
+  become: true
+
+- name: prometheus container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=prometheus'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

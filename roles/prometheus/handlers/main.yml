@@ -1,0 +1,25 @@
+---
+
+- name: stop prometheus.service
+  listen: _restart_prometheus
+  systemd:
+    name: prometheus
+    state: stopped
+  become: true
+  
+- name: daemon reload prometheus.service
+  listen: _restart_prometheus
+  systemd:
+    name: prometheus
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start prometheus.service
+  listen: _restart_prometheus
+  systemd:
+    name: prometheus
+    state: started
+  become: true
+
+
