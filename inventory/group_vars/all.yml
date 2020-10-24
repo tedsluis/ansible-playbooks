@@ -13,10 +13,10 @@ _all_sshkeys:
   - { key_name: 'id_rsa.pub', key_type: 'authorized_key', key_var: '_id_rsa_pub', owner: 'tedsluis',  group: 'tedsluis' }
 _all_firewall:
   - 22/tcp
+  - 323/udp
 _all_packages:
+  - chrony
   - curl
-  - cronie
-  - cronie-anacron
   - git
   - jq
   - net-tools

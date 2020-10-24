@@ -13,6 +13,7 @@
   - users-and-groups
   - baseline
   - ssh-keys-and-config
+  - chrony
   - firewall
   - role: nfsserver
     when: "'nfsserver' in group_names"
