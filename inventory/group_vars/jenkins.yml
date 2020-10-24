@@ -9,4 +9,13 @@ _jenkins_users:
 _jenkins_packages:
   - podman
 _jenkins_image_tag: 2.250-alpine-arm64
+_jenkins_plugins:
+  - cloudbees-folder:latest
+  - credentials-binding:latest
+  - gradle:latest
+  - mailer:latest
+  - pipeline-stage-view:latest
+  - timestamper:latest
+  - ws-cleanup:latest
+
 

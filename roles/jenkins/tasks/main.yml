@@ -12,9 +12,11 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/jenkins"      ,owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
-    - { directory: "/var/lib/jenkins/data" ,owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
-    - { directory: "/var/lib/jenkins/certs",owner: "jenkins" ,group: "jenkins" ,mode: "0775" }
+    - { directory: "/root/jenkins"                       ,owner: "root"    ,group: "root"    ,mode: "0775" }
+    - { directory: "/var/lib/jenkins"                    ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/data"               ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/data/init.groovy.d" ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/certs"              ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
 
 - name: "pull docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}} image"
   shell: |
@@ -25,6 +27,39 @@
 - debug:
     var: _image_pull
 
+- name: copy files to /root/jenkins/ for podman build 
+  template:
+    src: "{{item}}.j2"
+    dest: "/root/jenkins/{{item}}"
+    owner: jenkins
+    group: jenkins
+    mode: 0664
+  become: true
+  with_items:
+    - Dockerfile
+    - plugins.txt
+  notify: _restart_jenkins
+
+- name: build jenkins image
+  shell: |
+    cd /root/jenkins
+    podman build -t jenkins:{{_jenkins_image_tag}} -f /root/jenkins/Dockerfile
+  become: true
+  register: _build
+  failed_when: 
+    - _build.rc != 0
+    - "'MODULE FAILURE' not in _build.stderr"
+  
+- name: create /var/lib/jenkins/data/init.groovy.d/user-setup.groovy
+  template:
+    src: user-setup.groovy.j2
+    dest: /var/lib/jenkins/data/init.groovy.d/user-setup.groovy
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_jenkins
+
 - name: create /etc/systemd/system/jenkins.service
   template:
     src: jenkins.service.j2
@@ -32,7 +67,6 @@
     owner: root
     group: root
     mode: 0664
-  register: _service
   become: true
   notify: _restart_jenkins
 

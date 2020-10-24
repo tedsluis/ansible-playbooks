@@ -16,7 +16,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -v /var/lib/jenkins/data:/var/jenkins_home:z \
                               -v /var/lib/jenkins/certs:/certs/client:ro \
                               --restart unless-stopped \
-                              docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
+                              jenkins:{{_jenkins_image_tag}}
 
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
 PIDFile=/%t/%n-pid

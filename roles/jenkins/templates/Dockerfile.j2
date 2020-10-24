@@ -1,0 +1,12 @@
+FROM docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
+
+# install jenkins plugins
+COPY ./plugins.txt /usr/share/jenkins/plugins
+RUN while read i ; \ 
+        do /usr/local/bin/install-plugins.sh $i ; \
+    done < /usr/share/jenkins/plugins
+
+# allows to skip Jenkins setup wizard
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+
+
