@@ -41,6 +41,15 @@
     - plugins.txt
   notify: _restart_jenkins
 
+- name: get image info before build
+  shell: |
+    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/jenkins | grep {{_jenkins_image_tag}}
+  become: true
+  register: _image_info1
+  failed_when:
+    - _image_info1.rc != 0
+    - _image_info1.stdout != ""
+  
 - name: build jenkins image
   shell: |
     cd /root/jenkins
@@ -52,6 +61,20 @@
 - debug:
     var: _build.stdout
  
+- name: get image info after build
+  shell: |
+    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/jenkins | grep {{_jenkins_image_tag}}
+  become: true
+  register: _image_info2
+  failed_when:
+    - _image_info2.rc != 0
+    - _image_info2.stdout != ""
+ 
+- debug:
+    msg: "_image_info1={{_image_info1.stdout}} <> _image_info2={{_image_info2.stdout}}"
+  when: _image_info1.stdout != _image_info2.stdout
+  notify: _restart_jenkins
+
 - name: Fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
   delegate_to: fed143
   run_once: yes
