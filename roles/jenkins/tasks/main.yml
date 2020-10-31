@@ -12,6 +12,7 @@
     state: directory
   become: true
   with_items:
+    - { directory: "/root/tmp"                           ,owner: "root"    ,group: "root"    ,mode: "0775" }
     - { directory: "/root/jenkins"                       ,owner: "root"    ,group: "root"    ,mode: "0775" }
     - { directory: "/var/lib/jenkins"                    ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
     - { directory: "/var/lib/jenkins/data"               ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
@@ -75,12 +76,12 @@
   when: _image_info1.stdout != _image_info2.stdout
   notify: _restart_jenkins
 
-- name: Fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
   delegate_to: fed143
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/tmp/"
+    dest: "/root/tmp/"
     flat: yes
   become: true
   with_items:
@@ -89,7 +90,7 @@
 
 - name: copy keys to /var/lib/jenkins/certs
   copy:
-    src: "/tmp/{{item}}"
+    src: "/root/tmp/{{item}}"
     dest: /var/lib/jenkins/certs
     owner: root
     group: root
