@@ -1,5 +1,14 @@
 ---
 
+- name: create /root/tmp directories for certs
+  file:
+    path: /root/tmp
+    owner: root
+    group: root
+    mode: 0775
+    state: directory
+  become: true
+
 - name: set fact httpd directories
   set_fact:
     _httpd_directories:
@@ -45,10 +54,21 @@
       - { src: 'privkey.pem',   dest: 'server.key' }
       - { src: 'fullchain.pem', dest: 'server.crt' }
 
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: fed143
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/root/tmp/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
 - name: copy /var/lib/httpd-<sitename>/conf/ certificate files
   copy:
-    remote_src: true
-    src: '/var/lib/letsencrypt/keys/letsencrypt/{{item[1].src}}'
+    src: '/root/tmp/{{item[1].src}}'
     dest: '/var/lib/httpd-{{item[0].sitename}}/conf/{{item[1].dest}}'
     owner: httpd
     group: httpd
