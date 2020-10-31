@@ -16,7 +16,8 @@
   register: _open_ports
   failed_when:
     - _open_ports.rc != 0
-    - '"has no attribute" not in _open_ports.stdout'
+    - _open_ports.stdout != ""
+    - _open_ports.stderr != ""
   
 - name: open firewall ports 
   firewalld:
