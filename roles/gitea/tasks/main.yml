@@ -13,10 +13,11 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/gitea",           owner: "git", group: "git", mode: "0775" }
-    - { directory: "/var/lib/gitea/git/.ssh",  owner: "git", group: "git", mode: "0700" }
-    - { directory: "/var/lib/gitea/gitea",     owner: "git", group: "git", mode: "0775" }
-    - { directory: "/var/lib/gitea/gitea/conf",owner: "git", group: "git", mode: "0775" }
+    - { directory: "/root/tmp",                owner: "root", group: "root", mode: "0775" }
+    - { directory: "/var/lib/gitea",           owner: "git",  group: "git",  mode: "0775" }
+    - { directory: "/var/lib/gitea/git/.ssh",  owner: "git",  group: "git",  mode: "0700" }
+    - { directory: "/var/lib/gitea/gitea",     owner: "git",  group: "git",  mode: "0775" }
+    - { directory: "/var/lib/gitea/gitea/conf",owner: "git",  group: "git",  mode: "0775" }
 
 - name: pull gitea & postgress images
   shell: |
@@ -47,11 +48,11 @@
   become: true
   notify: _restart_gitea
 
-- name: Fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
   run_once: yes
   fetch: 
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}" 
-    dest: "/tmp/" 
+    dest: "/root/tmp/" 
     flat: yes
   become: true
   with_items:
@@ -60,7 +61,7 @@
 
 - name: Copy keys to /var/lib/gitea/gitea/conf/
   copy: 
-    src: "/tmp/{{item}}" 
+    src: "/root/tmp/{{item}}" 
     dest: /var/lib/gitea/gitea/conf/
     owner: git
     group: git
