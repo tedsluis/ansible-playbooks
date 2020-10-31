@@ -1,0 +1,10 @@
+_prometheus_image_tag: latest
+_prometheus_firewall:
+  - 9090/tcp
+_prometheus_packages:
+  - podman
+_prometheus_groups:
+  - { group: 'prometheus',gid: '1038' }
+_prometheus_users:
+  - { user: 'prometheus',comment: 'user for prometheus',uid: '1038',groups: 'prometheus',create_home: 'false',shell: '/bin/nologin' }
+
