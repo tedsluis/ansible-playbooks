@@ -27,19 +27,46 @@
     recurse: true
     mode: 0775
 
+- name: create local /root/tmp directory for certs
+  file:
+    path: /tmp/nodeexporter
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: fed143
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/tmp/nodeexporter/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
 - name: place cert
   copy:
-    content: "{{ _node_exporter_crt }}"
+    src: /tmp/nodeexporter/fullchain.pem
     dest: /opt/node_exporter/node_exporter.crt
     owner: "{{ _node_exporter_system_user }}"
     group: "{{ _node_exporter_system_group }}"
+  become: true
 
 - name: place key
   copy:
-    content: "{{_node_exporter_key}}"
+    src: /tmp/nodeexporter/privkey.pem
     dest: /opt/node_exporter/node_exporter.key
     owner: "{{ _node_exporter_system_user }}"
     group: "{{ _node_exporter_system_group }}"
+  become: true
+
+- name: "include ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
 
 - name: create configfile
   copy:
@@ -49,7 +76,7 @@
         cert_file: /opt/node_exporter/node_exporter.crt
         key_file: /opt/node_exporter/node_exporter.key
       basic_auth_users:
-        prometheus: $2y$10$Sgyol71hJwUiY3oCv6m0guqrQ/2ZIWuYeWNpl59OOR6i0vWrt8wP2
+        prometheus: "{{ _node_exporter_auth_pass_bcrypt_hashed }}"
     dest: /opt/node_exporter/web.yml
     owner: "{{ _node_exporter_system_user }}"
     group: "{{ _node_exporter_system_group }}"

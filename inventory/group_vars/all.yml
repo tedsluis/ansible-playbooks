@@ -39,6 +39,7 @@ _wants_ansible: false
 _wants_crontab: true
 _wants_dnsmasq: true
 _wants_git: false
+_want_prometheus_scraping: true
 _wants_sshagent: false
 # stored in 'group_vars/vault.yaml':
 #emailpassword: 

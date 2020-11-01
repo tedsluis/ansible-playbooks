@@ -42,34 +42,5 @@
     - node_exporter_run
   when: _config.changed
 
-- name: Open port
-  firewalld:
-    port: "{{node_exporter_port}}/tcp"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  ignore_errors: true
-
-- name: set_fact for environment ns
-  set_fact:
-    _delegate_host: dsootansible01.cp.donna.ns.nl
-    _openshift: https://portal.cp.donna.ns.nl:443
-  when: inventory_hostname is search('ns.nl')
-
-- name: set_fact for environment prorail
-  set_fact:
-    _delegate_host: dsoapansible01.cp.donna.prorail.nl
-    _openshift: https://portal.cp.donna.prorail.nl:443
-  when: inventory_hostname is search('dsoap|dsoprd') 
-
-- name: set_fact for environment prorail uitwijk
-  set_fact:
-    _delegate_host: dsoapansible01.cp.donna.prorail.nl
-    _openshift: https://portal.cp2.donna.prorail.nl:443
-  when: inventory_hostname is search('dsouit')
-
 - include_role:
-    name: roledonna-scrapeconfig
-  vars:
-    _delegateHost: "{{_delegate_host}}"
-    _OShift: "{{_openshift}}"
+    name: scrapeconfig

@@ -1,0 +1,45 @@
+---
+
+- name: run prometheus rule updater
+  block:
+  - name: getnodes
+    set_fact:
+      _groupNodes: "{{ groups[item] }}"
+    delegate_to: localhost
+    loop: "{{ _group }}"
+    register: _loop
+    when: _group is defined
+
+  - set_fact:
+      _nodeexporternodes: "{{ _nodeexporternodes + item.ansible_facts._groupNodes }}"
+    loop: "{{ _loop.results }}"
+    when: _group is defined
+
+  - name: create nodes list
+    set_fact:
+      _nodes: []
+
+  - name: get nodes
+    set_fact:
+      _nodes: "{{ _nodes + [hostvars[item]._hostname] | unique }}"
+    loop: "{{ groups['all'] }}"
+    when: 
+      - hostvars[item]._want_prometheus_scraping is defined
+      - hostvars[item]._want_prometheus_scraping == true
+
+  - set_fact:
+      _nodeexporternodes: "{{ _nodeexporternodes + _nodes }}"
+      
+  - name: copy the scrape config to prometheus scrape target directory
+    template:
+      src: scrape_configs.yml.j2
+      dest: /var/lib/prometheus/config/targets/scrape_configs.yml
+      owner: prometheus
+      group: prometheus
+      mode: 664
+    tags: scrapers
+    become: true
+    delegate_to: fed160
+    run_once: true
+
+

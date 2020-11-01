@@ -1,0 +1,3 @@
+_nodeexporter_firewall:
+  - 9100/tcp
+

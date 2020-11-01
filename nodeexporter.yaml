@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+
+- name: nodeexporter
+
+  hosts:
+    - fed160,fed159,fed157,fed149,fed143
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    #- packages
+    #- users-and-groups
+  - firewall
+  - role: nodeexporter
+    when: "'nodeexporter' in group_names"
+
