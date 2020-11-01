@@ -28,22 +28,13 @@ scrape_configs:
     static_configs:
     - targets: ['localhost:9090']
 
-  # - job_name: node-exporters
-  #   scrape_interval: 5s
-  #   scrape_timeout: 5s
-  #   metrics_path: /metrics
-  #   scheme: http 
-  #   file_sd_configs:
-  #     - files:
-  #       - /etc/prometheus/targets/*.yml
-
   - job_name: node_exporters_https
     scheme: https
     basic_auth:
       username: prometheus
       password: "{{ _node_exporter_auth_pass }}"
     tls_config:
-      ca_file: /prometheus/node_exporter.crt
+      ca_file: /etc/ssl/certs/ca-certificates.crt
       insecure_skip_verify: true
     file_sd_configs:
       - files:

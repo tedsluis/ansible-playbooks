@@ -3,7 +3,7 @@
 - name: provision
 
   hosts:
-    - fed143,fed149
+    - fed143,fed149,fed160,fed159,fed157
 
   vars:
     ansible_user: ansible

@@ -12,8 +12,11 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/prometheus"      ,owner: "prometheus" ,group: "prometheus" ,mode: "0775" }
-    - { directory: "/var/lib/prometheus/config" ,owner: "prometheus" ,group: "prometheus" ,mode: "0775" }
+    - { directory: "/var/lib/prometheus"                       ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
+    - { directory: "/var/lib/prometheus/config"                ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
+    - { directory: "/var/lib/prometheus/config/rules"          ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
+    - { directory: "/var/lib/prometheus/config/targets"        ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
+    - { directory: "/var/lib/prometheus/config/targetsPostgres",owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
 
 - name: "pull docker.io/prom/prometheus:{{_prometheus_image_tag}} image"
   shell: |
