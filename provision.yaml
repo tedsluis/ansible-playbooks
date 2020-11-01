@@ -33,4 +33,8 @@
     when: "'postgres' in group_names"
   - role: gitea
     when: "'gitea' in group_names"
+  - role: nodeexporter
+    when: "'nodeexporter' in group_names"
+  - role: prometheus
+    when: "'prometheus' in group_names"
 
