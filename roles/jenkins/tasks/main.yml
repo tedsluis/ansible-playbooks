@@ -3,6 +3,16 @@
 - name: "include ansible secrets to get duckdns token"
   include_vars: inventory/group_vars/vault.yaml
 
+- name: create local /tmp/jenkins directory for certs
+  file:
+    path: /tmp/jenkins
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
 - name: create jenkins directories
   file:
     path: "{{item.directory}}"
@@ -12,7 +22,6 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/root/tmp"                           ,owner: "root"    ,group: "root"    ,mode: "0775" }
     - { directory: "/root/jenkins"                       ,owner: "root"    ,group: "root"    ,mode: "0775" }
     - { directory: "/var/lib/jenkins"                    ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
     - { directory: "/var/lib/jenkins/data"               ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
@@ -81,7 +90,7 @@
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/root/tmp/"
+    dest: "/tmp/jenkins"
     flat: yes
   become: true
   with_items:
@@ -90,7 +99,7 @@
 
 - name: copy keys to /var/lib/jenkins/certs
   copy:
-    src: "/root/tmp/{{item}}"
+    src: "/tmp/jenkins/{{item}}"
     dest: /var/lib/jenkins/certs
     owner: root
     group: root
