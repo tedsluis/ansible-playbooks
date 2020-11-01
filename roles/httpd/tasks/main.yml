@@ -1,12 +1,13 @@
 ---
 
-- name: create /root/tmp directories for certs
+- name: create local /tmp/httpd directory for certs
   file:
-    path: /root/tmp
+    path: /tmp/httpd
     owner: root
     group: root
-    mode: 0775
+    mode: 0777
     state: directory
+  delegate_to: localhost
   become: true
 
 - name: set fact httpd directories
@@ -59,7 +60,7 @@
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/root/tmp/"
+    dest: "/tmp/httpd"
     flat: yes
   become: true
   with_items:
@@ -68,7 +69,7 @@
 
 - name: copy /var/lib/httpd-<sitename>/conf/ certificate files
   copy:
-    src: '/root/tmp/{{item[1].src}}'
+    src: '/tmp/httpd/{{item[1].src}}'
     dest: '/var/lib/httpd-{{item[0].sitename}}/conf/{{item[1].dest}}'
     owner: httpd
     group: httpd
