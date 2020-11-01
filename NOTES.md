@@ -2,6 +2,8 @@
 
 ## todo
 
+* set role defaults
+* move secrets from vault to role defaults, group_vars and host_vars
 * prepare boot from usb
 * remove users and groups
 * remove packages
@@ -12,9 +14,6 @@
 * deploy AWX
 * deploy media wiki
 * sync gitea <-> github
-* deploy jenkins host
-* deploy node exporter
-* deploy prometheus
 * deploy grafana
 * deploy syslog
 * deploy nextcload
@@ -22,6 +21,9 @@
 
 ## done
 
+* deploy prometheus
+* deploy node exporter
+* deploy jenkins host
 * configure nfs client
 * deploy nfs server
 * add firewall ports
