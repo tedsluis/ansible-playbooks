@@ -90,7 +90,7 @@
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/tmp/jenkins"
+    dest: "/tmp/jenkins/"
     flat: yes
   become: true
   with_items:

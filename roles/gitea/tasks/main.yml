@@ -61,7 +61,7 @@
   run_once: yes
   fetch: 
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}" 
-    dest: "/tmp/gitea" 
+    dest: "/tmp/gitea/" 
     flat: yes
   become: true
   with_items:
