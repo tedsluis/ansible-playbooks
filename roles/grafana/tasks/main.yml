@@ -15,6 +15,7 @@
     - { directory: "/var/lib/grafana"                             ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
     - { directory: "/var/lib/grafana/etc"                         ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
     - { directory: "/var/lib/grafana/etc/certs"                   ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/dashboards"              ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
     - { directory: "/var/lib/grafana/etc/provisioning"            ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
     - { directory: "/var/lib/grafana/etc/provisioning/dashboards" ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
     - { directory: "/var/lib/grafana/etc/provisioning/datasources",owner: "grafana" ,group: "grafana" ,mode: "0777" }
@@ -82,20 +83,30 @@
   become: true
   notify: _restart_grafana
 
-- name: create /var/lib/grafana/etc/provisioning/dashboards/dashboard.json
+- name: create /var/lib/grafana/etc/dashboards/dashboard.1.json
   copy:
-    src: dashboard.json 
-    dest: /var/lib/grafana/etc/provisioning/dashboards/dashboard.json
+    src: dashboard.1.json 
+    dest: /var/lib/grafana/etc/dashboards/dashboard.1.json
     owner: grafana
     group: grafana
     mode: 0666
   become: true
   notify: _restart_grafana
 
-- name: create /var/lib/grafana/etc/provisioning/datasources/datasource.aa.j2
+- name: create /var/lib/grafana/etc/provisioning/datasources/datasource.aa.yaml
   template:
-    src: datasource.aa.j2
-    dest: /var/lib/grafana/etc/provisioning/datasources/datasource.aa
+    src: datasource.aa.yaml.j2
+    dest: /var/lib/grafana/etc/provisioning/datasources/datasource.aa.yaml
+    owner: grafana
+    group: grafana
+    mode: 0666
+  become: true
+  notify: _restart_grafana
+
+- name: create /var/lib/grafana/etc/provisioning/dashboards/dashboard.1.yaml
+  copy:
+    src: dashboard.1.yaml
+    dest: /var/lib/grafana/etc/provisioning/dashboards/dashboard.1.yaml
     owner: grafana
     group: grafana
     mode: 0666

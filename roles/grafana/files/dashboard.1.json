@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": 405,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1604384301034,
+  "id": 2,
+  "iteration": 1604605926687,
   "links": [],
   "panels": [
     {
@@ -65,14 +65,14 @@
         "x": 6,
         "y": 0
       },
-      "id": 26,
+      "id": 135,
       "maxPerRow": 6,
       "options": {
         "content": "",
         "mode": "html"
       },
       "pluginVersion": "7.3.1",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 11,
       "scopedVars": {
         "node": {
@@ -101,14 +101,14 @@
         "x": 12,
         "y": 0
       },
-      "id": 27,
+      "id": 136,
       "maxPerRow": 6,
       "options": {
         "content": "",
         "mode": "html"
       },
       "pluginVersion": "7.3.1",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 11,
       "scopedVars": {
         "node": {
@@ -137,14 +137,14 @@
         "x": 18,
         "y": 0
       },
-      "id": 28,
+      "id": 137,
       "maxPerRow": 6,
       "options": {
         "content": "",
         "mode": "html"
       },
       "pluginVersion": "7.3.1",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 11,
       "scopedVars": {
         "node": {
@@ -291,7 +291,7 @@
         "x": 6,
         "y": 3
       },
-      "id": 29,
+      "id": 138,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -320,7 +320,7 @@
           "to": "null"
         }
       ],
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 20,
       "scopedVars": {
         "node": {
@@ -394,7 +394,7 @@
         "x": 12,
         "y": 3
       },
-      "id": 30,
+      "id": 139,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -423,7 +423,7 @@
           "to": "null"
         }
       ],
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 20,
       "scopedVars": {
         "node": {
@@ -497,7 +497,7 @@
         "x": 18,
         "y": 3
       },
-      "id": 31,
+      "id": 140,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -526,7 +526,7 @@
           "to": "null"
         }
       ],
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 20,
       "scopedVars": {
         "node": {
@@ -780,7 +780,7 @@
         "y": 6
       },
       "hiddenSeries": false,
-      "id": 32,
+      "id": 141,
       "legend": {
         "alignAsTable": false,
         "avg": false,
@@ -806,7 +806,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 7,
       "scopedVars": {
         "node": {
@@ -968,7 +968,7 @@
         "y": 6
       },
       "hiddenSeries": false,
-      "id": 33,
+      "id": 142,
       "legend": {
         "alignAsTable": false,
         "avg": false,
@@ -994,7 +994,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 7,
       "scopedVars": {
         "node": {
@@ -1156,7 +1156,7 @@
         "y": 6
       },
       "hiddenSeries": false,
-      "id": 34,
+      "id": 143,
       "legend": {
         "alignAsTable": false,
         "avg": false,
@@ -1182,7 +1182,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 7,
       "scopedVars": {
         "node": {
@@ -1320,6 +1320,924 @@
       }
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 3,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 10,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 13
+      },
+      "hiddenSeries": false,
+      "id": 134,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " node_cpu_scaling_frequency_hertz{instance=\"$node\"} -node_cpu_scaling_frequency_min_hertz{instance=\"$node\"} ",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "cpu{{cpu}}",
+          "metric": "",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "custom",
+          "fill": true,
+          "fillColor": "rgba(216, 200, 27, 0.27)",
+          "op": "gt",
+          "value": 0,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Scaling freqency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "GHZ",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 3,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 10,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 13
+      },
+      "hiddenSeries": false,
+      "id": 144,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 134,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " node_cpu_scaling_frequency_hertz{instance=\"$node\"} -node_cpu_scaling_frequency_min_hertz{instance=\"$node\"} ",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "cpu{{cpu}}",
+          "metric": "",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "custom",
+          "fill": true,
+          "fillColor": "rgba(216, 200, 27, 0.27)",
+          "op": "gt",
+          "value": 0,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Scaling freqency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "GHZ",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 3,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 10,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 13
+      },
+      "hiddenSeries": false,
+      "id": 145,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 134,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " node_cpu_scaling_frequency_hertz{instance=\"$node\"} -node_cpu_scaling_frequency_min_hertz{instance=\"$node\"} ",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "cpu{{cpu}}",
+          "metric": "",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "custom",
+          "fill": true,
+          "fillColor": "rgba(216, 200, 27, 0.27)",
+          "op": "gt",
+          "value": 0,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Scaling freqency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "GHZ",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "decimals": 3,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 10,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 13
+      },
+      "hiddenSeries": false,
+      "id": 146,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "hideEmpty": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 134,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " node_cpu_scaling_frequency_hertz{instance=\"$node\"} -node_cpu_scaling_frequency_min_hertz{instance=\"$node\"} ",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "cpu{{cpu}}",
+          "metric": "",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "custom",
+          "fill": true,
+          "fillColor": "rgba(216, 200, 27, 0.27)",
+          "op": "gt",
+          "value": 0,
+          "yaxis": "left"
+        }
+      ],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Scaling freqency",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "GHZ",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 20
+      },
+      "hiddenSeries": false,
+      "id": 130,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_cpu_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "cpu waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure cpu waiting",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 20
+      },
+      "hiddenSeries": false,
+      "id": 147,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 130,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_cpu_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "cpu waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure cpu waiting",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 20
+      },
+      "hiddenSeries": false,
+      "id": 148,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 130,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_cpu_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "cpu waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure cpu waiting",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 20
+      },
+      "hiddenSeries": false,
+      "id": 149,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 130,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_cpu_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "cpu waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure cpu waiting",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
       "aliasColors": {
         "Slab": "#E5A8E2",
         "Swap": "#E24D42"
@@ -1344,7 +2262,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 13
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 17,
@@ -1573,10 +2491,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 13
+        "y": 26
       },
       "hiddenSeries": false,
-      "id": 35,
+      "id": 150,
       "legend": {
         "avg": false,
         "current": false,
@@ -1599,7 +2517,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 17,
       "scopedVars": {
         "node": {
@@ -1803,10 +2721,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 13
+        "y": 26
       },
       "hiddenSeries": false,
-      "id": 36,
+      "id": 151,
       "legend": {
         "avg": false,
         "current": false,
@@ -1829,7 +2747,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 17,
       "scopedVars": {
         "node": {
@@ -2033,10 +2951,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 13
+        "y": 26
       },
       "hiddenSeries": false,
-      "id": 37,
+      "id": 152,
       "legend": {
         "avg": false,
         "current": false,
@@ -2059,7 +2977,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 17,
       "scopedVars": {
         "node": {
@@ -2259,7 +3177,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 20
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 13,
@@ -2370,10 +3288,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 20
+        "y": 33
       },
       "hiddenSeries": false,
-      "id": 38,
+      "id": 153,
       "legend": {
         "avg": false,
         "current": false,
@@ -2396,7 +3314,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 13,
       "scopedVars": {
         "node": {
@@ -2482,10 +3400,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 20
+        "y": 33
       },
       "hiddenSeries": false,
-      "id": 39,
+      "id": 154,
       "legend": {
         "avg": false,
         "current": false,
@@ -2508,7 +3426,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 13,
       "scopedVars": {
         "node": {
@@ -2594,10 +3512,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 20
+        "y": 33
       },
       "hiddenSeries": false,
-      "id": 40,
+      "id": 155,
       "legend": {
         "avg": false,
         "current": false,
@@ -2620,7 +3538,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 13,
       "scopedVars": {
         "node": {
@@ -2707,7 +3625,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 27
+        "y": 40
       },
       "hiddenSeries": false,
       "id": 9,
@@ -2819,10 +3737,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 27
+        "y": 40
       },
       "hiddenSeries": false,
-      "id": 41,
+      "id": 156,
       "legend": {
         "avg": false,
         "current": false,
@@ -2845,7 +3763,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 9,
       "scopedVars": {
         "node": {
@@ -2932,10 +3850,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 27
+        "y": 40
       },
       "hiddenSeries": false,
-      "id": 42,
+      "id": 157,
       "legend": {
         "avg": false,
         "current": false,
@@ -2958,7 +3876,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 9,
       "scopedVars": {
         "node": {
@@ -3045,10 +3963,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 27
+        "y": 40
       },
       "hiddenSeries": false,
-      "id": 43,
+      "id": 158,
       "legend": {
         "avg": false,
         "current": false,
@@ -3071,7 +3989,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 9,
       "scopedVars": {
         "node": {
@@ -3157,7 +4075,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 34
+        "y": 47
       },
       "hiddenSeries": false,
       "id": 19,
@@ -3268,10 +4186,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 34
+        "y": 47
       },
       "hiddenSeries": false,
-      "id": 44,
+      "id": 159,
       "legend": {
         "avg": false,
         "current": false,
@@ -3294,7 +4212,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 19,
       "scopedVars": {
         "node": {
@@ -3380,10 +4298,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 34
+        "y": 47
       },
       "hiddenSeries": false,
-      "id": 45,
+      "id": 160,
       "legend": {
         "avg": false,
         "current": false,
@@ -3406,7 +4324,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 19,
       "scopedVars": {
         "node": {
@@ -3492,10 +4410,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 34
+        "y": 47
       },
       "hiddenSeries": false,
-      "id": 46,
+      "id": 161,
       "legend": {
         "avg": false,
         "current": false,
@@ -3518,7 +4436,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 19,
       "scopedVars": {
         "node": {
@@ -3604,7 +4522,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 41
+        "y": 54
       },
       "hiddenSeries": false,
       "id": 14,
@@ -3729,10 +4647,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 41
+        "y": 54
       },
       "hiddenSeries": false,
-      "id": 47,
+      "id": 162,
       "legend": {
         "avg": false,
         "current": false,
@@ -3755,7 +4673,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 14,
       "scopedVars": {
         "node": {
@@ -3855,10 +4773,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 41
+        "y": 54
       },
       "hiddenSeries": false,
-      "id": 48,
+      "id": 163,
       "legend": {
         "avg": false,
         "current": false,
@@ -3881,7 +4799,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 14,
       "scopedVars": {
         "node": {
@@ -3981,10 +4899,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 41
+        "y": 54
       },
       "hiddenSeries": false,
-      "id": 49,
+      "id": 164,
       "legend": {
         "avg": false,
         "current": false,
@@ -4007,7 +4925,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 14,
       "scopedVars": {
         "node": {
@@ -4107,7 +5025,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 48
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 18,
@@ -4232,10 +5150,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 48
+        "y": 61
       },
       "hiddenSeries": false,
-      "id": 50,
+      "id": 165,
       "legend": {
         "avg": false,
         "current": false,
@@ -4258,7 +5176,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 18,
       "scopedVars": {
         "node": {
@@ -4358,10 +5276,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 48
+        "y": 61
       },
       "hiddenSeries": false,
-      "id": 51,
+      "id": 166,
       "legend": {
         "avg": false,
         "current": false,
@@ -4384,7 +5302,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 18,
       "scopedVars": {
         "node": {
@@ -4484,10 +5402,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 48
+        "y": 61
       },
       "hiddenSeries": false,
-      "id": 52,
+      "id": 167,
       "legend": {
         "avg": false,
         "current": false,
@@ -4510,7 +5428,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 18,
       "scopedVars": {
         "node": {
@@ -4610,7 +5528,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 55
+        "y": 68
       },
       "hiddenSeries": false,
       "id": 25,
@@ -4721,10 +5639,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 55
+        "y": 68
       },
       "hiddenSeries": false,
-      "id": 53,
+      "id": 168,
       "legend": {
         "avg": false,
         "current": false,
@@ -4747,7 +5665,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 25,
       "scopedVars": {
         "node": {
@@ -4833,10 +5751,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 55
+        "y": 68
       },
       "hiddenSeries": false,
-      "id": 54,
+      "id": 169,
       "legend": {
         "avg": false,
         "current": false,
@@ -4859,7 +5777,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 25,
       "scopedVars": {
         "node": {
@@ -4945,10 +5863,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 55
+        "y": 68
       },
       "hiddenSeries": false,
-      "id": 55,
+      "id": 170,
       "legend": {
         "avg": false,
         "current": false,
@@ -4971,7 +5889,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 25,
       "scopedVars": {
         "node": {
@@ -5042,6 +5960,836 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 75
+      },
+      "hiddenSeries": false,
+      "id": 132,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_io_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "io waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure IO waiting seconds",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 75
+      },
+      "hiddenSeries": false,
+      "id": 171,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 132,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_io_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "io waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure IO waiting seconds",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 75
+      },
+      "hiddenSeries": false,
+      "id": 172,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 132,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_io_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "io waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure IO waiting seconds",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 75
+      },
+      "hiddenSeries": false,
+      "id": 173,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 132,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_pressure_io_waiting_seconds_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "io waiting seconds",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Node pressure IO waiting seconds",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "sec",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 82
+      },
+      "hiddenSeries": false,
+      "id": 77,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " irate(node_nfs_rpcs_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "rpcs",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "NFS rpcs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 82
+      },
+      "hiddenSeries": false,
+      "id": 174,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 77,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " irate(node_nfs_rpcs_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "rpcs",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "NFS rpcs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 82
+      },
+      "hiddenSeries": false,
+      "id": 175,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 77,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " irate(node_nfs_rpcs_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "rpcs",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "NFS rpcs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 82
+      },
+      "hiddenSeries": false,
+      "id": 176,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 77,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": " irate(node_nfs_rpcs_total{instance=~'$node'}[5m])",
+          "interval": "",
+          "legendFormat": "rpcs",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "NFS rpcs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
       "editable": true,
       "error": false,
       "fieldConfig": {
@@ -5057,7 +6805,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 62
+        "y": 89
       },
       "hiddenSeries": false,
       "id": 22,
@@ -5168,10 +6916,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 62
+        "y": 89
       },
       "hiddenSeries": false,
-      "id": 56,
+      "id": 177,
       "legend": {
         "avg": false,
         "current": false,
@@ -5194,7 +6942,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 22,
       "scopedVars": {
         "node": {
@@ -5280,10 +7028,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 62
+        "y": 89
       },
       "hiddenSeries": false,
-      "id": 57,
+      "id": 178,
       "legend": {
         "avg": false,
         "current": false,
@@ -5306,7 +7054,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 22,
       "scopedVars": {
         "node": {
@@ -5392,10 +7140,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 62
+        "y": 89
       },
       "hiddenSeries": false,
-      "id": 58,
+      "id": 179,
       "legend": {
         "avg": false,
         "current": false,
@@ -5418,7 +7166,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 22,
       "scopedVars": {
         "node": {
@@ -5504,7 +7252,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 69
+        "y": 96
       },
       "hiddenSeries": false,
       "id": 12,
@@ -5629,10 +7377,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 69
+        "y": 96
       },
       "hiddenSeries": false,
-      "id": 59,
+      "id": 180,
       "legend": {
         "avg": false,
         "current": false,
@@ -5655,7 +7403,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 12,
       "scopedVars": {
         "node": {
@@ -5755,10 +7503,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 69
+        "y": 96
       },
       "hiddenSeries": false,
-      "id": 60,
+      "id": 181,
       "legend": {
         "avg": false,
         "current": false,
@@ -5781,7 +7529,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 12,
       "scopedVars": {
         "node": {
@@ -5881,10 +7629,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 69
+        "y": 96
       },
       "hiddenSeries": false,
-      "id": 61,
+      "id": 182,
       "legend": {
         "avg": false,
         "current": false,
@@ -5907,7 +7655,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 12,
       "scopedVars": {
         "node": {
@@ -6007,7 +7755,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 76
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 21,
@@ -6116,10 +7864,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 76
+        "y": 103
       },
       "hiddenSeries": false,
-      "id": 62,
+      "id": 183,
       "legend": {
         "avg": false,
         "current": false,
@@ -6142,7 +7890,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 21,
       "scopedVars": {
         "node": {
@@ -6226,10 +7974,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 76
+        "y": 103
       },
       "hiddenSeries": false,
-      "id": 63,
+      "id": 184,
       "legend": {
         "avg": false,
         "current": false,
@@ -6252,7 +8000,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 21,
       "scopedVars": {
         "node": {
@@ -6336,10 +8084,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 76
+        "y": 103
       },
       "hiddenSeries": false,
-      "id": 64,
+      "id": 185,
       "legend": {
         "avg": false,
         "current": false,
@@ -6362,7 +8110,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 21,
       "scopedVars": {
         "node": {
@@ -6446,7 +8194,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 83
+        "y": 110
       },
       "hiddenSeries": false,
       "id": 23,
@@ -6586,10 +8334,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 83
+        "y": 110
       },
       "hiddenSeries": false,
-      "id": 65,
+      "id": 186,
       "legend": {
         "avg": false,
         "current": false,
@@ -6612,7 +8360,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 23,
       "scopedVars": {
         "node": {
@@ -6727,10 +8475,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 83
+        "y": 110
       },
       "hiddenSeries": false,
-      "id": 66,
+      "id": 187,
       "legend": {
         "avg": false,
         "current": false,
@@ -6753,7 +8501,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 23,
       "scopedVars": {
         "node": {
@@ -6868,10 +8616,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 83
+        "y": 110
       },
       "hiddenSeries": false,
-      "id": 67,
+      "id": 188,
       "legend": {
         "avg": false,
         "current": false,
@@ -6894,7 +8642,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 23,
       "scopedVars": {
         "node": {
@@ -7009,7 +8757,630 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 90
+        "y": 117
+      },
+      "hiddenSeries": false,
+      "id": 133,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/.*Out.*/",
+          "transform": "negative-Y"
+        },
+        {
+          "alias": "Udp_NoPorts",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_netstat_Tcp_RetransSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_RetransSegs",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_PassiveOpens",
+          "refId": "B",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_OutSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_OutSegs",
+          "refId": "C",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_InSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_InSegs",
+          "refId": "D",
+          "step": 1200
+        },
+        {
+          "expr": "node_netstat_Tcp_CurrEstab{instance=~\"$node\"}",
+          "interval": "",
+          "legendFormat": "Tcp_CurrEstab",
+          "refId": "E"
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "legendFormat": "Tcp_ActiveOpens",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "TCP Stats",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 117
+      },
+      "hiddenSeries": false,
+      "id": 189,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 133,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/.*Out.*/",
+          "transform": "negative-Y"
+        },
+        {
+          "alias": "Udp_NoPorts",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_netstat_Tcp_RetransSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_RetransSegs",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_PassiveOpens",
+          "refId": "B",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_OutSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_OutSegs",
+          "refId": "C",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_InSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_InSegs",
+          "refId": "D",
+          "step": 1200
+        },
+        {
+          "expr": "node_netstat_Tcp_CurrEstab{instance=~\"$node\"}",
+          "interval": "",
+          "legendFormat": "Tcp_CurrEstab",
+          "refId": "E"
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "legendFormat": "Tcp_ActiveOpens",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "TCP Stats",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 117
+      },
+      "hiddenSeries": false,
+      "id": 190,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 133,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/.*Out.*/",
+          "transform": "negative-Y"
+        },
+        {
+          "alias": "Udp_NoPorts",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_netstat_Tcp_RetransSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_RetransSegs",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_PassiveOpens",
+          "refId": "B",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_OutSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_OutSegs",
+          "refId": "C",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_InSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_InSegs",
+          "refId": "D",
+          "step": 1200
+        },
+        {
+          "expr": "node_netstat_Tcp_CurrEstab{instance=~\"$node\"}",
+          "interval": "",
+          "legendFormat": "Tcp_CurrEstab",
+          "refId": "E"
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "legendFormat": "Tcp_ActiveOpens",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "TCP Stats",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 117
+      },
+      "hiddenSeries": false,
+      "id": 191,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "maxPerRow": 6,
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 133,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "/.*Out.*/",
+          "transform": "negative-Y"
+        },
+        {
+          "alias": "Udp_NoPorts",
+          "yaxis": 2
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "irate(node_netstat_Tcp_RetransSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_RetransSegs",
+          "refId": "A",
+          "step": 1200,
+          "target": ""
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_PassiveOpens",
+          "refId": "B",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_OutSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_OutSegs",
+          "refId": "C",
+          "step": 1200
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_InSegs{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "Tcp_InSegs",
+          "refId": "D",
+          "step": 1200
+        },
+        {
+          "expr": "node_netstat_Tcp_CurrEstab{instance=~\"$node\"}",
+          "interval": "",
+          "legendFormat": "Tcp_CurrEstab",
+          "refId": "E"
+        },
+        {
+          "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~\"$node\"}[5m])",
+          "interval": "",
+          "legendFormat": "Tcp_ActiveOpens",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "TCP Stats",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 124
       },
       "hiddenSeries": false,
       "id": 24,
@@ -7118,10 +9489,10 @@
         "h": 7,
         "w": 6,
         "x": 6,
-        "y": 90
+        "y": 124
       },
       "hiddenSeries": false,
-      "id": 68,
+      "id": 192,
       "legend": {
         "avg": false,
         "current": false,
@@ -7144,7 +9515,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 24,
       "scopedVars": {
         "node": {
@@ -7228,10 +9599,10 @@
         "h": 7,
         "w": 6,
         "x": 12,
-        "y": 90
+        "y": 124
       },
       "hiddenSeries": false,
-      "id": 69,
+      "id": 193,
       "legend": {
         "avg": false,
         "current": false,
@@ -7254,7 +9625,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 24,
       "scopedVars": {
         "node": {
@@ -7338,10 +9709,10 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 90
+        "y": 124
       },
       "hiddenSeries": false,
-      "id": 70,
+      "id": 194,
       "legend": {
         "avg": false,
         "current": false,
@@ -7364,7 +9735,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeatIteration": 1604384301034,
+      "repeatIteration": 1604605926687,
       "repeatPanelId": 24,
       "scopedVars": {
         "node": {
@@ -7426,8 +9797,424 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 131
+      },
+      "hiddenSeries": false,
+      "id": 27,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "node",
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed143:9100",
+          "value": "fed143:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "node_hwmon_temp_celsius{instance=~'$node'} ",
+          "interval": "",
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Temperature",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Celsius",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 131
+      },
+      "hiddenSeries": false,
+      "id": 195,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 27,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed149:9100",
+          "value": "fed149:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "node_hwmon_temp_celsius{instance=~'$node'} ",
+          "interval": "",
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Temperature",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Celsius",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 131
+      },
+      "hiddenSeries": false,
+      "id": 196,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 27,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed157:9100",
+          "value": "fed157:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "node_hwmon_temp_celsius{instance=~'$node'} ",
+          "interval": "",
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Temperature",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Celsius",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 131
+      },
+      "hiddenSeries": false,
+      "id": 197,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.1",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1604605926687,
+      "repeatPanelId": 27,
+      "scopedVars": {
+        "node": {
+          "selected": true,
+          "text": "fed160:9100",
+          "value": "fed160:9100"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "node_hwmon_temp_celsius{instance=~'$node'} ",
+          "interval": "",
+          "legendFormat": "{{sensor}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Temperature",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Celsius",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
+  "refresh": false,
   "schemaVersion": 26,
   "style": "dark",
   "tags": [
@@ -7440,6 +10227,7 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
             "fed143:9100",
             "fed149:9100",
@@ -7477,7 +10265,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
