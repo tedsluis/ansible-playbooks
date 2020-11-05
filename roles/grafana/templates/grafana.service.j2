@@ -1,0 +1,28 @@
+[Unit]
+Description=Grafana
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=grafana \
+                              -p 3000:3000 \
+                              -v /var/lib/grafana/etc:/etc/grafana:z \
+                              -v /var/lib/grafana/lib:/var/lib/grafana:z \
+                              --restart unless-stopped \
+                              docker.io/grafana/grafana:{{_grafana_image_tag}}
+                              #-v /var/lib/grafana/usr:/usr/share/grafana:z \
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

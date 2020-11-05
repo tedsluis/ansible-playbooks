@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+
+- name: grafana
+
+  hosts:
+    - fed160
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - users-and-groups
+  - firewall
+  - role: dnsmasq
+    when: _wants_dnsmasq|bool == true
+  - role: grafana
+    when: "'grafana' in group_names"
+

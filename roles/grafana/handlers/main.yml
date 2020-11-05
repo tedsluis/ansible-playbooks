@@ -1,0 +1,25 @@
+---
+
+- name: stop grafana.service
+  listen: _restart_grafana
+  systemd:
+    name: grafana
+    state: stopped
+  become: true
+  
+- name: daemon reload grafana.service
+  listen: _restart_grafana
+  systemd:
+    name: grafana
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start grafana.service
+  listen: _restart_grafana
+  systemd:
+    name: grafana
+    state: started
+  become: true
+
+

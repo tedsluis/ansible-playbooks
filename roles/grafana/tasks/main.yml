@@ -1,0 +1,134 @@
+---
+
+- name: "include ansible secrets to get duckdns token"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create grafana directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/grafana"                             ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc"                         ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/certs"                   ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/provisioning"            ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/provisioning/dashboards" ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/provisioning/datasources",owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/provisioning/notifiers"  ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/etc/provisioning/plugins"    ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/lib"                         ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+    - { directory: "/var/lib/grafana/usr"                         ,owner: "grafana" ,group: "grafana" ,mode: "0777" }
+
+- name: "pull docker.io/grafana/grafana:{{_grafana_image_tag}} image"
+  shell: |
+    podman pull docker.io/grafana/grafana:{{_grafana_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create local /tmp/grafana directory for certs
+  file:
+    path: /tmp/grafana
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: fed143
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/tmp/grafana/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: place cert
+  copy:
+    src: /tmp/grafana/fullchain.pem
+    dest: /var/lib/grafana/etc/certs/fullchain.pem
+    owner: grafana
+    group: grafana
+    mode: 0664
+  become: true
+
+- name: place key
+  copy:
+    src: /tmp/grafana/privkey.pem
+    dest: /var/lib/grafana/etc/certs/privkey.pem
+    owner: grafana
+    group: grafana
+    mode: 0664
+  become: true
+
+- name: create /var/lib/grafana/etc/grafana.ini
+  template:
+    src: grafana.ini.j2
+    dest: /var/lib/grafana/etc/grafana.ini
+    owner: grafana
+    group: grafana
+    mode: 0666
+  become: true
+  notify: _restart_grafana
+
+- name: create /var/lib/grafana/etc/provisioning/dashboards/dashboard.json
+  copy:
+    src: dashboard.json 
+    dest: /var/lib/grafana/etc/provisioning/dashboards/dashboard.json
+    owner: grafana
+    group: grafana
+    mode: 0666
+  become: true
+  notify: _restart_grafana
+
+- name: create /var/lib/grafana/etc/provisioning/datasources/datasource.aa.j2
+  template:
+    src: datasource.aa.j2
+    dest: /var/lib/grafana/etc/provisioning/datasources/datasource.aa
+    owner: grafana
+    group: grafana
+    mode: 0666
+  become: true
+  notify: _restart_grafana
+
+- name: create /etc/systemd/system/grafana.service
+  template:
+    src: grafana.service.j2
+    dest: /etc/systemd/system/grafana.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_grafana
+
+- name: start and enable grafana.service
+  systemd:
+    name: grafana
+    state: started
+    enabled: true
+  become: true
+
+- name: grafana container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=grafana'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+
