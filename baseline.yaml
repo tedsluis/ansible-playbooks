@@ -6,4 +6,7 @@
   vars:
     ansible_user: ansible
   roles:
+  - packages
+  - users-and-groups
+  - firewall
   - baseline

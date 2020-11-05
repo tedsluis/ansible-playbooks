@@ -29,7 +29,7 @@
     mode: 0664
     block: |
       if [[ ! "$TERM" =~ "screen" ]]; then
-           tmux attach -t default || tmux new -s default
+           tmux a  || tmux 
       fi
   when: '"root" not in _home_directory'
 
