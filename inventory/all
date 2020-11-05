@@ -17,6 +17,9 @@ pihole
 [gitea]
 fed143
 
+[grafana]
+fed160
+
 [httpd]
 fed143
 
