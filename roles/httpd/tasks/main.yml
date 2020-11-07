@@ -56,7 +56,7 @@
       - { src: 'fullchain.pem', dest: 'server.crt' }
 
 - name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
-  delegate_to: fed143
+  delegate_to: "{{_letsencrypt_hostname}}"
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
