@@ -9,11 +9,3 @@
     job: "sudo dnf update -y && echo \"finished.\""
   become: true
 
-- name: schedule reboot cronjob every monday 11:30pm.
-  cron:
-    name: "schedule reboot every monay 11:30pm."
-    minute: "30"
-    hour: "23"
-    weekday: "1"
-    job: "sudo /sbin/reboot"
-  become: true
