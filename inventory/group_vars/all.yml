@@ -29,9 +29,21 @@ _etc_vimrc: '/etc/vimrc'
 _domain: bachstraat20.duckdns.org
 _git_username: tedsluis
 _git_mail_address: ted.sluis@gmail.com
+_fqdns:
+  - { ip: '192.168.1.17',    fqdn: 'pihole.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.143',  fqdn: 'git.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.143',  fqdn: 'home.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.149',  fqdn: 'jenkins.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.149',  fqdn: 'nfs.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn: 'prometheus.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn: 'grafana.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn: 'alertmanager.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn: 'blackbox.bachstraat20.duckdns.org' }
 _mail_address: ted.sluis@gmail.com
 _mail_hubhost: smtp.gmail.com
 _mail_hubport: 587
+_prometheus_hostname: fed160
+_letsencrypt_hostname: fed143
 _raspi_configtxt: '/boot/efi/config.txt'
 _timezone: Europe/Amsterdam
 _tls_ca_file: '/etc/ssl/certs/ca-bundle.trust.crt'
