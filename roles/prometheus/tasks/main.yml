@@ -13,6 +13,7 @@
   become: true
   with_items:
     - { directory: "/var/lib/prometheus"                       ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
+    - { directory: "/var/lib/prometheus/data"                  ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
     - { directory: "/var/lib/prometheus/config"                ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
     - { directory: "/var/lib/prometheus/config/rules"          ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
     - { directory: "/var/lib/prometheus/config/targets"        ,owner: "prometheus" ,group: "prometheus" ,mode: "0777" }
