@@ -1,0 +1,66 @@
+---
+
+- name: "include ansible secrets"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create blackbox directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/blackbox"       ,owner: "blackbox" ,group: "blackbox" ,mode: "0777" }
+    - { directory: "/var/lib/blackbox/config",owner: "blackbox" ,group: "blackbox" ,mode: "0777" }
+
+- name: "pull docker.io/prom/blackbox-exporter:{{_blackbox_image_tag}} image"
+  shell: |
+    podman pull docker.io/prom/blackbox-exporter:{{_blackbox_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /var/lib/blackbox/config/blackbox.yml
+  template:
+    src: blackbox.yml.j2
+    dest: /var/lib/blackbox/config/blackbox.yml
+    owner: blackbox
+    group: blackbox
+    mode: 0664
+  become: true
+  notify: _restart_blackbox
+
+- name: create /etc/systemd/system/blackbox.service
+  template:
+    src: blackbox.service.j2
+    dest: /etc/systemd/system/blackbox.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_blackbox
+
+- name: start and enable blackbox.service
+  systemd:
+    name: blackbox
+    state: started
+    enabled: true
+  become: true
+
+- name: blackbox container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=blackbox'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

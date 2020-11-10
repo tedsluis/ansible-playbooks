@@ -1,0 +1,25 @@
+---
+
+- name: stop blackbox.service
+  listen: _restart_blackbox
+  systemd:
+    name: blackbox
+    state: stopped
+  become: true
+  
+- name: daemon reload blackbox.service
+  listen: _restart_blackbox
+  systemd:
+    name: blackbox
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start blackbox.service
+  listen: _restart_blackbox
+  systemd:
+    name: blackbox
+    state: started
+  become: true
+
+

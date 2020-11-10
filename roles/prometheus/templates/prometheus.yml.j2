@@ -51,7 +51,7 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-{% for target in _blackbox_targets %}
+{% for target in _blackbox_http_2xx_targets %}
          - "{{ target }}"
 {% endfor %}
     relabel_configs:
@@ -60,5 +60,22 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: 127.0.0.1:9115
+        replacement: {{_blackbox_hostname}}:9115
+
+  - job_name: 'blackbox-nodeexporter-200'
+    metrics_path: /probe
+    params:
+      module: [http_nodeexporter_2xx]
+    static_configs:
+      - targets:
+{% for target in _blackbox_http_nodeexporter_2xx_targets %}
+         - "{{ target }}"
+{% endfor %}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{_blackbox_hostname}}:9115
 

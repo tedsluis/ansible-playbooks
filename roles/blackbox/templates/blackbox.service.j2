@@ -1,0 +1,27 @@
+[Unit]
+Description=Blackbox
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=blackbox \
+                              -p 9115:9115 \
+                              -v /var/lib/blackbox/config/blackbox.yml:/config/blackbox.yml:z \
+                              --restart unless-stopped \
+                              docker.io/prom/blackbox-exporter:{{_blackbox_image_tag}} \
+                              --config.file=/config/blackbox.yml
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

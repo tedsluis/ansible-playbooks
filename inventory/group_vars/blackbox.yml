@@ -1,16 +1,14 @@
-_prometheus_image_tag: latest
-_prometheus_firewall:
-  - 9090/tcp
-_prometheus_packages:
+_blackbox_image_tag: latest
+_blackbox_firewall:
+  - 9115/tcp
+_blackbox_packages:
   - podman
-_prometheus_groups:
-  - { group: 'prometheus',gid: '1038' }
-_prometheus_users:
-  - { user: 'prometheus',comment: 'user for prometheus',uid: '1038',groups: 'prometheus',create_home: 'false',shell: '/bin/nologin' }
-_prometheus_url: prometheus.bachstraat20.duckdns.org
+_blackbox_groups:
+  - { group: 'blackbox',gid: '1040' }
 _blackbox_http_2xx_targets:
   - https://git.bachstraat20.duckdns.org:3000
   - https://grafana.bachstraat20.duckdns.org:3000
+  - https://jenkins.bachstraat20.duckdns.org:8443
   - https://home.bachstraat20.duckdns.org:30443
   - https://home.bachstraat20.duckdns.org:31433
   - http://alertmanager.bachstraat20.duckdns.org:9093
@@ -28,6 +26,8 @@ _blackbox_http_nodeexporter_2xx_targets:
   - https://fed157.bachstraat20.duckdns.org:9100
   - https://fed159.bachstraat20.duckdns.org:9100
   - https://fed160.bachstraat20.duckdns.org:9100
-_blackbox_http_jebnkins_2xx_targets:
-  - https://jenkins.bachstraat20.duckdns.org:8443
+_blackbox_users:
+  - { user: 'blackbox',comment: 'user for blackbox',uid: '1040',groups: 'blackbox',create_home: 'false',shell: '/bin/nologin' }
+_blackbox_url: blackbox.bachstraat20.duckdns.org
+
 
