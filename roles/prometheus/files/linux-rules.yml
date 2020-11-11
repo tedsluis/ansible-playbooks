@@ -1,0 +1,53 @@
+groups:
+    - name: linux-server.rules
+      rules:
+      - alert: chronySync
+        annotations:
+          description: Chrony not in sync
+          summary: Chrony not in sync
+        expr: node_timex_sync_status{job="node-exporters"} == 0
+        for: 1m
+        labels:
+          severity: warning
+      - alert: nodeDown
+        annotations:
+          description: Node is down
+          summary: Node is down
+        expr: up==0
+        for: 1m
+        labels:
+          severity: critical
+      - alert: daemonFailed
+        annotations:
+          description: A systemd daemon failed
+          summary: A systemd daemon failed
+        expr: node_systemd_unit_state{state="failed"} == 1
+        for: 1m
+        labels:
+          severity: critical
+      - alert: diskMoreThen95%Full
+        annotations:
+          description: A disk is filling up, more then 95% used
+          summary: A disk is filling up, more then 95% used
+        expr: 100 - ((node_filesystem_avail_bytes{device!="tmpfs"} * 100) / node_filesystem_size_bytes{device!="tmpfs"}) >= 95
+        for: 1m
+        labels:
+          severity: critical
+      - alert: cpu100%Usage
+        annotations:
+          description: 100% CPU usage
+          summary: 100% CPU usage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) == 100
+        for: 5m
+        labels:
+          severity: warning
+      - alert: swapUsageAbove50%
+        expr: |
+          (node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes * 100 > 50
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          description: 'Instance {{ $labels.instance }} of job {{ $labels.job }} has swap usage above 50% (current value: {{ printf "%.2f" $value }}%) for over 1 hour'
+          summary: 'Swap usage above 50%'
+  

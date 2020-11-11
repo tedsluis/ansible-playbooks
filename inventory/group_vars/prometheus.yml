@@ -23,6 +23,8 @@ _blackbox_http_2xx_targets:
   - http://192.168.11.200
   - http://192.168.11.201
 _blackbox_http_nodeexporter_2xx_targets:
+  - https://fed127.bachstraat20.duckdns.org:9100
+  - https://fed130.bachstraat20.duckdns.org:9100
   - https://fed143.bachstraat20.duckdns.org:9100
   - https://fed149.bachstraat20.duckdns.org:9100
   - https://fed157.bachstraat20.duckdns.org:9100

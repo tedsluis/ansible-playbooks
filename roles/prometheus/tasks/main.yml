@@ -29,6 +29,16 @@
 - debug:
     var: _image_pull
 
+- name: create /var/lib/prometheus/config/rules/linux-rules.yml
+  copy:
+    src: linux-rules.yml
+    dest: /var/lib/prometheus/config/rules/linux-rules.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0664
+  become: true
+  notify: _restart_prometheus
+
 - name: create /var/lib/prometheus/config/prometheus.yml
   template:
     src: prometheus.yml.j2
@@ -57,6 +67,13 @@
     enabled: true
   become: true
 
+- name: create prometheus directories
+  file:
+    path: "/var/lib/prometheus"
+    mode: "0777"
+    recurse: true
+  become: true
+ 
 - name: prometheus container state
   shell: |
     podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=prometheus'
