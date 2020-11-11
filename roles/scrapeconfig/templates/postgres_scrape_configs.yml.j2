@@ -1,0 +1,9 @@
+[
+  {
+    "targets": [ {% for host in _postgres_nodes %}{% if loop.last %}"{{ host }}:9187"{% else %}"{{ host }}:9187",{% endif %}{% endfor %} ],
+    "labels": {
+      "database": "postgres"
+    }
+  }
+]
+

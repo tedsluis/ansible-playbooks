@@ -39,7 +39,27 @@
       mode: 664
     tags: scrapers
     become: true
-    delegate_to: fed160
+    delegate_to: "{{_prometheus_hostname}}"
+    run_once: true
+
+  - name: get postgress nodes
+    set_fact:
+      _postgres_nodes: "{{ _postgres_nodes + [hostvars[item]._hostname] | unique }}"
+    loop: "{{ groups['postgres'] }}"
+    when: 
+      - hostvars[item]._want_prometheus_scraping is defined
+      - hostvars[item]._want_prometheus_scraping == true
+
+  - name: copy the postgres scrape config to prometheus scrape target directory
+    template:
+      src: scrape_configs.yml.j2
+      dest: /var/lib/prometheus/config/targets/postgres_scrape_configs.yml
+      owner: prometheus
+      group: prometheus
+      mode: 664
+    tags: scrapers
+    become: true
+    delegate_to: "{{_prometheus_hostname}}"
     run_once: true
 
 
