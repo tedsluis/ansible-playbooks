@@ -1,0 +1,10 @@
+_alertmanager_image_tag: latest
+_alertmanager_firewall:
+  - 9093/tcp
+_alertmanager_packages:
+  - podman
+_alertmanager_groups:
+  - { group: 'alertmanager',gid: '1041' }
+_alertmanager_users:
+  - { user: 'alertmanager',comment: 'user for alertmanager',uid: '1041',groups: 'alertmanager',create_home: 'false',shell: '/bin/nologin' }
+_alertmanager_url: alertmanager.bachstraat20.duckdns.org

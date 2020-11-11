@@ -1,0 +1,25 @@
+---
+
+- name: stop alertmanager.service
+  listen: _restart_alertmanager
+  systemd:
+    name: alertmanager
+    state: stopped
+  become: true
+  
+- name: daemon reload alertmanager.service
+  listen: _restart_alertmanager
+  systemd:
+    name: alertmanager
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start alertmanager.service
+  listen: _restart_alertmanager
+  systemd:
+    name: alertmanager
+    state: started
+  become: true
+
+

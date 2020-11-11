@@ -1,0 +1,29 @@
+[Unit]
+Description=Alertmanager
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=alertmanager \
+                              -p 9093:9093 \
+                              -v /var/lib/alertmanager/config:/etc/alertmanager:z \
+                              -v /var/lib/alertmanager/data:/alertmanager:z \
+                              --restart unless-stopped \
+                              docker.io/prom/alertmanager:{{_alertmanager_image_tag}} \
+                                 --config.file=/etc/alertmanager/alertmanager.yml \
+                                 --storage.path=/alertmanager
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+
