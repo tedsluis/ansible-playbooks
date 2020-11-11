@@ -12,6 +12,8 @@ prometheus
 nfsserver
 
 [all]
+fed127
+fed130
 fed143
 fed149
 fed157
@@ -41,6 +43,8 @@ fed149
 fed143
 
 [nfsclient]
+fed127
+fed130
 fed143
 fed149
 fed157
@@ -51,11 +55,13 @@ fed160
 fed149
 
 [nodeexporter]
-fed160
-fed159
-fed157
-fed149
+fed127
+fed130
 fed143
+fed149
+fed157
+fed159
+fed160
 
 [pihole]
 pihole
