@@ -8,4 +8,5 @@
     weekday: "1"
     job: "sudo dnf update -y && echo \"finished.\""
   become: true
+  when: false
 
