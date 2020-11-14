@@ -11,8 +11,9 @@
     group: root
     mode: 0777
   with_items:
-    - /home/pi/etc-pihole
-    - /home/pi/etc-dnsmasq.d
+    - /var/lib/pihole
+    - /var/lib/pihole/etc-pihole
+    - /var/lib/pihole/etc-dnsmasq.d
   become: true
 
 - name: create pihole unit

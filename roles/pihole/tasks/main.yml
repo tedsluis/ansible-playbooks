@@ -1,5 +1,16 @@
 ---
 
+- name: get systemd-resolved status
+  shell: |
+    sudo systemctl status systemd-resolved
+  become: true
+  register: _systemd_resolved
+  failed_when: false
+
+- include: prepair-for-systemd-resolved.yml
+  when: '"running" in _systemd_resolved.stdout' 
+  tags: systemd-resolved
+
 - include: network.yml
   tags: network
 

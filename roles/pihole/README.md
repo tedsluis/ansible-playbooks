@@ -1,7 +1,9 @@
 # Pihole
 
 ## description
-Deploys piphole
+Deploys pihole
+
+note: when systemd-resolved is running (fedora 33+), it will be disabled.
 
 ## documentation
 
@@ -22,4 +24,5 @@ Deploys piphole
 | _pihole_image_version: latest     | inventory/group_vars/pihole.yml      | pihole image version                    |
 | _pihole_image_name: pihole/pihole | inventory/group_vars/pihole.yml      | image name                              |
 | _pihole_image_repo: docker.io     | inventory/group_vars/pihole.yml      | registry                                |
+| _pihole_password                  | inventory/group_vars/vault.yml       | admin password pihole                   |
 

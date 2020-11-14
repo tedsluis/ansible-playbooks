@@ -1,5 +1,5 @@
 ---
-pihole_image_version: latest
-pihole_image_name: pihole/pihole
-pihole_image_repo: docker.io
+_pihole_image_version: latest
+_pihole_image_name: pihole/pihole
+_pihole_image_repo: docker.io
 
