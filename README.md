@@ -3,7 +3,7 @@
 ## Scope
 
 * raspberry 2b, 3b, 3b+, 4b-4gb, 4b-8gb
-* fedora 32
+* fedora 32,32
 * ansible & ansible-vault
 
 

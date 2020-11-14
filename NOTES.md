@@ -2,6 +2,8 @@
 
 ## todo
 
+* configure locale dns pihole
+* alertmanager with slack
 * set role defaults
 * move secrets from vault to role defaults, group_vars and host_vars
 * prepare boot from usb
@@ -21,6 +23,8 @@
 
 ## done
 
+* deploy blackbox exporter
+* support for fedora 33
 * deploy prometheus
 * deploy node exporter
 * deploy jenkins host
