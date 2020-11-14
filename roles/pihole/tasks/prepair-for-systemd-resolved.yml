@@ -1,0 +1,36 @@
+---
+
+- name: "configure some internet dns server in /etc/resolv.conf"
+  lineinfile:
+    dest: '/etc/resolv.conf'
+    regexp: "^nameserver 127.0.0.53"
+    state: present
+    line: nameserver 8.8.8.8
+  become: true
+
+- name: "configure a second internet dns server in /etc/resolv.conf"
+  lineinfile:
+    dest: '/etc/resolv.conf'
+    regexp: "^nameserver 8.8.4.4"
+    state: present
+    insertafter: '^nameserver 8.8.8.8' 
+    line: nameserver 8.8.4.4
+  become: true
+
+- name: "configure dns=default in /etc/NetworkManager/NetworkManager.conf"
+  lineinfile:
+    dest: '/etc/NetworkManager/NetworkManager.conf'
+    regexp: "^dns="
+    state: present
+    insertafter: '\[main\]'
+    line: dns=default
+  become: true
+
+- name: disable systemd-resolved.service 
+  systemd:
+    name: systemd-resolved.service
+    state: stopped
+    enabled: no
+  become: true
+
+
