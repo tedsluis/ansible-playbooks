@@ -1,0 +1,21 @@
+#!/usr/bin/env ansible-playbook
+
+- name: httpd
+
+  hosts:
+    - fed143
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - users-and-groups
+  - firewall
+  - role: dnsmasq
+    when: _wants_dnsmasq|bool == true
+  - role: letsencrypt
+    when: "'letsencrypt' in group_names"
+  - role: httpd
+    when: "'httpd' in group_names"
+
