@@ -2,7 +2,7 @@
 
 - name: create local /tmp/httpd directory for certs
   file:
-    path: /tmp/httpd
+    path: "/tmp/httpd"
     owner: root
     group: root
     mode: 0777
