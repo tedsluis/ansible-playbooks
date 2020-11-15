@@ -2,7 +2,6 @@
 
 ## todo
 
-* configure locale dns pihole
 * alertmanager with slack
 * set role defaults
 * move secrets from vault to role defaults, group_vars and host_vars
@@ -11,18 +10,19 @@
 * remove packages
 * remove configuration
 * deploy proxy server
-* automatic dns registration using pihole
 * setup DHCP + PXE
 * deploy AWX
 * deploy media wiki
 * sync gitea <-> github
-* deploy grafana
 * deploy syslog
 * deploy nextcload
 * PKI server + CFSSL
 
 ## done
 
+* deploy grafana
+* automatic dns registration using pihole
+* configure locale dns pihole
 * deploy blackbox exporter
 * support for fedora 33
 * deploy prometheus
