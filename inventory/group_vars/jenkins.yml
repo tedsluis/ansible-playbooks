@@ -9,15 +9,15 @@ _jenkins_users:
   - { user: 'jenkins',comment: 'user for jenkins',uid: '1037',groups: 'jenkins',create_home: 'false',shell: '/bin/nologin' }
 _jenkins_packages:
   - podman
-_jenkins_image_tag: 2.250-alpine-arm64
+_jenkins_image_tag: 2.262-alpine-arm64
 _jenkins_plugins:
   - cloudbees-folder:latest
-  - credentials-binding:latest
-  - gradle:latest
-  - mailer:latest
   - pipeline-stage-view:latest
-  - timestamper:latest
   - ws-cleanup:latest
+  #- credentials-binding:latest
+  #- gradle:latest
+  #- mailer:latest
+  #- timestamper:latest
 _packages_for_jenkins:
   - ansible 
   - ca-certificates 
