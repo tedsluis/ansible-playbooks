@@ -1,0 +1,7 @@
+[Unit]
+Description=dnf update -y
+
+[Timer]
+OnCalendar=Mon..Fri 02:00
+AccuracySec=1m
+

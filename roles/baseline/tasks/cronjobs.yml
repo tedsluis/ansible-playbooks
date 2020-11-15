@@ -1,12 +1,14 @@
 ---
 
-- name: schedule dnf update every monday 10pm on fedora
-  cron: 
-    name: "schedule dnf update every cronjob monday 10pm."
-    minute: "0"
-    hour: "22"
-    weekday: "1"
-    job: "sudo dnf update -y && echo \"finished.\""
+- name: copy jobs
+  copy:
+    src: "{{item}}"
+    dest: "/etc/systemd/system/{{item}}"
+    owner: root
+    group: root
+    mode: 0664
   become: true
-  when: false
+  with_items:
+    - dnf-update.service
+    - dnf-update.timer
 

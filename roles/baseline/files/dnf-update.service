@@ -1,0 +1,7 @@
+[Unit]
+Description=dnf update -y
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/dnf update -y
+
