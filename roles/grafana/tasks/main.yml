@@ -83,14 +83,17 @@
   become: true
   notify: _restart_grafana
 
-- name: create /var/lib/grafana/etc/dashboards/dashboard.1.json
+- name: create /var/lib/grafana/etc/dashboards/dashboard.*.json
   copy:
-    src: dashboard.1.json 
-    dest: /var/lib/grafana/etc/dashboards/dashboard.1.json
+    src: "{{item}}"
+    dest: "/var/lib/grafana/etc/dashboards/{{item}}"
     owner: grafana
     group: grafana
     mode: 0666
   become: true
+  with_items:
+    - dashboard.1.json
+    - dashboard.2.json
   notify: _restart_grafana
 
 - name: create /var/lib/grafana/etc/provisioning/datasources/datasource.aa.yaml
@@ -103,14 +106,17 @@
   become: true
   notify: _restart_grafana
 
-- name: create /var/lib/grafana/etc/provisioning/dashboards/dashboard.1.yaml
+- name: create /var/lib/grafana/etc/provisioning/dashboards/dashboard.*.yaml
   copy:
-    src: dashboard.1.yaml
-    dest: /var/lib/grafana/etc/provisioning/dashboards/dashboard.1.yaml
+    src: "{{item}}"
+    dest: "/var/lib/grafana/etc/provisioning/dashboards/{{item}}"
     owner: grafana
     group: grafana
     mode: 0666
   become: true
+  with_items: 
+    - dashboard.1.yaml
+    - dashboard.2.yaml
   notify: _restart_grafana
 
 - name: create /etc/systemd/system/grafana.service
@@ -142,4 +148,23 @@
 
 - name: trigger handelers
   meta: flush_handlers
+
+- name: "pause until grafana is reachable"
+  uri:
+    url: "https://{{_grafana_url}}:3000/login"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 60 # 60 * 5 seconds = 5 minutes
+  delay: 5 # Every 5 seconds
+
+- name: set grafana password
+  shell: |
+    podman exec grafana /usr/share/grafana/bin/grafana-cli admin reset-admin-password {{_grafana_admin_password}} --config=/etc/grafana/grafana.ini || echo "set password failed."
+  become: true
+  register: _set_grafana_password
+
+- debug:
+    var: _set_grafana_password
 

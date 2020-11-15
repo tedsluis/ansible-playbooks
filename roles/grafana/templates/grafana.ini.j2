@@ -26,7 +26,7 @@ instance_name = {{_grafana_url}}
 
 # folder that contains provisioning config files that grafana will apply on startup and while running.
 ;provisioning = conf/provisioning
-provisioning = /etc//provisioning
+provisioning = /etc/grafana//provisioning
 
 #################################### Server ####################################
 [server]
@@ -178,7 +178,7 @@ cert_key =/etc/grafana/certs/privkey.pem
 #################################### Security ####################################
 [security]
 # disable creation of admin user on first start of grafana
-;disable_initial_admin_creation = true
+disable_initial_admin_creation = true
 
 # default admin user, created on startup
 admin_user = admin
