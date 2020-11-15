@@ -100,7 +100,7 @@
 - name: copy keys to /var/lib/jenkins/certs
   copy:
     src: "/tmp/jenkins/{{item}}"
-    dest: /var/lib/jenkins/certs
+    dest: "/var/lib/jenkins/certs/{{item}}"
     owner: root
     group: root
     mode: 0666
