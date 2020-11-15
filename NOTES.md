@@ -2,6 +2,11 @@
 
 ## todo
 
+- configure hostname
+- configure static ip address
+- fix chrony issue for raspberry
+- auto risize partition + lv
+- update packages
 * alertmanager with slack
 * set role defaults
 * move secrets from vault to role defaults, group_vars and host_vars
