@@ -31,9 +31,6 @@ pipeline {
         }
     }
     post {
-        failure {
-            slackSend color: "danger", message: "pipeline failed!"
-        }
         always {
             cleanWs()
         }
