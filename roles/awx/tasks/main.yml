@@ -12,10 +12,12 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/awx"          ,owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/clone"        ,owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/awx/compose"  ,owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/awx/postgress",owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx"                  ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/clone"                ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/data"             ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/postgress"        ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/postgress/10"     ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/postgress/10/data",owner: "root" ,group: "root" ,mode: "0777" }
 
 - name: clone awx in 
   git:
@@ -94,18 +96,16 @@
   become: true
   when: "_image_pull.rc != 0"
 
+- name: Put SELinux in permissive mode (otherwise redis won't run), logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive 
+
 - name: deploy awx
   shell: |
     ansible-playbook -l localhost -i /var/lib/awx/clone/installer/inventory /var/lib/awx/clone/installer/install.yml
   become: true
 
-- name: set permissions awx directories
-  file:
-    path: "/var/lib/awx"
-    mode: "0777"
-    recurse: true
-  become: true
- 
 - name: awx_web container state
   shell: |
     podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=awx_web'
