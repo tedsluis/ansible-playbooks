@@ -100,6 +100,7 @@
   selinux:
     policy: targeted
     state: permissive 
+  become: true
 
 - name: deploy awx
   shell: |
@@ -142,4 +143,13 @@
 - debug:
     var: _awx_redis_state
 
+- name: "pause until awx is reachable"
+  uri:
+    url: "https://{{_awx_url}}:80/"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 60 # 60 * 5 seconds = 5 minutes
+  delay: 5 # Every 5 seconds
 
