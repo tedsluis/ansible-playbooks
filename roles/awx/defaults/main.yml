@@ -1,0 +1,6 @@
+_awx_password: admin
+_awx_broadcast_websocket_secret: secret
+_awx_pg_password: awx
+_dockerio_username: awx
+_awx_secret_key: awx
+_awx_tag: 15.0.1

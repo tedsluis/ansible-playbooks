@@ -4,16 +4,4 @@ _wants_ansible: true
 _wants_git: true
 _wants_private_key: true
 _wants_sshagent: true
-
-_lv_host:
-  - pv: /dev/sdb
-    vg: vg_data
-    lv: lv_podman
-    mount: "/var/lib/containers"
-    size: "15"
-  - pv: /dev/sdb
-    vg: vg_data
-    lv: lv_libvirt
-    mount: "/var/lib/libvirt"
-    size: "25"
-
+_host_type: raspberry-4b-4gb

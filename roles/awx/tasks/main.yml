@@ -1,0 +1,145 @@
+---
+
+- name: "include ansible secrets"
+  include_vars: inventory/group_vars/vault.yaml
+
+- name: create awx directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/awx"          ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/clone"        ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/compose"  ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/postgress",owner: "root" ,group: "root" ,mode: "0777" }
+
+- name: clone awx in 
+  git:
+    repo: 'https://github.com/ansible/awx.git'
+    dest: /var/lib/awx/clone
+    force: true
+    version: "{{_awx_tag}}"
+  become: true
+
+- name: update awx inventory
+  lineinfile:
+    path: /var/lib/awx/clone/installer/inventory
+    regexp: '^#?\s?{{item.match}}='
+    line: '{{item.replace}}'
+  become: true
+  with_items:
+    - { match: 'admin_password',            replace: 'admin_password={{_awx_password}}'}
+    - { match: 'broadcast_websocket_secret',replace: 'broadcast_websocket_secret={{_awx_broadcast_websocket_secret}}'}
+    - { match: 'pg_password',               replace: 'pg_password={{_awx_pg_password}}'}
+    - { match: 'dockerhub_base',            replace: 'dockerhub_base={{_dockerio_username}}'}
+    - { match: 'postgres_data_dir',         replace: 'postgres_data_dir=/var/lib/awx/postgress'}
+    - { match: 'docker_compose_dir',        replace: 'docker_compose_dir=/var/lib/awx/data'}
+    - { match: 'docker_registry',           replace: 'docker_registry=docker.io'}
+    - { match: 'docker_registry_repository',replace: 'docker_registry_repository={{_dockerio_username}}'}
+    - { match: 'docker_registry_username'  ,replace: 'docker_registry_username={{_dockerio_username}}'}
+    - { match: 'docker_registry_password',  replace: 'docker_registry_password={{_dockerio_token}}'}
+    - { match: 'secret_key'                ,replace: 'secret_key={{_awx_secret_key}}'}
+  
+- name: replace centos:8 with arm64v8/centos images
+  replace:
+    path: "{{item}}"
+    regexp: 'centos:8'
+    replace: 'arm64v8/centos'
+  become: true
+  with_items:
+    - /var/lib/awx/clone/installer/roles/image_build/files/Dockerfile.sdist
+    - /var/lib/awx/clone/installer/roles/image_build/templates/Dockerfile.j2
+ 
+- name: copy files
+  copy:
+    src: "{{item.src}}"
+    dest: "/var/lib/awx/clone/installer/roles/{{item.dest}}"
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items:
+    - { src: 'local_docker_compose.yml', dest: 'local_docker/tasks/compose.yml'}
+    - { src: 'image_build_main.yml',     dest: 'image_build/tasks/main.yml'}
+    - { src: 'image_push_main.yml',      dest: 'image_push/tasks/main.yml'}
+
+- name: get awx_sdist_builder container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.ID{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.Status{{ '}}' }}" --filter 'name=awx_sdist_builder'
+  register: _awx_sdist_builder_state
+  become: true
+
+- name: remove previous build container if exists
+  shell: |
+    podman rm -f $(echo "{{_awx_sdist_builder_state.stdout}}" | awk '{print $1}') 
+  become: true
+  when: '"awx_sdist_builder" in _awx_sdist_builder_state.stdout'
+
+- name: "pull docker.io/{{_dockerio_username}}/awx:{{_awx_tag}} image"
+  shell: |
+    podman pull docker.io/{{_dockerio_username}}/awx:{{_awx_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    msg: "image pull status: {{_image_pull.stdout}}"
+
+- name: build awx image
+  shell: |
+    ansible-playbook -l localhost -i /var/lib/awx/clone/installer/inventory /var/lib/awx/clone/installer/build.yml
+  become: true
+  when: "_image_pull.rc != 0"
+
+- name: deploy awx
+  shell: |
+    ansible-playbook -l localhost -i /var/lib/awx/clone/installer/inventory /var/lib/awx/clone/installer/install.yml
+  become: true
+
+- name: set permissions awx directories
+  file:
+    path: "/var/lib/awx"
+    mode: "0777"
+    recurse: true
+  become: true
+ 
+- name: awx_web container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=awx_web'
+  register: _awx_web_state
+  become: true
+
+- debug:
+    var: _awx_web_state
+
+- name: awx_task container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=awx_task'
+  register: _awx_task_state
+  become: true
+
+- debug:
+    var: _awx_task_state
+
+- name: awx_postgres container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=awx_postgres'
+  register: _awx_postgres_state
+  become: true
+
+- debug:
+    var: _awx_postgres_state
+
+- name: awx_redis container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=awx_redis'
+  register: _awx_redis_state
+  become: true
+
+- debug:
+    var: _awx_redis_state
+
+

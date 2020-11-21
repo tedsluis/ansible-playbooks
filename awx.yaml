@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+
+- name: awx
+
+  hosts:
+    - fed149
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - firewall
+  - role: awx
+    when: "'awx' in group_names"
+

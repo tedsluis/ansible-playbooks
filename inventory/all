@@ -21,6 +21,9 @@ fed159
 fed160
 pihole
 
+[awx]
+fed149
+
 [alertmanager]
 fed160
 
@@ -69,6 +72,7 @@ pihole
 
 [postgres]
 fed143
+fed130
 
 [prometheus]
 fed160
