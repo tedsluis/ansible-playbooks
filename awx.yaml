@@ -9,6 +9,7 @@
     ansible_user: ansible
 
   roles:
+  - packages
   - firewall
   - role: awx
     when: "'awx' in group_names"
