@@ -21,8 +21,8 @@
     when: "'nfsclient' in group_names"
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
-#  - role: pihole
-#    when: "'pihole' in group_names"
+  - role: pihole
+    when: "'pihole' in group_names"
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
   - role: jenkins
@@ -37,4 +37,6 @@
     when: "'nodeexporter' in group_names"
   - role: prometheus
     when: "'prometheus' in group_names"
+  - role: awx
+    when: "'awx' in group_names"
 
