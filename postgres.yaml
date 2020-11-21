@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+
+- name: postgres
+
+  hosts:
+    - fed143
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - users-and-groups
+  - firewall
+  - role: dnsmasq
+    when: _wants_dnsmasq|bool == true
+  - role: postgres
+    when: "'postgres' in group_names"
+
