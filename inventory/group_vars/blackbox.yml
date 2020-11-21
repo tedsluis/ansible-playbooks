@@ -6,16 +6,17 @@ _blackbox_packages:
 _blackbox_groups:
   - { group: 'blackbox',gid: '1040' }
 _blackbox_http_2xx_targets:
+  - http://awx.bachstraat20.duckdns.org:80
+  - http://alertmanager.bachstraat20.duckdns.org:9093
   - https://git.bachstraat20.duckdns.org:3000
   - https://grafana.bachstraat20.duckdns.org:3000
-  - https://jenkins.bachstraat20.duckdns.org:8443
   - https://home.bachstraat20.duckdns.org:30443
   - https://home.bachstraat20.duckdns.org:31443
-  - http://alertmanager.bachstraat20.duckdns.org:9093
-  - http://prometheus.bachstraat20.duckdns.org:9090
   - http://home.bachstraat20.duckdns.org:30080
   - http://home.bachstraat20.duckdns.org:31080
+  - https://jenkins.bachstraat20.duckdns.org:8443
   - http://pihole.bachstraat20.duckdns.org
+  - http://prometheus.bachstraat20.duckdns.org:9090
   - http://192.168.11.1
   - http://192.168.1.254
   - http://192.168.11.200

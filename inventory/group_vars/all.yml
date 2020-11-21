@@ -36,6 +36,7 @@ _fqdns:
   - { ip: '192.168.11.143',  fqdn:         'home.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.149',  fqdn:      'jenkins.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.149',  fqdn:          'nfs.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.149',  fqdn:          'awx.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:   'prometheus.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:      'grafana.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn: 'alertmanager.bachstraat20.duckdns.org' }
