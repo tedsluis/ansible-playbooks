@@ -145,7 +145,7 @@
 
 - name: "pause until awx is reachable"
   uri:
-    url: "https://{{_awx_url}}:80/"
+    url: "http://{{_awx_url}}:80/"
     follow_redirects: none
     method: GET
   register: _result
