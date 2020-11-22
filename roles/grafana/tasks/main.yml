@@ -33,9 +33,9 @@
 - debug:
     var: _image_pull
 
-- name: create local /tmp/grafana directory for certs
+- name: create local /tmp/certs directory for certs
   file:
-    path: /tmp/grafana
+    path: /tmp/certs
     owner: root
     group: root
     mode: 0777
@@ -48,7 +48,7 @@
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/tmp/grafana/"
+    dest: "/tmp/certs/"
     flat: yes
   become: true
   with_items:
@@ -57,7 +57,7 @@
 
 - name: place cert
   copy:
-    src: /tmp/grafana/fullchain.pem
+    src: /tmp/certs/fullchain.pem
     dest: /var/lib/grafana/etc/certs/fullchain.pem
     owner: grafana
     group: grafana
@@ -66,7 +66,7 @@
 
 - name: place key
   copy:
-    src: /tmp/grafana/privkey.pem
+    src: /tmp/certs/privkey.pem
     dest: /var/lib/grafana/etc/certs/privkey.pem
     owner: grafana
     group: grafana

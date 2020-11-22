@@ -3,9 +3,9 @@
 - name: "include ansible secrets to get postgres password"
   include_vars: inventory/group_vars/vault.yaml
 
-- name: create local /tmp/gitea directory for certs
+- name: create local /tmp/certs directory for certs
   file:
-    path: /tmp/gitea
+    path: /tmp/certs
     owner: root
     group: root
     mode: 0777
@@ -61,7 +61,7 @@
   run_once: yes
   fetch: 
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}" 
-    dest: "/tmp/gitea/" 
+    dest: "/tmp/certs/" 
     flat: yes
   become: true
   with_items:
@@ -70,7 +70,7 @@
 
 - name: Copy keys to /var/lib/gitea/gitea/conf/
   copy: 
-    src: "/tmp/gitea/{{item}}" 
+    src: "/tmp/certs/{{item}}" 
     dest: /var/lib/gitea/gitea/conf/
     owner: git
     group: git
