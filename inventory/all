@@ -72,7 +72,6 @@ pihole
 
 [postgres]
 fed143
-fed130
 
 [prometheus]
 fed160
