@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+
+- name: chrony
+
+  hosts:
+    - pihole,fed127,fed130,fed143,fed149,fed160,fed159,fed157
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    #  - packages
+    #- users-and-groups
+    #- baseline
+    #- ssh-keys-and-config
+  - chrony
+
