@@ -29,7 +29,7 @@
 
 - name: create local /root/tmp directory for certs
   file:
-    path: /tmp/certs
+    path: /var/lib/certs
     owner: root
     group: root
     mode: 0777
@@ -42,7 +42,7 @@
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
-    dest: "/tmp/certs/"
+    dest: "/var/lib/certs/"
     flat: yes
   become: true
   with_items:
@@ -51,7 +51,7 @@
 
 - name: place cert
   copy:
-    src: /tmp/certs/fullchain.pem
+    src: /var/lib/certs/fullchain.pem
     dest: /opt/node_exporter/node_exporter.crt
     owner: "{{ _node_exporter_system_user }}"
     group: "{{ _node_exporter_system_group }}"
@@ -59,7 +59,7 @@
 
 - name: place key
   copy:
-    src: /tmp/certs/privkey.pem
+    src: /var/lib/certs/privkey.pem
     dest: /opt/node_exporter/node_exporter.key
     owner: "{{ _node_exporter_system_user }}"
     group: "{{ _node_exporter_system_group }}"
