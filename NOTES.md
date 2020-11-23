@@ -3,7 +3,6 @@
 ## todo
 
 - configure static ip address
-- fix chrony issue for raspberry
 - auto risize partition + lv
 * alertmanager with slack
 * set role defaults
@@ -14,7 +13,6 @@
 * remove configuration
 * deploy proxy server
 * setup DHCP + PXE
-* deploy AWX
 * deploy media wiki
 * sync gitea <-> github
 * deploy syslog
@@ -23,7 +21,8 @@
 
 ## done
 
-- added awx
+- fix chrony issue for raspberry
+* deploy AWX
 - auto update packages
 - configure hostname
 * deploy grafana

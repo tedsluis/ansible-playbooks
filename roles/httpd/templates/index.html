@@ -3,7 +3,15 @@
   <body onload="javascript:myFunction()">
   PAGE NAME: {{item[1].pagename}}<br><br>
   SITE NAME: {{item[0].sitename}}<br><br>
-  URLs:<br>
+  _blackbox_http_2xx_targets URLs:<br>
+  {% for _url in _blackbox_http_2xx_targets %}
+  <a href="{{ _url }}">{{_url}}</a><br>
+  {% endfor %}<br>
+  _blackbox_http_jenkins_2xx_targets URLs:<br>
+  {% for _url in _blackbox_http_jenkins_2xx_targets %}
+  <a href="{{_url}}">{{_url}}</a><br>
+  {% endfor %}<br>
+  PAGE URLs:<br>
   <a href="http://{{item[0].url}}:{{item[0].http_port  }}/">http://{{item[0].url}}:{{item[0].http_port  }}/</a><br>
   <a href="https://{{item[0].url}}:{{item[0].https_port}}/">https://{{item[0].url}}:{{item[0].https_port}}/</a><br><br>
   HEALTH CHECK:<br>
@@ -20,7 +28,7 @@
         var dy = d.getDate();
         var mt = d.getMonth()+1;
         var y  = d.getFullYear();
-        document.getElementById("healthcheck").innerHTML ='HTTP STATUS CODE 200 OK -- ' + y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms;
+        document.getElementById("healthcheck").innerHTML ='HTTP STATUS CODE 200 OK   --   ' + y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms;
       }
     </script>
   </body>
