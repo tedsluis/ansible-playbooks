@@ -1,6 +1,7 @@
 [Unit]
 Description=pihole
 Requires=network.target
+After=network-online.target
 
 [Service]
 TimeoutStartSec=300
@@ -29,8 +30,10 @@ ExecStart=/usr/bin/podman run \
                           --privileged \
                           {{_pihole_image_name}}:{{_pihole_image_version}}
 
-ExecStop=-/usr/bin/docker stop -t 2 pihole
-ExecStopPost=-/usr/bin/docker rm -f pihole
+ExecStop=-/usr/bin/podman stop -t 2 pihole
+ExecStopPost=-/usr/bin/podman rm -f pihole
  
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target default.target
+
+
