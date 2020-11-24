@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html>
+<style>
+    h3 { font-family: "Lucida Console", Monaco, monospace; }
+    p  { font-family: "Lucida Console", Monaco, monospace; }
+</style>
   <body onload="javascript:myFunction()">
-  PAGE NAME: {{item[1].pagename}}<br><br>
-  SITE NAME: {{item[0].sitename}}<br><br>
-  _blackbox_http_2xx_targets URLs:<br>
-  {% for _url in _blackbox_http_2xx_targets %}
+  <h3>PAGE NAME: {{item[1].pagename}}</h3>
+  <h3>SITE NAME: {{item[0].sitename}}</h3>
+  <h3>_blackbox_http_2xx_targets URLs:</h3>
+  <p>{% for _url in _blackbox_http_2xx_targets %}
   <a href="{{ _url }}">{{_url}}</a><br>
-  {% endfor %}<br>
-  _blackbox_http_jenkins_2xx_targets URLs:<br>
-  {% for _url in _blackbox_http_jenkins_2xx_targets %}
+  {% endfor %}</p>
+  <h3>_blackbox_http_jenkins_2xx_targets URLs:</h3>
+  <p>{% for _url in _blackbox_http_jenkins_2xx_targets %}
   <a href="{{_url}}">{{_url}}</a><br>
-  {% endfor %}<br>
-  PAGE URLs:<br>
+  {% endfor %}</p>
+  <h3>PAGE URLs:</h3><p>
   <a href="http://{{item[0].url}}:{{item[0].http_port  }}/">http://{{item[0].url}}:{{item[0].http_port  }}/</a><br>
-  <a href="https://{{item[0].url}}:{{item[0].https_port}}/">https://{{item[0].url}}:{{item[0].https_port}}/</a><br><br>
-  HEALTH CHECK:<br>
+  <a href="https://{{item[0].url}}:{{item[0].https_port}}/">https://{{item[0].url}}:{{item[0].https_port}}/</a></p>
+  <h3>HEALTH CHECK:</h3><p>
   <a href="http://{{item[0].url}}:{{item[0].http_port  }}/health">http://{{item[0].url}}:{{item[0].http_port  }}/health</a><br>
-  <a href="https://{{item[0].url}}:{{item[0].https_port}}/health">https://{{item[0].url}}:{{item[0].https_port}}/health</a><br><br>
-  <p id="healthcheck"></p>
+  <a href="https://{{item[0].url}}:{{item[0].https_port}}/health">https://{{item[0].url}}:{{item[0].https_port}}/health</a></p>
+  <h3 id="healthcheck"></h3>
+  <p>
     <script>
       function myFunction() {
         var d  = new Date();
@@ -31,5 +36,6 @@
         document.getElementById("healthcheck").innerHTML ='HTTP STATUS CODE 200 OK   --   ' + y + '-' + mt + '-' + dy + 'T' + h + ':' + m + ':' + s + '.' + ms;
       }
     </script>
+  </p>
   </body>
 </html>
