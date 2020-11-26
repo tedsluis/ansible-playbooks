@@ -25,6 +25,7 @@ _all_packages:
   - tmux
   - vim
   - wget
+_awx_hostname: fed149
 _blackbox_hostname: fed160  
 _blackbox_http_2xx_targets:
   - http://awx.bachstraat20.duckdns.org:80
