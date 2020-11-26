@@ -36,7 +36,7 @@ _blackbox_http_2xx_targets:
   - https://home.bachstraat20.duckdns.org:31443
   - http://home.bachstraat20.duckdns.org:30080
   - http://home.bachstraat20.duckdns.org:31080
-  - http://pihole.bachstraat20.duckdns.org
+  - https://pihole.bachstraat20.duckdns.org
   - http://prometheus.bachstraat20.duckdns.org:9090
   - http://192.168.11.1
   - http://192.168.1.254
