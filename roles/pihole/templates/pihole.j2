@@ -24,6 +24,7 @@ ExecStart=/usr/bin/podman run \
                           -e DNS1="8.8.4.4" \
                           -e ServerIP={{_ip_address}} \
                           -v "/var/lib/pihole/etc-pihole/:/etc/pihole/" \
+                          -v "/var/lib/pihole/etc-lighttpd/external.conf:/etc/lighttpd/external.conf" \
                           -v "/var/lib/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/" \
                           --dns=127.0.0.1 \
                           --dns=192.168.1.254 \

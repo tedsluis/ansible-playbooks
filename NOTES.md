@@ -2,6 +2,9 @@
 
 ## todo
 
+- ldap server
+- https for awx
+- https for promtheus + authenication
 - configure static ip address
 - auto risize partition + lv
 * alertmanager with slack
@@ -21,6 +24,8 @@
 
 ## done
 
+- cert for pihole
+- promtheus scraper for awx
 - fix chrony issue for raspberry
 * deploy AWX
 - auto update packages

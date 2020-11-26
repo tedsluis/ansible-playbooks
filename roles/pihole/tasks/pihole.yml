@@ -14,7 +14,68 @@
     - /var/lib/pihole
     - /var/lib/pihole/etc-pihole
     - /var/lib/pihole/etc-dnsmasq.d
+    - /var/lib/pihole/etc-lighttpd
   become: true
+
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{_letsencrypt_hostname}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - cert.pem
+
+- name: create combined.pem
+  delegate_to: localhost
+  shell: |
+    cat /var/lib/certs/privkey.pem /var/lib/certs/cert.pem > /var/lib/certs/combined.pem
+  become: true
+
+- name: set permissions /tmp/certs/combined.pem
+  delegate_to: localhost
+  file:
+    path: /var/lib/certs/combined.pem
+    mode: 0664
+  become: true
+
+- name: place cert and key
+  copy:
+    src: "/var/lib/certs/combined.pem"
+    dest: "/var/lib/pihole/etc-pihole/combined.pem"
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: 
+    - reload daemon pihole
+    - restart pihole
+
+- name: copy /var/lib/pihole/etc-lighttpd/external.conf
+  template:
+    src: external.conf.j2
+    dest: /var/lib/pihole/etc-lighttpd/external.conf
+    owner: root
+    group: root
+    mode: 0775
+    force: yes
+  become: true
+  notify:
+    - reload daemon pihole 
+    - restart pihole
 
 - name: create pihole unit
   template:
@@ -35,4 +96,7 @@
     state: started
     enabled: yes
   become: true
+
+- name: trigger handelers
+  meta: flush_handlers
 

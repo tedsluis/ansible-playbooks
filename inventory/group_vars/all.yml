@@ -72,6 +72,7 @@ _letsencrypt_hostname: fed143
 _mail_address: ted.sluis@gmail.com
 _mail_hubhost: smtp.gmail.com
 _mail_hubport: 587
+_pihole_url: pihole.bachstraat20.duckdns.org
 _prometheus_hostname: fed160
 _raspi_configtxt: '/boot/efi/config.txt'
 _timezone: Europe/Amsterdam
