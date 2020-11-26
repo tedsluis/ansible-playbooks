@@ -63,6 +63,7 @@
     group: grafana
     mode: 0664
   become: true
+  notify: _restart_grafana
 
 - name: place key
   copy:
@@ -72,6 +73,7 @@
     group: grafana
     mode: 0664
   become: true
+  notify: _restart_grafana
 
 - name: create /var/lib/grafana/etc/grafana.ini
   template:
