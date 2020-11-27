@@ -5,7 +5,7 @@ groups:
         annotations:
           description: 'Chrony not in sync {{ $labels.instance }}'
           summary: 'Chrony not in sync'
-        expr: node_timex_sync_status{job="node-exporters"} == 0
+        expr: node_timex_sync_status{job="node_exporters_https"} == 0
         for: 1m
         labels:
           severity: warning
