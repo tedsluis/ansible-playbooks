@@ -25,10 +25,10 @@ _all_packages:
   - tmux
   - vim
   - wget
-_awx_hostname: fed149
-_blackbox_hostname: fed160  
+_awx_hostname: awx.bachstraat20.duckdns.org
+_blackbox_hostname: blackbox.bachstraat20.duckdns.org
 _blackbox_http_2xx_targets:
-  - http://awx.bachstraat20.duckdns.org:80
+  - https://awx.bachstraat20.duckdns.org:443
   - http://alertmanager.bachstraat20.duckdns.org:9093
   - https://git.bachstraat20.duckdns.org:3000
   - https://grafana.bachstraat20.duckdns.org:3000
@@ -73,7 +73,7 @@ _mail_address: ted.sluis@gmail.com
 _mail_hubhost: smtp.gmail.com
 _mail_hubport: 587
 _pihole_url: pihole.bachstraat20.duckdns.org
-_prometheus_hostname: fed160
+_prometheus_hostname: prometheus.bachstraat20.duckdns.org
 _raspi_configtxt: '/boot/efi/config.txt'
 _timezone: Europe/Amsterdam
 _tls_ca_file: '/etc/ssl/certs/ca-bundle.trust.crt'

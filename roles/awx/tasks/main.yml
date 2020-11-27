@@ -3,6 +3,16 @@
 - name: "include ansible secrets"
   include_vars: inventory/group_vars/vault.yaml
 
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
 - name: create awx directories
   file:
     path: "{{item.directory}}"
@@ -13,13 +23,13 @@
   become: true
   with_items:
     - { directory: "/var/lib/awx"                  ,owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/clone"                ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/awx/clone"            ,owner: "root" ,group: "root" ,mode: "0777" }
     - { directory: "/var/lib/awx/data"             ,owner: "root" ,group: "root" ,mode: "0777" }
     - { directory: "/var/lib/awx/postgress"        ,owner: "root" ,group: "root" ,mode: "0777" }
     - { directory: "/var/lib/awx/postgress/10"     ,owner: "root" ,group: "root" ,mode: "0777" }
     - { directory: "/var/lib/awx/postgress/10/data",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: clone awx in 
+- name: clone awx in /var/lib/awx/clone
   git:
     repo: 'https://github.com/ansible/awx.git'
     dest: /var/lib/awx/clone
@@ -45,7 +55,33 @@
     - { match: 'docker_registry_username'  ,replace: 'docker_registry_username={{_dockerio_username}}'}
     - { match: 'docker_registry_password',  replace: 'docker_registry_password={{_dockerio_token}}'}
     - { match: 'secret_key'                ,replace: 'secret_key={{_awx_secret_key}}'}
-  
+    - { match: 'ssl_certificate'          ,replace: 'ssl_certificate=/var/lib/awx/data/fullchain.pem'}
+    - { match: 'ssl_certificate_key'     ,replace: 'ssl_certificate_key=/var/lib/awx/data/privkey.pem'}
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{_letsencrypt_hostname}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: copy keys to /var/lib/awx/data/
+  copy:
+    src: "/var/lib/certs/{{item}}"
+    dest: "/var/lib/awx/data/{{item}}"
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
 - name: replace centos:8 with arm64v8/centos images
   replace:
     path: "{{item}}"
@@ -145,7 +181,7 @@
 
 - name: "pause until awx is reachable"
   uri:
-    url: "http://{{_awx_url}}:80/"
+    url: "http://{{_awx_url}}:443/"
     follow_redirects: none
     method: GET
   register: _result

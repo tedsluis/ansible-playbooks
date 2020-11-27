@@ -1,6 +1,6 @@
 _awx_tag: 15.0.1
 _awx_firewall:
-  - 8052/tcp
+  - 443/tcp
 _awx_packages:
   - podman
   - podman-compose
