@@ -3,11 +3,9 @@
 ## todo
 
 - ldap server
-- https for awx
 - https for promtheus + authenication
 - configure static ip address
 - auto risize partition + lv
-* alertmanager with slack
 * set role defaults
 * move secrets from vault to role defaults, group_vars and host_vars
 * prepare boot from usb
@@ -24,6 +22,8 @@
 
 ## done
 
+- https for awx
+* alertmanager with slack
 - cert for pihole
 - promtheus scraper for awx
 - fix chrony issue for raspberry
