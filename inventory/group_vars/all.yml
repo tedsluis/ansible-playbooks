@@ -25,6 +25,7 @@ _all_packages:
   - tmux
   - vim
   - wget
+_alertmanager_hostname: alertmanager.bachstraat20.duckdns.org
 _awx_hostname: awx.bachstraat20.duckdns.org
 _blackbox_hostname: blackbox.bachstraat20.duckdns.org
 _blackbox_http_2xx_targets:

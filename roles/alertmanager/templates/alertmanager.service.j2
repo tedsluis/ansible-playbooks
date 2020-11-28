@@ -12,8 +12,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -d \
                               --name=alertmanager \
                               -p 9093:9093 \
-                              -v /var/lib/alertmanager/config:/etc/alertmanager:z \
-                              -v /var/lib/alertmanager/data:/alertmanager:z \
+                              -v /var/lib/alertmanager:/etc/alertmanager:z \
                               --restart unless-stopped \
                               docker.io/prom/alertmanager:{{_alertmanager_image_tag}} \
                                  --config.file=/etc/alertmanager/alertmanager.yml \

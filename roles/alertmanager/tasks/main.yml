@@ -1,6 +1,6 @@
 ---
 
-- name: "include ansible secrets to get duckdns token"
+- name: "include ansible secrets"
   include_vars: inventory/group_vars/vault.yaml
 
 - name: create alertmanager directories
@@ -13,8 +13,6 @@
   become: true
   with_items:
     - { directory: "/var/lib/alertmanager"       ,owner: "alertmanager" ,group: "alertmanager" ,mode: "0777" }
-    - { directory: "/var/lib/alertmanager/data"  ,owner: "alertmanager" ,group: "alertmanager" ,mode: "0777" }
-    - { directory: "/var/lib/alertmanager/config",owner: "alertmanager" ,group: "alertmanager" ,mode: "0777" }
 
 - name: "pull docker.io/prom/alertmanager:{{_alertmanager_image_tag}} image"
   shell: |
@@ -25,10 +23,10 @@
 - debug:
     var: _image_pull
 
-- name: create /var/lib/alertmanager/config/alertmanager.yml
+- name: create /var/lib/alertmanager/alertmanager.yml
   template:
     src: alertmanager.yml.j2
-    dest: /var/lib/alertmanager/config/alertmanager.yml
+    dest: /var/lib/alertmanager/alertmanager.yml
     owner: alertmanager
     group: alertmanager
     mode: 0664
