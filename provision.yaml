@@ -35,8 +35,14 @@
     when: "'gitea' in group_names"
   - role: nodeexporter
     when: "'nodeexporter' in group_names"
+  - role: blackbox
+    when: "'blackbox' in group_names"
   - role: prometheus
     when: "'prometheus' in group_names"
-  - role: awx
-    when: "'awx' in group_names"
+  - role: alertmanager
+    when: "'alertmanager' in group_names"
+  - role: grafana
+    when: "'grafana' in group_names"
+    #  - role: awx
+    #when: "'awx' in group_names"
 
