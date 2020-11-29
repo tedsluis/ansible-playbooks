@@ -1,6 +1,9 @@
-_awx_password: admin
+_awx_password: somepassword
 _awx_broadcast_websocket_secret: secret
 _awx_pg_password: awx
-_dockerio_username: awx
 _awx_secret_key: awx
 _awx_tag: 15.0.1
+_awx_hostname: awx.domain  
+_dockerio_username: dockerio_loginname
+_dockerio_token: sometoken
+_letsencrypt_hostname: letsencrypt_inventory_hostname
