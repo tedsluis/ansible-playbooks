@@ -4,5 +4,4 @@ _awx_firewall:
 _awx_packages:
   - podman
   - podman-compose
-_awx_url: awx.bachstraat20.duckdns.org
 
