@@ -1,2 +1,24 @@
 ---
-_node_exporter_auth_pass: password
+
+_alertmanager_hostname: alertmanager.domain
+
+_awx_hostname: awx.domain
+_awx_password: awxpassword
+
+_blackbox_hostname: blackbox.domain
+_blackbox_http_2xx_targets: 
+  - http://hostname1.domain:80
+  - http://hostname2.domain:8080
+  - https://hostname3.domain:443
+  - https://hostname4.domain:8443
+_blackbox_http_nodeexporter_2xx_targets:
+  - https://hostname1.domain:9100
+  - https://hostname2.domain:9100
+  - https://hostname3.domain:9100
+_blackbox_http_jenkins_2xx_targets:
+  - https://jenkinshostname.domain:443    
+
+_node_exporter_auth_pass: nodeexporterpassword
+
+_prometheus_image_tag: latest
+
