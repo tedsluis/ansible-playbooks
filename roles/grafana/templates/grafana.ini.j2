@@ -8,7 +8,7 @@
 
 # instance name, defaults to HOSTNAME environment variable value or hostname if HOSTNAME var is empty
 ;instance_name = ${HOSTNAME}
-instance_name = {{_grafana_url}}
+instance_name = {{_grafana_hostname}}
 
 #################################### Paths ####################################
 [paths]
@@ -40,7 +40,7 @@ http_addr = 0.0.0.0
 http_port = 3000
 
 # The public facing domain name used to access grafana from a browser
-domain = {{_grafana_url}}
+domain = {{_grafana_hostname}}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks

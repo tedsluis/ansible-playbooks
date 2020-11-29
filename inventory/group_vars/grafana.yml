@@ -7,5 +7,5 @@ _grafana_groups:
   - { group: 'grafana',gid: '1039' }
 _grafana_users:
   - { user: 'grafana',comment: 'user for grafana',uid: '1039',groups: 'grafana',create_home: 'false',shell: '/bin/nologin' }
-_grafana_url: grafana.bachstraat20.duckdns.org
+_grafana_hostname: grafana.bachstraat20.duckdns.org
 
