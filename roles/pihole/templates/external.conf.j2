@@ -1,4 +1,4 @@
-$HTTP["host"] == "{{_pihole_url}}" {
+$HTTP["host"] == "{{_pihole_hostname}}" {
   setenv.add-environment = ("fqdn" => "true")
 
   # Enable the SSL engine with a LE cert, only for this specific host
