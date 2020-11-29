@@ -122,7 +122,7 @@
             -inkey /certs/privkey.pem \
             -in /certs/fullchain.pem \
             -certfile /etc/ssl/certs/ca-certificates.crt \
-            -name {{_jenkins_base_url}}'  
+            -name {{_jenkins_hostname}}'  
   become: true
 
 - name: add jenkins.p12 to keystore
@@ -133,11 +133,11 @@
         /bin/bash -c 'keytool -importkeystore \
             -srckeystore /certs/jenkins.p12 \
             -srcstorepass {{_jenkins_passphrase}}  \
-            -srcstoretype PKCS12 -srcalias {{_jenkins_base_url}} \
+            -srcstoretype PKCS12 -srcalias {{_jenkins_hostname}} \
             -deststoretype JKS \
             -destkeystore /certs/jenkins.jks \
             -deststorepass {{_jenkins_passphrase}} \
-            -destalias {{_jenkins_base_url}} \
+            -destalias {{_jenkins_hostname}} \
             -noprompt'
   become: true
 

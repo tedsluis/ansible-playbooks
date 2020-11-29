@@ -17,7 +17,7 @@ RUN while read i ; \
 # allows to skip Jenkins setup wizard
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
-ENV JENKINS_URL {{_jenkins_base_url}}
+ENV JENKINS_URL {{_jenkins_hostname}}
 
 ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8443 --httpsKeyStore=/var/jenkins_home/keystore/jenkins.jks --httpsKeyStorePassword="{{_jenkins_passphrase}}"
 
