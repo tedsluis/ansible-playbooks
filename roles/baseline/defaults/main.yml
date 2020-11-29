@@ -1,2 +1,31 @@
 ---
-# defaults file for baseline
+_accounts: ['root','someuseraccount']
+
+_etc_vimrc: /etc/vimrc
+
+_git_username: someaccountname
+
+_git_mail_address: emailname@domain
+
+_raspi_configtxt: /boot/efi/config.txt
+
+_mail_hubhost: smtp.domain
+
+_mail_hubport: 587
+
+_mail_address: emailname@domain
+
+_mail_password: password
+
+_tls_ca_file: /etc/ssl/certs/ca-bundle.trust.crt
+
+_timezone: Europe/Amsterdam
+
+_wants_crontab: true
+
+_wants_git: false
+
+_wants_ansible: false
+
+_wants_sshagent: false
+
