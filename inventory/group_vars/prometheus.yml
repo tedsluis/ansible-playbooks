@@ -7,5 +7,4 @@ _prometheus_groups:
   - { group: 'prometheus',gid: '1038' }
 _prometheus_users:
   - { user: 'prometheus',comment: 'user for prometheus',uid: '1038',groups: 'prometheus',create_home: 'false',shell: '/bin/nologin' }
-_prometheus_url: prometheus.bachstraat20.duckdns.org
 
