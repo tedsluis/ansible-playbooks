@@ -1,5 +1,4 @@
 ---
-_jenkins_base_url: jenkins.bachstraat20.duckdns.org
 _jenkins_firewall:
   - 5000/tcp
   - 8443/tcp

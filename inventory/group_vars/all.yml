@@ -266,6 +266,8 @@ _id_rsa: !vault |
 _id_rsa_pub:
   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6+TgVy21vI+DypuqmW7sPyDomWaekXjJMcUBDNb+2/PEAdUm4hzmZIYff+8vIYY8nnkJGHgiizfTXSCcZNlW1FvB6Y/ac+6KoEbaYWfbQPI4KWYChMciz2+ta6m1niBHfTCZ+pJLc9udlEsxWzmQWcqSyd1ZxN7eUD3pg7+7PJ0kqQk+7qjBXux2AAZLGhUdhrS8CxAbR1yWVmm8ZxqDvjqEIaz4UXwGcqx5AA0DOf+UvpQ9C1rHNxE9pBj1a42ZLY3AudLx6BJWtWm10lnMLTbtHZtT+bF1NwH/z7l0OkexxPAGWh8XUEswqyPDgcEG6xwQBD+7aYKUm78AWvpBp tedsluis@bachstraat20.duckdns.org
 
+_jenkins_hostname: jenkins.bachstraat20.duckdns.org
+
 _jenkins_passphrase: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37363735643933646338666565316435363364383565663536613235663536393939323564313139
