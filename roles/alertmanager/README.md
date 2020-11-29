@@ -27,11 +27,13 @@ Deploys alertmanager using ansible.
 * *packages* role
 * *users-and-groups* role
 
-## group_vars, host_vars and vault vars.
+## varibles
+
+default variable values can be found in [defaults/main.yml](defaults/main.yml)
 
 | var name                   | var source                      | description                              |
 |----------------------------|---------------------------------|------------------------------------------|
 | _alertmanager_image_tag    | inventory/group_vars/gitea.yml  | docker image tag prom/alertmanager:<tag> |
-| _slack_webhook_secret      | defaults/main.yml               | slack webhook secret                     |
+| _slack_webhook_secret      | inventory/group_vars/all.yml    | encrypted slack webhook secret           |
 
 
