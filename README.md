@@ -54,6 +54,18 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 | [users-and-groups](roles/users-and-groups) | [README.md](roles/users-and-groups/README.md)   |                                                           |
 
 
+## encrypted vars
+
+create encrypted var
+```bash
+$ ansible-vault encrypt_string  'SECRET' --name '_slack_webhook_secret'
+```
+
+show encrypted var
+```bash
+$ ansible -i "localhost," all  -m debug -a 'msg="{{ _slack_webhook_secret }}"'  -e@roles/alertmanager/defaults/main.yml
+```
+
 ## Used port, users, groups
 
 <details>

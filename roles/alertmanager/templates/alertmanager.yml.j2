@@ -2,7 +2,7 @@ global:
     resolve_timeout: 5m
     http_config:
       proxy_url: 
-    slack_api_url: 'https://hooks.slack.com/services/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'
+    slack_api_url: 'https://hooks.slack.com/services/{{_slack_webhook_secret}}'
 route:
   receiver: global
   group_by: ['...']
@@ -23,4 +23,3 @@ receivers:
         {{ '{{' }} end {{ '}}' }}
 - name: devnull
 templates: []
-##
