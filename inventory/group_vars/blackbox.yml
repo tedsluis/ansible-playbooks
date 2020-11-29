@@ -7,6 +7,5 @@ _blackbox_groups:
   - { group: 'blackbox',gid: '1040' }
 _blackbox_users:
   - { user: 'blackbox',comment: 'user for blackbox',uid: '1040',groups: 'blackbox',create_home: 'false',shell: '/bin/nologin' }
-_blackbox_url: blackbox.bachstraat20.duckdns.org
 
 
