@@ -9,17 +9,14 @@ Deploys grafana using ansible.
 
 ## documentation
 
-* https://prometheus.io/docs/alerting/latest/alertmanager/
-* https://github.com/prometheus/alertmanager
-* https://hub.docker.com/r/prom/alertmanager
+* https://grafana.com/docs/
+* https://github.com/grafana/grafana
+* https://hub.docker.com/r/grafana/grafana/
 
-## Requirements
-
-- slack webhook url, see [defaults](defaults/main.yml)
 
 ## dependecies
 
-* host must belong to inventory group *alertmanager* with *inventory/group_vars/alertmanager.yml*
+* host must belong to inventory group *grafana* with *inventory/group_vars/grafana.yml*
 * *dnsmasq* role
 * *firewall* role
 * *letsencrypt* role
