@@ -1,7 +1,9 @@
 ---
 # defaults file for roledonnachrony
 _chronyservers:
+  - 216.239.35.0
+  - 216.239.35.4
   - 0.nl.pool.ntp.org
   - 1.nl.pool.ntp.org
-  - 2.nl.pool.ntp.org
   - 3.nl.pool.ntp.org
+  - 4.nl.pool.ntp.org

@@ -91,6 +91,14 @@ _blackbox_http_nodeexporter_2xx_targets:
 _blackbox_http_jenkins_2xx_targets:
   - https://jenkins.bachstraat20.duckdns.org:8443
 
+_chronyservers:
+  - 216.239.35.0
+  - 216.239.35.4
+  - 0.nl.pool.ntp.org
+  - 1.nl.pool.ntp.org
+  - 3.nl.pool.ntp.org
+  - 4.nl.pool.ntp.org
+
 _dockerio_username: tedsluis
 
 _dockerio_token: !vault |
