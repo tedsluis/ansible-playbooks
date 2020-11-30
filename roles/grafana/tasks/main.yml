@@ -153,7 +153,7 @@
 
 - name: "pause until grafana is reachable"
   uri:
-    url: "https://{{_grafana_url}}:3000/login"
+    url: "https://{{_grafana_hostname}}:3000/login"
     follow_redirects: none
     method: GET
   register: _result
