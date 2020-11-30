@@ -1,0 +1,24 @@
+_gitea_admin_user: admin
+_gitea_admin_password: somepassword
+_mail_address: email.domain
+_postgres_password_giteadb: somepassword
+_gitea_image_tag: 1
+_gitea_secret_key: somekey
+_gitea_internal_token: sometoken
+_gitea_jwt_secret: somesecret
+_gitea_lfs_jwt_secret: somesecret
+_gitea_properties: 
+  appname: 'gitea'
+  podman_network: 'gitea'
+  ui_port: '3000'
+  ssh_port: '2222'
+  domain: 'git.somedomain'
+  sshdomain: 'git.somedomain'
+  run_user: 'git'
+  uid: '1033'
+  gid: '1033'
+  db_port: '5432'
+  db_host: 'postgres-gitea'
+  db_name: 'giteadb'
+  db_user: 'giteadb'
+  password_var: '_postgres_password_giteadb'

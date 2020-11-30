@@ -26,15 +26,20 @@ Deploys a gitea container:
 
 ## group_vars, host_vars and vault vars.
 
+default variable values can be found in [defaults/main.yml](defaults/main.yml)
+
 | var name                   | var source                      | description                        |
 |----------------------------|---------------------------------|------------------------------------|
-| _postgres_password_giteadb | inventory/group_vars/vault.yaml | postgres password                  |
+| _gitea_admin_user          | inventory/group_vars/gitea.yml  | admin user                         |
+| _gitea_admin_password      | inventory/group_vars/all.yml    | encrypted admin password           |
+| _mail_address              | inventory/group_vars/all.yml    | email address                      |
+| _postgres_password_giteadb | inventory/group_vars/all.yaml   | encrypted postgres password        |
 | _gitea_image_tag           | inventory/group_vars/gitea.yml  | docker image tag gitea/gitea:<tag> |
 | _gitea_properties          | inventory/group_vars/gitea.yml  | properties gitea, see below        |
-| _gitea_secret_key          | inventory/group_vars/vault.yaml | random at every install            |
-| _gitea_internal_token      | inventory/group_vars/vault.yaml | random at every install            |
-| _gitea_jwt_secret:         | inventory/group_vars/vault.yaml | unique string                      |
-| _gitea_lfs_jwt_secret      | inventory/group_vars/vault.yaml | unique string                      |
+| _gitea_secret_key          | inventory/group_vars/all.yaml   | encrypted random at every install  |
+| _gitea_internal_token      | inventory/group_vars/all.yaml   | encrypted random at every install  |
+| _gitea_jwt_secret:         | inventory/group_vars/all.yaml   | encrypted unique string            |
+| _gitea_lfs_jwt_secret      | inventory/group_vars/all.yaml   | encrypted unique string            |
 
 
 In *inventory/group_vars/gitea.yml* or in *inventory/host_var/somehost.yml*:
@@ -59,5 +64,4 @@ _gitea_properties:
 ## notes
 
 * create a dns record for the *domain* and *sshdomain*.
-* for SSH, add public key(s) and update/resync for the site admin dashboard.
-* 
+* for SSH, add public key(s) and update/resync for the site admin dashboard. 
