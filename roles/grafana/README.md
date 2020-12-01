@@ -27,11 +27,11 @@ Deploys grafana using ansible.
 
 default variable values can be found in [defaults/main.yml](defaults/main.yml)
 
-| var name                   | var source                       | description                              |
-|----------------------------|----------------------------------|------------------------------------------|
-| _grafana_admin_password    | inventory/group_vars/all.yml     | encrypted grafana password               |
-| _grafana_image_tag         | inventory/group_vars/grafana.yml | docker image tag grafana:grafana:<tag>   |
-| _grafana_hostname          | inventory/group_vars/all.yml     | grafana hostname                         |
-| _letsencrypt_hostname      | inventory/group_vars/all.yml     | Letsencrypt inventory hostname           |
-| _prometheus_hostname       | inventory/group_vars/all.yml     | prometheus hostname                      |
+| var name                        | var source                           | description                              |
+|---------------------------------|--------------------------------------|------------------------------------------|
+| _grafana_admin_password         | inventory/group_vars/grafana.yml     | encrypted grafana password               |
+| _grafana_image_tag              | inventory/group_vars/grafana.yml     | docker image tag grafana:grafana:<tag>   |
+| _grafana_hostname               | inventory/group_vars/grafana.yml     | grafana hostname                         |
+| _letsencrypt_inventory_hostname | inventory/group_vars/letsencrypt.yml | Letsencrypt inventory hostname           |
+| _prometheus_fqdn                | inventory/group_vars/prometheus.yml  | prometheus hostname                      |
 

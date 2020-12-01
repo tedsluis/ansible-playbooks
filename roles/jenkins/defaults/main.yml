@@ -7,4 +7,4 @@ _jenkins_fqdn: jenkins.domain
 _jenkins_plugins:
   - pluginname
   - pluginname
-_letsencrypt_hostname: _letsencrypt_inventory_hostname
+_letsencrypt_inventory_hostname: _letsencrypt_inventory_hostname

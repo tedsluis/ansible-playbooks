@@ -1,6 +1,6 @@
 ---
 _grafana_admin_password: admin
 _grafana_image_tag: latest
-_letsencrypt_hostname: letsencrypt_inventory_hostname
+_letsencrypt_inventory_hostname: letsencrypt_inventory_hostname
 _grafana_hostname: grafana.domain
 _prometheus_hostname: prometheus.domain
