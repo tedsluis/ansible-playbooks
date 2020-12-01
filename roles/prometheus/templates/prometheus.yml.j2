@@ -9,7 +9,7 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
-       - {{_alertmanager_hostname}}:9093
+       - {{hostvars[groups["alertmanager"][0]]["_alertmanager_fqdn"]}}:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:

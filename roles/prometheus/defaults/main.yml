@@ -1,6 +1,6 @@
 ---
 
-_alertmanager_hostname: alertmanager.domain
+_alertmanager_fqdn: alertmanager.domain
 
 _awx_hostname: awx.domain
 _awx_password: awxpassword

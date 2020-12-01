@@ -33,8 +33,6 @@ _all_packages:
   - vim
   - wget
 
-_alertmanager_hostname: alertmanager.bachstraat20.duckdns.org
-
 _awx_hostname: awx.bachstraat20.duckdns.org
 
 _awx_password: !vault |

@@ -9,6 +9,8 @@ _alertmanager_packages:
 _alertmanager_groups:
   - { group: 'alertmanager',gid: '1041' }
 
+_alertmanager_fqdn: alertmanager.bachstraat20.duckdns.org
+
 _alertmanager_users:
   - { user: 'alertmanager',comment: 'user for alertmanager',uid: '1041',groups: 'alertmanager',create_home: 'false',shell: '/bin/nologin' }
 
