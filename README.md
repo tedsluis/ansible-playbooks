@@ -3,7 +3,7 @@
 ## Scope
 
 * raspberry 2b, 3b, 3b+, 4b-4gb, 4b-8gb
-* fedora 32,32
+* fedora 32, 33
 * ansible & ansible-vault
 
 
@@ -27,12 +27,22 @@
 | [inventory/all](inventory/all)                                     | main group         |
 | [inventory/host_vars/](inventory/host_vars/)                       | host files         |
 | [inventory/group_vars/](inventory/group_vars/)                     | group files        |
-| [inventory/group_vars/vault.yaml](inventory/group_vars/vault.yaml) | ansible vault file |
 
+## encrypted varibles
 
-To open ansible vault, store password in file and add environment variable to .bashrc:
+To decrypt ansible encrypted variables, store the password in file and add environment variable to .bashrc:
 ```bash
 $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
+```
+
+create encrypted variable
+```bash
+$ ansible-vault encrypt_string  'SECRET' --name '_slack_webhook_secret'
+```
+
+show encrypted variable
+```bash
+$ ansible -i "localhost," all  -m debug -a 'msg="{{ _slack_webhook_secret }}"'  -e@roles/alertmanager/defaults/main.yml
 ```
 
 
@@ -53,18 +63,6 @@ $ ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt
 | [ssh-keys-and-config](ssh-keys-and-config) | [README.md](roles/ssh-keys-and-config/README.md)|                                                           |
 | [users-and-groups](roles/users-and-groups) | [README.md](roles/users-and-groups/README.md)   |                                                           |
 
-
-## encrypted vars
-
-create encrypted var
-```bash
-$ ansible-vault encrypt_string  'SECRET' --name '_slack_webhook_secret'
-```
-
-show encrypted var
-```bash
-$ ansible -i "localhost," all  -m debug -a 'msg="{{ _slack_webhook_secret }}"'  -e@roles/alertmanager/defaults/main.yml
-```
 
 ## Used port, users, groups
 

@@ -139,5 +139,3 @@
 
 - name: trigger handelers
   meta: flush_handlers
-
-

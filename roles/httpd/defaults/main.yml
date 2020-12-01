@@ -1,0 +1,17 @@
+_httpd_image_tag: latest
+
+_httpd_sites:
+  - {sitename: 'somesitename',   url: 'somesitename.domain',  http_port: 'someport', https_port: 'someport' }
+  - {sitename: 'othersitename',  url: 'othersitename.domain', http_port: 'someport', https_port: 'someport' }
+
+_httpd_users:
+  - { user: 'httpd',comment: 'user for apache httpd',uid: 'someid',groups: 'httpd',create_home: 'false',shell: '/bin/nologin' }
+
+_blackbox_http_2xx_targets:
+  - hostname.domain
+  - hostname.domain
+
+_blackbox_http_jenkins_2xx_targets:
+  - jenkinshost.domain
+
+_mail_address: email@domain
