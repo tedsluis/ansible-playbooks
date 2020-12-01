@@ -1,14 +1,20 @@
 ---
+
 _jenkins_firewall:
   - 5000/tcp
   - 8443/tcp
+
 _jenkins_groups:
   - { group: 'jenkins',gid: '1037' }
+
 _jenkins_users:
   - { user: 'jenkins',comment: 'user for jenkins',uid: '1037',groups: 'jenkins',create_home: 'false',shell: '/bin/nologin' }
+
 _jenkins_packages:
   - podman
+
 _jenkins_image_tag: 2.262-alpine-arm64
+
 _jenkins_plugins:
   - cloudbees-folder:latest
   - pipeline-stage-view:latest
@@ -17,6 +23,25 @@ _jenkins_plugins:
   #- gradle:latest
   #- mailer:latest
   #- timestamper:latest
+
+_jenkins_fqdn: jenkins.bachstraat20.duckdns.org
+
+_jenkins_passphrase: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37363735643933646338666565316435363364383565663536613235663536393939323564313139
+          6364363131643361323930613735376336663532313865650a376166363536636437396164363535
+          33343033363832326236303832643438643563303338626133626234663735383064323337373263
+          6439616637636163370a376131343337333133326632613261373239396232363863623466623464
+          6463
+
+_jenkins_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62343731613432656538623533376134303039376338353463306535383261383539303335623862
+          3434316535646565623763643832666562393363353536370a313065653964336234616339353232
+          64623261666163313662386234643666386565623636396239333033666639356565303333343837
+          3733343331383331360a633637383561666561386165346337623064333261386434623938616638
+          6339
+
 _packages_for_jenkins:
   - ansible 
   - ca-certificates 

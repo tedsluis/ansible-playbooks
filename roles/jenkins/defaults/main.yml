@@ -3,7 +3,7 @@ _jenkins_user: admin
 _jenkins_password: somepassword
 _jenkins_passphrase: somepassphrase
 _jenkins_image_tag: latest
-_jenkins_hostname: jenkins.domain
+_jenkins_fqdn: jenkins.domain
 _jenkins_plugins:
   - pluginname
   - pluginname
