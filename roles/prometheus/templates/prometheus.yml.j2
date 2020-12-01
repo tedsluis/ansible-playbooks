@@ -91,4 +91,4 @@ scrape_configs:
         password: {{_awx_password}}
     static_configs:
         - targets:
-            - {{_awx_hostname}}
+            - {{hostvars[groups["alertmanager"][0]]["_awx_fqdn"]}}

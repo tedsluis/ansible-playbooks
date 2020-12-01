@@ -35,4 +35,4 @@ default variable values can be found in [defaults/main.yml](defaults/main.yml)
 | _dockerio_username               | inventory/group_vars/all.yml    | docker registry username                 |
 | _dockerio_token                  | inventory/group_vars/all.yml    | docker registry token                    |
 | _letsencrypt_hostname            | inventory/group_vars/all.yml    | fqdn letsencrypt host                    |
-| _awx_hostname                    | inventory/group_vars/all.yml    | fqdn awx host                            |
+| _awx_fqdn                    | inventory/group_vars/all.yml    | fqdn awx host                            |
