@@ -31,8 +31,7 @@ default variable values can be found in [defaults/main.yml](defaults/main.yml)
 |----------------------------|----------------------------------|------------------------------------------|
 | _grafana_admin_password    | inventory/group_vars/all.yml     | encrypted grafana password               |
 | _grafana_image_tag         | inventory/group_vars/grafana.yml | docker image tag grafana:grafana:<tag>   |
-| _letsencrypt_hostname      | inventory/group_vars/all.yml     | Letsencrypt inventory hostname           |
 | _grafana_hostname          | inventory/group_vars/all.yml     | grafana hostname                         |
+| _letsencrypt_hostname      | inventory/group_vars/all.yml     | Letsencrypt inventory hostname           |
 | _prometheus_hostname       | inventory/group_vars/all.yml     | prometheus hostname                      |
-
 
