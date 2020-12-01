@@ -1,0 +1,15 @@
+---
+_letsencrypt_image_tag: latest
+
+_letsencrypt_domain: domain
+
+_letsencrypt_staging: false
+
+_duckdns_token: someduckdnstoken
+
+_letsencrypt_users: 
+  - { user: 'letsencrypt',comment: 'user for swag letsencrypt',uid: 'someid',groups: 'letsencrypt',create_home: 'false',shell: '/bin/nologin' }
+
+_mail_address: email.domain
+
+_timezone: sometimezone

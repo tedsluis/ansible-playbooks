@@ -22,6 +22,8 @@ Deploys a letsencrypt swag container:
 
 ## group_vars, host_vars and vault vars.
 
+default variable values can be found in [defaults/main.yml](defaults/main.yml)
+
 | var name               | var source                           | description                             |
 |------------------------|--------------------------------------|-----------------------------------------|
 | _duckdns_token         | inventory/group_vars/vault.yaml      | your duckdn token                       |
