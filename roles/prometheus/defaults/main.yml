@@ -5,7 +5,7 @@ _alertmanager_fqdn: alertmanager.domain
 _awx_fqdn: awx.domain
 _awx_password: awxpassword
 
-_blackbox_hostname: blackbox.domain
+_blackbox_fqdn: blackbox.domain
 _blackbox_http_2xx_targets: 
   - http://hostname1.domain:80
   - http://hostname2.domain:8080
