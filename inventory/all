@@ -12,6 +12,7 @@ prometheus
 nfsserver
 
 [all]
+fed120
 fed127
 fed130
 fed143
@@ -46,6 +47,7 @@ fed149
 fed143
 
 [nfsclient]
+fed120
 fed127
 fed130
 fed143
@@ -58,6 +60,7 @@ fed160
 fed149
 
 [nodeexporter]
+fed120
 fed127
 fed130
 fed143
