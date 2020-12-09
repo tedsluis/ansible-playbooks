@@ -1,9 +1,22 @@
 _postgres_image_tag: 9.6
+
 _postgres_groups: 
   - { group: 'postgres',gid: '1036' }
+
 _postgres_users: 
   - { user: 'postgres',comment: 'user for postgres',uid: '1036',groups: 'postgres',create_home: 'false',shell: '/bin/nologin' }
+
 _postgres_packages: 
   - podman
   - dnsmasq
+
 _wants_dnsmasq: true
+
+_postgres_password_giteadb: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38633837626335323335633834333135346335333066383135383265636464313661326436353061
+          6164346566653637383166386639643339346133613562340a643837633735663830663337646265
+          65356463383761323861616464366366623866356638613663333134353162636531373861306364
+          6461616630313635610a636566336438646136346438623639623931643034343161343836663832
+          6262
+
