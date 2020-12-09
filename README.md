@@ -2,7 +2,7 @@
 
 ## Scope
 
-* raspberry 2b, 3b, 3b+, 4b-4gb, 4b-8gb
+* raspberry 2b, 3b, 3b+, 4b-4gb, 4b-8gb, Lenovo Thinkpad T580, Intel Nuc
 * fedora 32, 33
 * ansible & ansible-vault
 

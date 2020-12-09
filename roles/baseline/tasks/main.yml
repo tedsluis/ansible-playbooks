@@ -39,6 +39,7 @@
   loop: "{{ _accounts }}"
 
 - include: raspi-config.yml
+  when: "'raspberry' in _host_type"
 
 - include: sshagent.yml
   when: _wants_sshagent|bool == true
