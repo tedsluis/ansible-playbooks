@@ -9,7 +9,7 @@ alerting:
   alertmanagers:
   - static_configs:
     - targets:
-       - {{hostvars[groups["alertmanager"][0]]["_alertmanager_fqdn"]}}:9093
+       - {{hostvars[groups['alertmanager'][0]]['_alertmanager_fqdn']}}:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
@@ -51,7 +51,7 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-{% for target in _blackbox_http_2xx_targets %}
+{% for target in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_targets'] %}
          - "{{ target }}"
 {% endfor %}
     relabel_configs:
@@ -60,7 +60,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: {{hostvars[groups["blackbox"][0]]["_blackbox_fqdn"]}}:9115
+        replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
 
   - job_name: 'blackbox-nodeexporter-200'
     metrics_path: /probe
@@ -68,7 +68,7 @@ scrape_configs:
       module: [http_nodeexporter_2xx]
     static_configs:
       - targets:
-{% for target in _blackbox_http_nodeexporter_2xx_targets %}
+{% for target in hostvars[groups['blackbox'][0]]['_blackbox_http_nodeexporter_2xx_targets'] %}
          - "{{ target }}"
 {% endfor %}
     relabel_configs:
@@ -77,7 +77,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: {{hostvars[groups["blackbox"][0]]["_blackbox_fqdn"]}}:9115
+        replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
 
   - job_name: 'tower'
     #tls_config:
@@ -91,4 +91,4 @@ scrape_configs:
         password: {{_awx_password}}
     static_configs:
         - targets:
-            - {{hostvars[groups["awx"][0]]["_awx_fqdn"]}}
+            - {{hostvars[groups['awx'][0]]['_awx_fqdn']}}
