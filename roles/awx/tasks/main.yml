@@ -59,7 +59,7 @@
     - { match: 'ssl_certificate_key'     ,replace: 'ssl_certificate_key=/var/lib/awx/data/privkey.pem'}
 
 - name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
-  delegate_to: "{{hostvars[groups["letsencrypt"][0]]["_letsencrypt_fqdn"]}}"
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
@@ -185,7 +185,7 @@
     follow_redirects: none
     method: GET
     user: awx
-    password: {{_awx_password}}
+    password: "{{_awx_password}}"
   register: _result
   until: _result.status == 200
   retries: 60 # 60 * 5 seconds = 5 minutes
