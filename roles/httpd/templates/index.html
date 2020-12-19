@@ -8,11 +8,11 @@
   <h3>PAGE NAME: {{item[1].pagename}}</h3>
   <h3>SITE NAME: {{item[0].sitename}}</h3>
   <h3>_blackbox_http_2xx_targets URLs:</h3>
-  <p>{% for _url in _blackbox_http_2xx_targets %}
+  <p>{% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_targets'] %}
   <a href="{{ _url }}">{{_url}}</a><br>
   {% endfor %}</p>
   <h3>_blackbox_http_jenkins_2xx_targets URLs:</h3>
-  <p>{% for _url in _blackbox_http_jenkins_2xx_targets %}
+  <p>{% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_jenkins_2xx_targets'] %}
   <a href="{{_url}}">{{_url}}</a><br>
   {% endfor %}</p>
   <h3>PAGE URLs:</h3><p>
