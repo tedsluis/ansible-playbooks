@@ -1,7 +1,10 @@
 [Unit]
 Description=dnf update -y
+Requires=network-online.target
+After=network-online.target
 
 [Service]
 Type=oneshot
+ExecStartPre=/bin/sleep 30
 ExecStart=/usr/bin/dnf update -y
 
