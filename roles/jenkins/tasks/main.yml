@@ -86,7 +86,7 @@
   notify: _restart_jenkins
 
 - name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
-  delegate_to: "{{_letsencrypt_inventory_hostname}}"
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
   run_once: yes
   fetch:
     src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
