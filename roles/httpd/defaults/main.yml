@@ -4,8 +4,8 @@ _httpd_sites:
   - {sitename: 'somesitename',   url: 'somesitename.domain',  http_port: 'someport', https_port: 'someport' }
   - {sitename: 'othersitename',  url: 'othersitename.domain', http_port: 'someport', https_port: 'someport' }
 
-_httpd_users:
-  - { user: 'httpd',comment: 'user for apache httpd',uid: 'someid',groups: 'httpd',create_home: 'false',shell: '/bin/nologin' }
+#_httpd_users:
+#  - { user: 'httpd',comment: 'user for apache httpd',uid: 'someid',groups: 'httpd',create_home: 'false',shell: '/bin/nologin' }
 
 _blackbox_http_2xx_targets:
   - hostname.domain
