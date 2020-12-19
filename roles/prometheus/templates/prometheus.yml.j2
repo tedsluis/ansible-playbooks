@@ -52,7 +52,7 @@ scrape_configs:
     static_configs:
       - targets:
 {% for target in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_targets'] %}
-         - "{{ target }}"
+        - "{{ target }}"
 {% endfor %}
     relabel_configs:
       - source_labels: [__address__]
@@ -69,8 +69,25 @@ scrape_configs:
     static_configs:
       - targets:
 {% for target in hostvars[groups['blackbox'][0]]['_blackbox_http_nodeexporter_2xx_targets'] %}
-         - "{{ target }}"
+        - "{{ target }}"
 {% endfor %}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
+
+  - job_name: 'blackbox-nodeexporter-dns_test'
+    metrics_path: /probe
+    params:
+      module: [dns_test]
+    static_configs:
+      - targets:
+        - 8.8.4.4
+        - 8.8.8.8
+        - 192.168.1.17
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

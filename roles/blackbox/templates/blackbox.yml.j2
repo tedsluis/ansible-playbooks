@@ -54,4 +54,10 @@ modules:
   icmp:
     prober: icmp
     timeout: 5s
-
+  dns_test:
+    prober: dns
+    timeout: 5s
+    dns:
+      query_name: home.bachstraat20.duckdns.org
+      preferred_ip_protocol: ip4
+      ip_protocol_fallback: false
