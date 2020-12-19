@@ -25,10 +25,14 @@ _blackbox_http_2xx_targets:
   - http://home.bachstraat20.duckdns.org:31080
   - https://pihole.bachstraat20.duckdns.org
   - http://prometheus.bachstraat20.duckdns.org:9090
-  - http://192.168.11.1
-  - http://192.168.1.254
-  - http://192.168.11.200
-  - http://192.168.11.201
+  - http://personalcloud
+  - http://ziggorouter
+  - http://netgear-gs274t
+  - http://rb750
+  - http://deco-slaapkamer-stijn
+  - http://deco-studeerkamer
+  - http://deco-studeerkamer
+  - http://deco-woonkamer
 
 _blackbox_http_nodeexporter_2xx_targets:
   - https://fed127.bachstraat20.duckdns.org:9100
