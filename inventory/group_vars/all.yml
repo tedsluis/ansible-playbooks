@@ -82,6 +82,15 @@ _fqdns:
   - { ip: '192.168.11.160',  fqdn: 'alertmanager.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:     'blackbox.bachstraat20.duckdns.org' }
 
+_hostnames:
+  - { ip: '192.168.11.169', hostname: 'personalcloud' }
+  - { ip: '192.168.1.254',  hostname: 'ziggorouter' }
+  - { ip: '192.168.11.200', hostname: 'netgear-gs274t' }
+  - { ip: '192.168.11.1',   hostname: 'rb750' }
+  - { ip: '192.168.11.146', hostname: 'deco-slaapkamer-stijn' }
+  - { ip: '192.168.11.147', hostname: 'deco-studeerkamer' }
+  - { ip: '192.168.11.148', hostname: 'deco-woonkamer' }
+
 _id_rsa: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           31653533623538646530393362653739346331666239616337633538656336666435653439353263
