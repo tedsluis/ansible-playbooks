@@ -39,7 +39,7 @@
       mode: 664
     tags: scrapers
     become: true
-    delegate_to: "{{_prometheus_hostname}}"
+    delegate_to: "{{hostvars[groups['prometheus'][0]]['_prometheus_hostname']}}"
     run_once: true
 
   - name: get postgress nodes
@@ -59,7 +59,7 @@
       mode: 664
     tags: scrapers
     become: true
-    delegate_to: "{{_prometheus_hostname}}"
+    delegate_to: "{{hostvars[groups['prometheus'][0]]['_prometheus_hostname']}}"
     run_once: true
 
 
