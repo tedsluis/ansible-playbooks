@@ -1,0 +1,7 @@
+unbind C-b
+set -g prefix C-a
+bind a send-prefix
+set -g status-bg {{_status_background_tmux|default('red')}}
+set -g status-fg {{_status_forground_tmux |default('white')}}
+set -g allow-rename off
+set -g default-terminal "screen-256color"

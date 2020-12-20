@@ -9,9 +9,9 @@
 - set_fact:
     _home_directory: "{{getent_passwd[item][4]}}"
 
-- name: "copies tmux.conf to {{ _home_directory }}/.tmux.conf"
-  copy:
-    src: 'files/tmux.conf'
+- name: "copies template tmux.conf.j2 to {{ _home_directory }}/.tmux.conf"
+  template:
+    src: 'tmux.conf.j2'
     dest: "{{ _home_directory }}/.tmux.conf"
     owner: "{{ item }}"
     group: "{{ item }}"

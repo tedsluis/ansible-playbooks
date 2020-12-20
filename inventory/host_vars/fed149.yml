@@ -5,3 +5,6 @@ _wants_git: true
 _wants_private_key: true
 _wants_sshagent: true
 _host_type: raspberry-4b-4gb
+_status_background_tmux: magenta
+_status_forground_tmux: white
+

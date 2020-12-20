@@ -24,6 +24,14 @@
     state: present
     line: 'alias grep="grep --color=auto"'
   become: true
+
+- name: default editor into .bashrc
+  lineinfile:
+    dest: "{{_home_directory}}/.bashrc"
+    regexp: '^\s*(export)?\s*EDITOR'
+    state: present
+    line: 'export EDITOR=/usr/bin/vim'
+  become: true
     
 - name: change file ownership, group and permissions .bashrc
   file:
