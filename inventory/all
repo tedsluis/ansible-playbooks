@@ -21,6 +21,8 @@ fed157
 fed159
 fed160
 pihole
+msi
+lenovo
 
 [awx]
 fed149
@@ -55,6 +57,8 @@ fed149
 fed157
 fed159
 fed160
+lenovo
+msi
 
 [nfsserver]
 fed149

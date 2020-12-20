@@ -3,7 +3,7 @@
 - name: provision
 
   hosts:
-    - fed120,fed129,fed130,fed143,fed149,fed160,fed159,fed157
+    - fed120,fed129,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo
 
   vars:
     ansible_user: ansible

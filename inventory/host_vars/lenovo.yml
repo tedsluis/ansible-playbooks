@@ -1,0 +1,8 @@
+_hostname: lenovo
+_ip_address: '192.168.11.172'
+_wants_ansible: true
+_wants_git: true
+_wants_private_key: true
+_wants_sshagent: true
+_host_type: nuc
+
