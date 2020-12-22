@@ -1,0 +1,63 @@
+---
+
+#- name: create snmpexporter directories
+#  file:
+#    path: "{{item.directory}}"
+#    owner: "{{item.owner}}"
+#    group: "{{item.group}}"
+#    mode: "{{item.mode}}"
+#    state: directory
+#  become: true
+#  with_items:
+#    - { directory: "/var/lib/snmpexporter"       ,owner: "snmpexporter" ,group: "snmpexporter" ,mode: "0777" }
+#    - { directory: "/var/lib/snmpexporter/config",owner: "snmpexporter" ,group: "snmpexporter" ,mode: "0777" }
+#
+- name: "pull docker.io/prom/snmp-exporter:{{_snmpexporter_image_tag}} image"
+  shell: |
+    podman pull docker.io/prom/snmp-exporter:{{_snmpexporter_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+    #- name: create /var/lib/snmpexporter/config/snmp.yml
+    #  template:
+    #    src: snmp.yml.j2
+    #    dest: /var/lib/snmpexporter/config/snmp.yml
+    #    owner: snmpexporter
+    #    group: snmpexporter
+    #    mode: 0664
+    #  become: true
+    #  notify: _restart_snmpexporter
+
+- name: create /etc/systemd/system/snmpexporter.service
+  template:
+    src: snmpexporter.service.j2
+    dest: /etc/systemd/system/snmpexporter.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_snmpexporter
+
+- name: start and enable snmpexporter.service
+  systemd:
+    name: snmpexporter
+    state: started
+    enabled: true
+  become: true
+
+- name: snmpexporter container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=snmpexporter'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

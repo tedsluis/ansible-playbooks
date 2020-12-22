@@ -1,0 +1,4 @@
+---
+_node_exporter_auth_pass: password
+
+_snmpexporter_image_tag: latest

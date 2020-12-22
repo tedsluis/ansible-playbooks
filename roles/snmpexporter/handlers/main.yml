@@ -1,0 +1,25 @@
+---
+
+- name: stop snmpexporter.service
+  listen: _restart_snmpexporter
+  systemd:
+    name: snmpexporter
+    state: stopped
+  become: true
+  
+- name: daemon reload snmpexporter.service
+  listen: _restart_snmpexporter
+  systemd:
+    name: snmpexporter
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start snmpexporter.service
+  listen: _restart_snmpexporter
+  systemd:
+    name: snmpexporter
+    state: started
+  become: true
+
+

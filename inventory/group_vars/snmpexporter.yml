@@ -1,0 +1,19 @@
+_snmpexporter_image_tag: latest
+
+_snmpexporter_firewall:
+  - 9116/tcp
+
+_snmpexporter_packages:
+  - podman
+
+_snmpexporter_groups:
+  - { group: 'snmpexporter',gid: '1042' }
+
+_snmpexporter_users:
+  - { user: 'snmpexporter',comment: 'user for snmpexporter',uid: '1042',groups: 'snmpexporter',create_home: 'false',shell: '/bin/nologin' }
+
+_snmpexporter_fqdn: snmpexporter.bachstraat20.duckdns.org
+
+
+
+

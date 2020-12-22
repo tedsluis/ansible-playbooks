@@ -82,3 +82,8 @@ fed143
 
 [prometheus]
 fed160
+
+[snmpexporter]
+fed160
+
+
