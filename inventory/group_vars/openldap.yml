@@ -1,0 +1,27 @@
+_openldap_image_tag: 1.4.0
+
+_openldap_firewall:
+  - 389/tcp
+  - 636/tcp
+  - 6443/tcp
+
+_openldap_packages:
+  - podman
+
+_openldap_groups:
+  - { group: 'ldap',gid: '1043' }
+
+_openldap_users:
+  - { user: 'ldap',comment: 'user for ldap',uid: '1043',groups: 'ldap',create_home: 'false',shell: '/bin/nologin' }
+
+_openldap_hostname: ldap.bachstraat20.duckdns.org
+
+_openldap_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          33316334653634646630356265653638343838373831633263646536386436356263663263353964
+          3230373234663166336431333236316234643834346636390a646661643233653736643534646235
+          36396463336331626564313961316164303564323066666435333561616136626465326535646330
+          3165633231633039320a366233396633613566363961623365636239663937653330646261383537
+          6137
+
+_phpldapadmin_image_tag: 0.9.0

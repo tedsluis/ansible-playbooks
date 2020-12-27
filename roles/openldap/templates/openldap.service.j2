@@ -1,0 +1,57 @@
+[Unit]
+Description=Openldap
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=openldap \
+                              -p 389:389 \
+                              -p 636:636 \
+                              --network openldap \
+                              -v /var/lib/openldap/data:/var/lib/ldap:z \
+                              -v /var/lib/openldap/config:/etc/ldap/slapd.d:z \
+                              -v /var/lib/openldap/certs:/container/service/slapd/assets/certs/:z \
+                              --restart unless-stopped \
+                              -e LDAP_LOG_LEVEL=256 \
+                              -e LDAP_ORGANISATION=bachstraat20 \
+                              -e LDAP_DOMAIN=bachstraat20.duckdns.org \
+                              -e LDAP_BASE_DN="" \
+                              -e LDAP_ADMIN_PASSWORD={{_openldap_admin_password}} \
+                              -e LDAP_CONFIG_PASSWORD={{_openldap_admin_password}} \
+                              -e LDAP_READONLY_USER=true \
+                              -e LDAP_READONLY_USER_USERNAME=readonly \
+                              -e LDAP_READONLY_USER_PASSWORD={{_openldap_readonly_password}} \
+                              -e LDAP_RFC2307BIS_SCHEMA=false \
+                              -e LDAP_BACKEND=mdb \
+                              -e LDAP_TLS=false \
+                              -e LDAP_TLS_CRT_FILENAME=fullchain.pem \
+                              -e LDAP_TLS_KEY_FILENAME=privkey.pem \
+                              -e LDAP_TLS_DH_PARAM_FILENAME=dhparam.pem \
+                              -e LDAP_TLS_CA_CRT_FILENAME=ca-bundle.trust.crt \
+                              -e LDAP_TLS_ENFORCE=false \
+                              -e LDAP_TLS_CIPHER_SUITE=SECURE256:-VERS-SSL3.0 \
+                              -e LDAP_TLS_VERIFY_CLIENT=demand \
+                              -e LDAP_REPLICATION=false \
+                              -e KEEP_EXISTING_CONFIG=false \
+                              -e LDAP_REMOVE_CONFIG_AFTER_SETUP=true \
+                              -e LDAP_SSL_HELPER_PREFIX=ldap \
+                              docker.io/osixia/openldap:{{_openldap_image_tag}}
+
+# -e LDAP_REPLICATION_CONFIG_SYNCPROV=binddn="cn=admin,cn=config" bindmethod=simple credentials=$$LDAP_CONFIG_PASSWORD searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical \
+# -e LDAP_REPLICATION_DB_SYNCPROV=binddn="cn=admin,$$LDAP_BASE_DN" bindmethod=simple credentials=$$LDAP_ADMIN_PASSWORD searchbase="$$LDAP_BASE_DN" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical \
+# -e LDAP_REPLICATION_HOSTS=#PYTHON2BASH:['ldap://ldap.example.org','ldap://ldap2.example.org'] \
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

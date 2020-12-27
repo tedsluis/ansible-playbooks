@@ -1,0 +1,149 @@
+---
+
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: create openldap directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/openldap"               ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+    - { directory: "/var/lib/openldap/data"          ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+    - { directory: "/var/lib/openldap/config"        ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+    - { directory: "/var/lib/openldap/certs"         ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+    - { directory: "/var/lib/openldap/phpldapadmins" ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+
+- name: create podman network if not exists
+  shell: |
+    if [[ $(podman network ls --format "{{ '{{' }}.Name{{ '}}' }}"  --filter 'name=openldap') == "" ]]; then podman network create openldap; fi
+  become: true
+
+- name: "pull docker.io/osixia/openldap:{{_openldap_image_tag}} and docker.io/osixia/phpldapadmin:{{_phpldapadmin_image_tag}}"
+  shell: |
+    podman pull {{item}}
+  register: _image_pull
+  become: true
+  with_items:
+    - docker.io/osixia/openldap:{{_openldap_image_tag}}
+    - docker.io/osixia/phpldapadmin:{{_phpldapadmin_image_tag}}
+
+- debug:
+    var: _image_pull
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: copy keys to /var/lib/openldap/certs
+  copy:
+    src: "/var/lib/certs/{{item}}"
+    dest: "/var/lib/openldap/certs/{{item}}"
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+  notify: 
+    - _restart_openldap
+    - _restart_phpldapadmin
+
+- name: copy /etc/ssl/certs/ca-bundle.crt
+  copy:
+    remote_src: true
+    src: /etc/ssl/certs/ca-bundle.crt
+    dest: /var/lib/openldap/certs/ca-bundle.crt
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: 
+    - _restart_openldap
+    - _restart_phpldapadmin
+
+- name: copy dhparam.pem
+  copy:
+    src: dhparam.pem
+    dest: /var/lib/openldap/certs/dhparam.pem
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: _restart_openldap
+
+- name: create /etc/systemd/system/openldap.service
+  template:
+    src: openldap.service.j2
+    dest: /etc/systemd/system/openldap.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_openldap
+
+- name: create /etc/systemd/system/phpldapadmin.service
+  template:
+    src: phpldapadmin.service.j2
+    dest: /etc/systemd/system/phpldapadmin.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_phpldapadmin
+
+- name: start and enable openldap.service
+  systemd:
+    name: openldap
+    state: started
+    enabled: true
+  become: true
+
+- name: start and enable phpldapadmin.service
+  systemd:
+    name: phpldapadmin
+    state: started
+    enabled: true
+  become: true
+
+- name: openldap container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=openldap'
+  register: _openldap_state
+  become: true
+
+- debug:
+    var: _openldap_state
+
+- name: phpldapadmin container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=phpldapadmin'
+  register: _phpldapadmin_state
+  become: true
+
+- debug:
+    var: _phpldapadmin_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

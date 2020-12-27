@@ -1,0 +1,47 @@
+---
+
+- name: stop openldap.service
+  listen: _restart_openldap
+  systemd:
+    name: openldap
+    state: stopped
+  become: true
+  
+- name: daemon reload openldap.service
+  listen: _restart_openldap
+  systemd:
+    name: openldap
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start openldap.service
+  listen: _restart_openldap
+  systemd:
+    name: openldap
+    state: started
+  become: true
+
+- name: stop phpldapadmin.service
+  listen: _restart_phpldapadmin
+  systemd:
+    name: phpldapadmin
+    state: stopped
+  become: true
+  
+- name: daemon reload phpldapadmin.service
+  listen: _restart_phpldapadmin
+  systemd:
+    name: phpldapadmin
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start phpldapadmin.service
+  listen: _restart_phpldapadmin
+  systemd:
+    name: phpldapadmin
+    state: started
+  become: true
+
+

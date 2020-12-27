@@ -77,10 +77,13 @@ _fqdns:
   - { ip: '192.168.11.149',  fqdn:      'jenkins.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.149',  fqdn:          'nfs.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.149',  fqdn:          'awx.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.157',  fqdn:         'ldap.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.157',  fqdn: 'phpldapadmin.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:   'prometheus.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:      'grafana.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn: 'alertmanager.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:     'blackbox.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn: 'snmpexporter.bachstraat20.duckdns.org' }
 
 _hostnames:
   - { ip: '192.168.11.169', hostname: 'personalcloud' }
@@ -207,6 +210,14 @@ _mail_password: !vault |
           63616663366438653362336539383434306362303232623631346536313864396137323065343532
           3836613062333730650a613537363334623037666539396435643539666164363230623034386261
           37353138643265653165376633353934353033646662613563663061643135633538
+
+_openldap_readonly_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66356463336564363635356637396531303130333465383237633464356364643237373763666233
+          3732613630663931346630303630643566306362396638390a643534666431633439633536666462
+          35336563306138636264353634663037373936336439376131653930613331663732643231613034
+          6438343134326439370a396362656562376565333836366330663836613135306432303733633238
+          6665
 
 _raspi_configtxt: '/boot/efi/config.txt'
 

@@ -74,6 +74,9 @@ fed159
 fed160
 pihole
 
+[openldap]
+fed157
+
 [pihole]
 pihole
 
