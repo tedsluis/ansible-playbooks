@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+
+- name: ldapclient
+
+  hosts:
+    - pihole,fed120,fed127,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - role: ldapclient
+    when: "'ldapclient' in group_names"
+

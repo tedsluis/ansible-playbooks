@@ -1,0 +1,10 @@
+---
+_ldapclient_client_packages:
+  - openldap-clients
+
+_ldap_client_settings:
+  - { key: 'BASE',       value: 'dc=bachstraat20,dc=duckdns,dc=org' }
+  - { key: 'URI',        value: 'ldaps://ldap.bachstraat20.duckdns.org:636' }
+  - { key: 'TLS_CACERT', value: '/etc/pki/tls/cert.pem' }
+  - { key: 'TIMELIMIT',  value: '15' }
+

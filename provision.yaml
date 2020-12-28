@@ -23,6 +23,8 @@
     when: _wants_dnsmasq|bool == true
   - role: pihole
     when: "'pihole' in group_names"
+  - role: ldapclient
+    when: "'ldapclient' in group_names"
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
   - role: jenkins

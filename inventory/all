@@ -4,6 +4,7 @@ blackbox
 gitea
 grafana
 httpd
+ldapclient
 letsencrypt
 nodeexporter
 pihole
@@ -44,6 +45,17 @@ fed143
 
 [jenkins]
 fed149
+
+[ldapclient]
+fed120
+fed127
+fed130
+fed143
+fed149
+fed157
+fed159
+fed160
+lenovo
 
 [letsencrypt]
 fed143

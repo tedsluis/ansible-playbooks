@@ -1,0 +1,11 @@
+---
+
+- name: configure ldap client
+  lineinfile:
+    dest: "/etc/openldap/ldap.conf"
+    regexp: "^{{item.key}}"
+    state: present
+    line: "{{item.key}} {{item.value}}"
+  become: true
+  with_items: "{{_ldap_client_settings}}"
+
