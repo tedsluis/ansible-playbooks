@@ -18,7 +18,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -e PHPLDAPADMIN_LDAP_HOSTS=ldap.bachstraat20.duckdns.org \
                               -e PHPLDAPADMIN_HTTPS_CRT_FILENAME=fullchain.pem \
                               -e PHPLDAPADMIN_HTTPS_KEY_FILENAME=privkey.pem \
-                              -e PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME=ca-bundle.trust.crt \
+                              -e PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME=ca-bundle.crt \
                               docker.io/osixia/phpldapadmin:{{_phpldapadmin_image_tag}} \
                               --loglevel debug
 

@@ -5,18 +5,9 @@
 
 Deploys openldap using ansible.
 
-* supports http (default port 9093)
-* support slack notifications
-
 ## documentation
 
-* https://prometheus.io/docs/alerting/latest/openldap/
-* https://github.com/prometheus/openldap
-* https://hub.docker.com/r/prom/openldap
-
 ## Requirements
-
-- slack webhook url, see [defaults](defaults/main.yml)
 
 ## dependecies
 
@@ -29,9 +20,15 @@ Deploys openldap using ansible.
 
 ## group_vars, host_vars and vault vars.
 
-| var name                   | var source                      | description                              |
-|----------------------------|---------------------------------|------------------------------------------|
-| _openldap_image_tag    | inventory/group_vars/gitea.yml  | docker image tag prom/openldap:<tag> |
-| _slack_webhook_secret      | defaults/main.yml               | slack webhook secret                     |
+| var name                 | var source                        | description                               |
+|--------------------------|-----------------------------------|-------------------------------------------|
+| _openldap_image_tag      | inventory/group_vars/openldap.yml | docker image tag osixia/openldap:<tag>    |
+| _phpldapadmin_image_tag  | inventory/group_vars/openldap.yml | docker image tag osixia/phpldapadmin:<tag>|
 
+## ldap search query
+
+```bash
+$ ldapsearch -x -H ldap://ldap.bachstraat20.duckdns.org:389 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD
+$ ldapsearch -x -H ldaps://ldap.bachstraat20.duckdns.org:636 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w 
+```
 
