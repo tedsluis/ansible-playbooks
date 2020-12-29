@@ -12,12 +12,10 @@ _snmpexporter_groups:
 _snmpexporter_users:
   - { user: 'snmpexporter',comment: 'user for snmpexporter',uid: '1042',groups: 'snmpexporter',create_home: 'false',shell: '/bin/nologin' }
 
-_snmpexporter_fqdn: snmpexporter.bachstraat20.duckdns.org
+  _snmpexporter_fqdn: snmpexporter.bachstraat20.duckdns.org
 
-_snmpexport_targets:
+  _snmpexporter_targets:
   - 192.168.11.1
   - 192.168.11.200
-
-
 
 
