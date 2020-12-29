@@ -14,7 +14,7 @@ _snmpexporter_users:
 
   _snmpexporter_fqdn: snmpexporter.bachstraat20.duckdns.org
 
-  _snmpexporter_targets:
+_snmpexporter_targets:
   - 192.168.11.1
   - 192.168.11.200
 
