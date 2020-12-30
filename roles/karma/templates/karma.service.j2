@@ -1,0 +1,27 @@
+[Unit]
+Description=Karma
+Wants=network.target
+After=network-online.target
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+ExecStartPre=-/usr/bin/rm -f /%t/%n-pid /%t/%n-cid
+ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
+                              --cidfile /%t/%n-cid \
+                              -d \
+                              --name=karma \
+                              -p 8080:8080 \
+                              -v /var/lib/karma/karma.yml:/etc/karma.yml:z \
+                              --restart unless-stopped \
+                              ghcr.io/prymitive/karma:{{_karma_image_tag}} \
+                              --config.file /etc/karma.yml
+
+ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
+PIDFile=/%t/%n-pid
+KillMode=none
+Type=forking
+
+[Install]
+WantedBy=multi-user.target default.target
+

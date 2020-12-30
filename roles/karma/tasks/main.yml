@@ -1,0 +1,62 @@
+---
+
+- name: create karma directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/karma" ,owner: "karma" ,group: "karma" ,mode: "0777" }
+
+- name: "pull ghcr.io/prymitive/karma:{{_karma_image_tag}} image"
+  shell: |
+    podman pull ghcr.io/prymitive/karma:{{_karma_image_tag}}
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: create /var/lib/karma/karma.yml
+  template:
+    src: karma.yml.j2
+    dest: /var/lib/karma/karma.yml
+    owner: karma
+    group: karma
+    mode: 0664
+  become: true
+  notify: _restart_karma
+
+- name: create /etc/systemd/system/karma.service
+  template:
+    src: karma.service.j2
+    dest: /etc/systemd/system/karma.service
+    owner: root
+    group: root
+    mode: 0664
+  register: _service
+  become: true
+  notify: _restart_karma
+
+- name: start and enable karma.service
+  systemd:
+    name: karma
+    state: started
+    enabled: true
+  become: true
+
+- name: karma container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=karma'
+  register: _container_state
+  become: true
+
+- debug:
+    var: _container_state
+
+- name: trigger handelers
+  meta: flush_handlers
+

@@ -1,0 +1,25 @@
+---
+
+- name: stop karma.service
+  listen: _restart_karma
+  systemd:
+    name: karma
+    state: stopped
+  become: true
+  
+- name: daemon reload karma.service
+  listen: _restart_karma
+  systemd:
+    name: karma
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start karma.service
+  listen: _restart_karma
+  systemd:
+    name: karma
+    state: started
+  become: true
+
+

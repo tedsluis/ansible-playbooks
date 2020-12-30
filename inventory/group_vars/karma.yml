@@ -1,0 +1,19 @@
+_karma_image_tag: latest
+
+_karma_firewall:
+  - 8080/tcp
+
+_karma_packages:
+  - podman
+
+_karma_groups:
+  - { group: 'karma',gid: '1044' }
+
+_karma_users:
+  - { user: 'karma',comment: 'user for karma',uid: '1044',groups: 'karma',create_home: 'false',shell: '/bin/nologin' }
+
+_karma_fqdn: karma.bachstraat20.duckdns.org
+
+
+
+

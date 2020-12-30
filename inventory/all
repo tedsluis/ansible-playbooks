@@ -4,6 +4,7 @@ blackbox
 gitea
 grafana
 httpd
+karma
 ldapclient
 letsencrypt
 nodeexporter
@@ -45,6 +46,9 @@ fed143
 
 [jenkins]
 fed149
+
+[karma]
+fed160
 
 [ldapclient]
 fed120

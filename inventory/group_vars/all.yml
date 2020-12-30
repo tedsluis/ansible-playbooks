@@ -84,6 +84,7 @@ _fqdns:
   - { ip: '192.168.11.160',  fqdn: 'alertmanager.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:     'blackbox.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn: 'snmpexporter.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.160',  fqdn:        'karma.bachstraat20.duckdns.org' }
 
 _hostnames:
   - { ip: '192.168.11.169', hostname: 'personalcloud' }

@@ -43,6 +43,8 @@
     when: "'prometheus' in group_names"
   - role: alertmanager
     when: "'alertmanager' in group_names"
+  - role: karma
+    when: "'karma' in group_names"
   - role: grafana
     when: "'grafana' in group_names"
     #  - role: awx
