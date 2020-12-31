@@ -25,6 +25,7 @@ _blackbox_http_2xx_targets:
   - http://home.bachstraat20.duckdns.org:30080
   - http://home.bachstraat20.duckdns.org:31080
   - http://karma.bachstraat20.duckdns.org:8080
+  - https://ldap.bachstraat20.duckdns.org:6443
   - https://pihole.bachstraat20.duckdns.org
   - http://prometheus.bachstraat20.duckdns.org:9090
   - http://personalcloud
