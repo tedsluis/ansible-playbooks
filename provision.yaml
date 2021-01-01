@@ -47,6 +47,6 @@
     when: "'karma' in group_names"
   - role: grafana
     when: "'grafana' in group_names"
-    #  - role: awx
-    #when: "'awx' in group_names"
+      - role: awx
+    when: "'awx' in group_names"
 

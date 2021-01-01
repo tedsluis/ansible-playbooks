@@ -181,7 +181,7 @@
 
 - name: "pause until awx is reachable"
   uri:
-    url: "http://{{_awx_fqdn}}:443/"
+    url: "https://{{_awx_fqdn}}:443/"
     follow_redirects: none
     method: GET
     user: awx
