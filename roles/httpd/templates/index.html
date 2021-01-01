@@ -5,16 +5,33 @@
     p  { font-family: "Lucida Console", Monaco, monospace; background-color: #f2f2f2; }
 </style>
   <body onload="javascript:myFunction()">
-  <h3>PAGE NAME: {{item[1].pagename}}</h3>
-  <h3>SITE NAME: {{item[0].sitename}}</h3>
-  <h3>_blackbox_http_2xx_targets URLs:</h3>
-  <p>{% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_targets'] %}
-  <a href="{{ _url }}">{{_url}}</a><br>
-  {% endfor %}</p>
-  <h3>_blackbox_http_jenkins_2xx_targets URLs:</h3>
-  <p>{% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_jenkins_2xx_targets'] %}
-  <a href="{{_url}}">{{_url}}</a><br>
-  {% endfor %}</p>
+  <h3>Page name: {{item[1].pagename}}</h3>
+  <h3>Site name: {{item[0].sitename}}</h3>
+  <h3>Blackbox target URLs:</h3>
+  <table>
+    <tr>
+      <th>proto</th>
+      <th>hostname</th>
+      <th>domain</th>
+      <th>port</th>
+    </tr>
+      {% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_targets'] %}
+    <tr>
+      <td style="text-align:right"><a href="{{ _url }}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('scheme')}}</a></td>
+      <td style="text-align:right"><a href="{{ _url }}"; title="{{_url}}"; target=”_blank”>{{(_url | urlsplit('hostname')).split('.')[0] }}</a></td>
+      <td><a href="{{ _url }}"; title="{{_url}}"; target=”_blank”>{{(_url | urlsplit('hostname')).split('.')[1:] | join('.') }}</a></td>
+      <td style="text-align:right"><a href="{{ _url }}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('port')}}</a><td>
+    </tr>
+      {% endfor %}
+      {% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_jenkins_2xx_targets'] %}
+    <tr>
+      <td style="text-align:right"><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('scheme')}}</a></td>
+      <td style="text-align:right"><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{(_url | urlsplit('hostname')).split('.')[0] }}</a></td>
+      <td><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{(_url | urlsplit('hostname')).split('.')[1:] | join('.') }}</a></td>
+      <td style="text-align:right"><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('port')}}</a></td>
+    </tr>
+      {% endfor %}
+  </table>
   <h3>PAGE URLs:</h3><p>
   <a href="http://{{item[0].url}}:{{item[0].http_port  }}/">http://{{item[0].url}}:{{item[0].http_port  }}/</a><br>
   <a href="https://{{item[0].url}}:{{item[0].https_port}}/">https://{{item[0].url}}:{{item[0].https_port}}/</a></p>
