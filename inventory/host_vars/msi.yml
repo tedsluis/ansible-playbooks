@@ -1,10 +1,20 @@
 _hostname: msi
-_ip_address: '192.168.11.115'
-_wants_ansible: true
-_wants_git: true
-_wants_private_key: true
-_wants_sshagent: true
+
 _host_type: intell-x86
+
+_ip_address: '192.168.11.115'
+
 _status_background_tmux: green
+
 _status_forground_tmux: black
+
+_wants_ansible: true
+
+_wants_git: true
+
+_wants_private_key: true
+
+_want_prometheus_scraping: false
+
+_wants_sshagent: true
 
