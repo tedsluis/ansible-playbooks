@@ -62,6 +62,23 @@ scrape_configs:
       - target_label: __address__
         replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
 
+  - job_name: 'blackbox-200-auth'
+    metrics_path: /probe
+    params:
+      module: [http_2xx_auth]
+    static_configs:
+      - targets:
+{% for target in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_auth_targets'] %}
+        - "{{ target }}"
+{% endfor %}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
+
   - job_name: 'blackbox-nodeexporter-200'
     metrics_path: /probe
     params:
@@ -85,9 +102,9 @@ scrape_configs:
       module: [dns_test]
     static_configs:
       - targets:
-        - 8.8.4.4
-        - 8.8.8.8
-        - 192.168.1.17
+{% for target in hostvars[groups['blackbox'][0]]['_blackbox_dns_targets'] %}
+        - "{{ target }}"
+{% endfor %}
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -97,15 +114,14 @@ scrape_configs:
         replacement: {{hostvars[groups['blackbox'][0]]['_blackbox_fqdn']}}:9115
 
   - job_name: 'tower'
-    #tls_config:
-    #    insecure_skip_verify: True
+    tls_config:
+        insecure_skip_verify: True
     metrics_path: /api/v2/metrics
-    scrape_interval: 5s
+    scrape_interval: 10s
     scheme: https
-    #bearer_token: <token_value>
     basic_auth:
         username: admin
-        password: {{_awx_password}}
+        password: {{_admin_password}}
     static_configs:
         - targets:
             - {{hostvars[groups['awx'][0]]['_awx_fqdn']}}
