@@ -2,19 +2,6 @@
 
 - name: run prometheus rule updater
   block:
-  - name: getnodes
-    set_fact:
-      _groupNodes: "{{ groups[item] }}"
-    delegate_to: localhost
-    loop: "{{ _group }}"
-    register: _loop
-    when: _group is defined
-
-  - set_fact:
-      _nodeexporternodes: "{{ _nodeexporternodes + item.ansible_facts._groupNodes }}"
-    loop: "{{ _loop.results }}"
-    when: _group is defined
-
   - name: create nodes list
     set_fact:
       _nodes: []
@@ -28,7 +15,7 @@
       - hostvars[item]._want_prometheus_scraping == true
 
   - set_fact:
-      _nodeexporternodes: "{{ _nodeexporternodes + _nodes }}"
+      _nodeexporternodes: "{{ _nodes }}"
       
   - name: copy the scrape config to prometheus scrape target directory
     template:
