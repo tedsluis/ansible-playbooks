@@ -142,3 +142,18 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: {{hostvars[groups['snmpexporter'][0]]['_snmpexporter_fqdn']}}:9116  
+
+  - job_name: 'karma'
+    #tls_config:
+    #    insecure_skip_verify: True
+    metrics_path: /metrics
+    scrape_interval: 10s
+    scheme: http
+    #basic_auth:
+    #    username: admin
+    #    password: {{_admin_password}}
+    static_configs:
+        - targets:
+            - {{hostvars[groups['karma'][0]]['_karma_fqdn']}}:8080
+
+
