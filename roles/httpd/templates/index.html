@@ -23,7 +23,7 @@
       <td style="text-align:right"><a href="{{ _url }}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('port')}}</a><td>
     </tr>
       {% endfor %}
-      {% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_jenkins_2xx_targets'] %}
+      {% for _url in hostvars[groups['blackbox'][0]]['_blackbox_http_2xx_auth_targets'] %}
     <tr>
       <td style="text-align:right"><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{_url | urlsplit('scheme')}}</a></td>
       <td style="text-align:right"><a href="{{_url}}"; title="{{_url}}"; target=”_blank”>{{(_url | urlsplit('hostname')).split('.')[0] }}</a></td>
