@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 8,
-  "iteration": 1609659621693,
+  "id": 10,
+  "iteration": 1609666339209,
   "links": [],
   "panels": [
     {
@@ -71,16 +71,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "count(ALERTS{alertname=~\"$alertname\", alertstate=~\"$alertstate\", instance=~\"$instance\", job=~\"$job\", severity=~\"critical\"} == 1)",
+          "expr": "ALERTS{severity=~\"$severity\",alertname=~\"$alertname\", alertstate=~\"$alertstate\", instance=~\"$instance\", job=~\"$job\"}",
           "interval": "",
-          "legendFormat": "criticals",
+          "legendFormat": "{{severity}}: {{alertname}} {{alertstate}} {{instance}} {{job}}",
           "refId": "A"
-        },
-        {
-          "expr": "count(ALERTS{alertname=~\"$alertname\", alertstate=~\"$alertstate\", instance=~\"$instance\", job=~\"$job\", severity=~\"warning\"} == 1)",
-          "interval": "",
-          "legendFormat": "warnings",
-          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -463,8 +457,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
+          "selected": false,
           "text": [
             "All"
           ],
@@ -495,8 +488,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
+          "selected": false,
           "text": [
             "All"
           ],
@@ -527,8 +519,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
+          "selected": false,
           "text": [
             "All"
           ],
@@ -559,12 +550,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2021-01-03T08:06:17.218Z",
+    "to": "2021-01-03T09:33:08.492Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Prometheus Alertmanager Karma",
   "uid": "Axn247aMz",
-  "version": 12
+  "version": 4
 }
