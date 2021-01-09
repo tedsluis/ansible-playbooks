@@ -23,6 +23,7 @@
     - { directory: "/var/lib/openldap/data"          ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
     - { directory: "/var/lib/openldap/config"        ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
     - { directory: "/var/lib/openldap/certs"         ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
+    - { directory: "/var/lib/openldap/templates"     ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
     - { directory: "/var/lib/openldap/phpldapadmins" ,owner: "ldap" ,group: "ldap" ,mode: "0777" }
 
 - name: create podman network if not exists
@@ -146,4 +147,127 @@
 
 - name: trigger handelers
   meta: flush_handlers
+
+- name: "pause until phpldapadmin is reachable"
+  uri:
+    url: "https://{{_openldap_fqdn}}:6443"
+    follow_redirects: none
+    method: GET
+  register: _result
+  until: _result.status == 200
+  retries: 60 # 60 * 5 seconds = 5 minutes
+  delay: 5 # Every 5 seconds
+
+- name: create ldap ou templates
+  template: 
+    src: createou.ldif
+    dest: /var/lib/openldap/templates/createou-{{item}}.ldif 
+    owner: ldap
+    group: ldap
+    mode: 0664
+  become: true
+  with_items: "{{_ous_ldap}}"
+
+- name: create ldap group templates
+  template: 
+    src: creategroup.ldif
+    dest: /var/lib/openldap/templates/creategroup-{{item.cn}}.ldif 
+    owner: ldap
+    group: ldap
+    mode: 0664
+  become: true
+  with_items: "{{_groups_ldap}}"
+
+- name: create ldap user templates
+  template: 
+    src: createuser.ldif
+    dest: /var/lib/openldap/templates/createuser-{{item.cn}}.ldif 
+    owner: ldap
+    group: ldap
+    mode: 0664
+  become: true
+  with_items: "{{_users_ldap}}"
+
+- name: create ldap group member templates
+  template: 
+    src: addusertogroup.ldif
+    dest: /var/lib/openldap/templates/addusertogroup-{{item.cn}}.ldif 
+    owner: ldap
+    group: ldap
+    mode: 0664
+  become: true
+  with_items: "{{_users_ldap}}"
+
+- name: create ldap ous
+  shell: |
+    RESULT=$(ldapsearch -x -LLL -b "{{_ldap_domain}}"  "(ou={{item}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'ou={{item}}')
+    if [[ ! $RESULT =~ ou={{item}} ]]; then 
+         ldapadd -x -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} -f /var/lib/openldap/templates/createou-{{item}}.ldif
+    fi
+  become: true
+  with_items: "{{_ous_ldap}}"
+
+- name: create ldap groups
+  shell: |
+    RESULT=$(ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(cn={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'cn={{item.cn}}')
+    if [[ ! $RESULT =~ cn={{item.cn}} ]]; then 
+         ldapadd -x -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} -f /var/lib/openldap/templates/creategroup-{{item.cn}}.ldif
+    fi
+  become: true
+  with_items: "{{_groups_ldap}}"
+
+- name: create ldap users
+  shell: |
+    RESULT=$(ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(uid={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'uid={{item.cn}}')
+    if [[ ! $RESULT =~ uid={{item.cn}} ]]; then 
+         ldapadd -x -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} -f /var/lib/openldap/templates/createuser-{{item.cn}}.ldif
+    fi
+  become: true
+  with_items: "{{_users_ldap}}"
+
+- name: set password
+  shell: |
+    ldappasswd -s {{item.password}} -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} -x "uid={{item.cn}},ou={{item.ou}},{{_ldap_domain}}"
+  become: true
+  with_items: "{{_users_ldap}}"
+
+- name: add user to group
+  community.general.ldap_attrs:
+    server_uri: ldaps://{{_ldap_fqdn}}:636
+    start_tls: true
+    bind_dn: cn=admin,{{_ldap_domain}}
+    bind_pw: {{_openldap_admin_password}}
+    dn: cn={{item.group}},ou={{item.ou}},{{_ldap_domain}}
+    attributes:
+      dn: cn=administrators,ou=groups,dc=bachstraat20,dc=duckdns,dc=org
+      objectClass: top
+      objectClass: groupOfUniqueNames
+      cn: administrators
+      description: Admin users
+      uniqueMember: uid=admin,dc=bachstraat20,dc=duckdns,dc=org
+      uniqueMember: uid=ted.sluis.admin,ou=users,dc=bachstraat20,dc=duckdns,dc=org
+  become: true
+  with_items: "{{_users_ldap}}"
+
+
+- name: Make sure we have an admin user
+  community.general.ldap_entry:
+    server_uri: ldaps://{{_ldap_fqdn}}:636
+    start_tls: true
+    bind_dn: cn=admin,{{_ldap_domain}}
+    bind_pw: {{_openldap_admin_password}}
+    dn: {{_ldap_domain}}
+    objectClass:
+      - simpleSecurityObject
+      - organizationalRole
+    attributes:
+      description: An LDAP administrator
+      userPassword: "{SSHA}tabyipcHzhwESzRaGA7oQ/SDoBZQOGND"
+
+- name: add users to groups
+  shell: |
+    ldapmodify -x -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} -f /var/lib/openldap/templates/addusertogroup-{{item.cn}}.ldif
+  become: true
+  with_items: "{{_users_ldap}}"
+
 

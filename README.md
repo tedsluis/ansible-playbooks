@@ -45,6 +45,12 @@ show encrypted variable
 $ ansible -i "localhost," all  -m debug -a 'msg="{{ _slack_webhook_secret }}"'  -e@roles/alertmanager/defaults/main.yml
 ```
 
+## dependicies
+
+```bash
+$  ansible-galaxy collection install community.general
+```
+
 
 ## Roles
 

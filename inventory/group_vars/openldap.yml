@@ -1,3 +1,17 @@
+_ldap_domain: dc=bachstraat20,dc=duckdns,dc=org
+
+_groups_ldap:
+  - { cn: 'administrators', gid: '2000', ou: 'groups' }
+  - { cn: 'testers',        gid: '2001', ou: 'groups' }
+
+_users_ldap:
+  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '1234abcd', ou: 'users', group: 'testers' }
+  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: 'abcd1234', ou: 'users', group: 'administrators' }  
+
+_ous_ldap:
+  - users
+  - groups
+
 _openldap_image_tag: 1.4.0
 
 _openldap_firewall:
@@ -14,7 +28,7 @@ _openldap_groups:
 _openldap_users:
   - { user: 'ldap',comment: 'user for ldap',uid: '1043',groups: 'ldap',create_home: 'false',shell: '/bin/nologin' }
 
-_openldap_hostname: ldap.bachstraat20.duckdns.org
+_openldap_fqdn: ldap.bachstraat20.duckdns.org
 
 _openldap_admin_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
