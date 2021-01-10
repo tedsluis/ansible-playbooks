@@ -1,3 +1,0 @@
-dn: ou={{item}},{{_ldap_domain}}
-objectClass: organizationalUnit
-ou: {{item}}

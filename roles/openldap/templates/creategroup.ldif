@@ -1,4 +1,0 @@
-dn: cn={{item.cn}},ou={{item.ou}},{{_ldap_domain}}
-objectClass: top
-objectClass: posixGroup
-gidNumber: {{item.gid}}

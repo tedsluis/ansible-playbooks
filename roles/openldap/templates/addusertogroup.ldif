@@ -1,4 +1,0 @@
-dn: cn={{item.group}},ou=groups,{{_ldap_domain}}
-changetype: modify
-add: uniqueMember
-memberuid: uid={{item.cn}},ou={{item.ou}},{{_ldap_domain}}
