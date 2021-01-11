@@ -160,33 +160,33 @@
 
 - name: get ldap ous
   shell: |
-    ldapsearch -x -LLL -b "{{_ldap_domain}}"  "(ou={{item}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'ou={{item}}'
+    ldapsearch -x -LLL -b "{{_ldap_domain}}"  "(ou={{item}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'ou={{item}}' || true
   become: true
   with_items: "{{_ous_ldap}}"
   register: _current_ous_ldap
 
 - debug:
-    msg: "_current_ous_ldap={{_current_ous_ldap.stdout}}"
+    msg: "_current_ous_ldap={{_current_ous_ldap}}"
 
 - name: get ldap groups
   shell: |
-    ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(cn={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'cn={{item.cn}}'
+    ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(cn={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'cn={{item.cn}}' || true
   become: true
   with_items: "{{_groups_ldap}}"
   register: _current_groups_ldap
   
 - debug:
-    msg: "_current_ous_ldap={{_current_ous_ldap.stdout}}"
+    msg: "_current_ous_ldap={{_current_ous_ldap}}"
 
 - name: get ldap users
   shell: |
-    ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(uid={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'uid={{item.cn}}'
+    ldapsearch -x -LLL -b "ou={{item.ou}},{{_ldap_domain}}"  "(uid={{item.cn}})" -D "cn=admin,{{_ldap_domain}}" -w {{_openldap_admin_password}} | grep 'uid={{item.cn}}' || true
   become: true
   with_items: "{{_users_ldap}}"
   register: _current_users_ldap
 
 - debug:
-    msg: "_current_users_ldap={{_current_users_ldap.stdout}}"
+    msg: "_current_users_ldap={{_current_users_ldap}}"
 
 - name: create ou(s)
   community.general.ldap_entry:
@@ -254,16 +254,30 @@
       uniqueMember: uid={{item.cn}},ou=users,{{_ldap_domain}}
   become: true
   with_items: "{{_users_ldap}}"
+
+- name: add user to group
+  community.general.ldap_attrs:
+    server_uri: ldaps://{{_openldap_fqdn}}:636
+    bind_dn: cn=admin,{{_ldap_domain}}
+    bind_pw: "{{_openldap_admin_password}}"
+    dn: cn=allowedusers,ou=groups,{{_ldap_domain}}
+    attributes:
+      objectClass: top
+      objectClass: groupOfUniqueNames
+      cn: "allowedusers"
+      uniqueMember: uid={{item.cn}},ou=users,{{_ldap_domain}}
+  become: true
+  with_items: "{{_users_ldap}}"
   
 - name: users remove from group
   community.general.ldap_attrs:
     server_uri: ldaps://{{_openldap_fqdn}}:636
     bind_dn: cn=admin,{{_ldap_domain}}
     bind_pw: "{{_openldap_admin_password}}"
-    dn: cn={{item.group}},ou=groups,{{_ldap_domain}}
+    dn: cn={{item.cn}},ou=groups,{{_ldap_domain}}
     state: absent
     attributes:
       uniqueMember: ''
   become: true
-  with_items: "{{_users_ldap}}"
+  with_items: "{{groups_ldap}}"
   

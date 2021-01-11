@@ -3,6 +3,7 @@ _ldap_domain: dc=bachstraat20,dc=duckdns,dc=org
 _groups_ldap:
   - { cn: 'administrators', gid: '2000', ou: 'groups', description: 'admin group' }
   - { cn: 'testers',        gid: '2001', ou: 'groups', description: 'testers group' }
+  - { cn: 'allowedusers',   gid: '2002', ou: 'groups', description: 'allowed users' } 
 
 _users_ldap:
   - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '1234abcd', ou: 'users', group: 'testers' }
