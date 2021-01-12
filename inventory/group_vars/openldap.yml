@@ -6,8 +6,8 @@ _groups_ldap:
   - { cn: 'allowedusers',   gid: '2002', ou: 'groups', description: 'allowed users' } 
 
 _users_ldap:
-  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '1234abcd', ou: 'users', group: 'testers' }
-  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: 'abcd1234', ou: 'users', group: 'administrators' }  
+  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '{{_admin_password}}', ou: 'users', group: 'testers' }
+  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: '{{_admin_password}}', ou: 'users', group: 'administrators' }  
 
 _ous_ldap:
   - users
@@ -39,5 +39,13 @@ _openldap_admin_password: !vault |
           36396463336331626564313961316164303564323066666435333561616136626465326535646330
           3165633231633039320a366233396633613566363961623365636239663937653330646261383537
           6137
+
+_openldap_readonly_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35366531386333306137326366323537323137643636343136393261336530343830633836383966
+          6561303837616434346163393738646265353431333034650a346566323831343963366137306466
+          36386339373833323936633033333934323034363834623835373261663061313937646135663561
+          6161363864623039610a313731353936653031653936343930313534343464666432353262353830
+          3434
 
 _phpldapadmin_image_tag: 0.9.0
