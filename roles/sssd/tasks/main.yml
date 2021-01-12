@@ -1,0 +1,25 @@
+---
+
+- name: create /etc/sssd/sssd.conf
+  template:
+    src: sssd.conf.j2
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: 0600
+  become: true
+  notify: _restart_sssd
+
+  authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
+  authselect select sssd with-mkhomedir --force
+
+- name: start and enable openldap.service
+  systemd:
+    name: openldap
+    state: started
+    enabled: true
+  become: true
+
+- name: trigger handelers
+  meta: flush_handlers
+
