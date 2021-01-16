@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+
+- name: sssd
+
+  hosts:
+    - fed130
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+#  - users-and-groups
+#  - firewall
+#  - role: dnsmasq
+#    when: _wants_dnsmasq|bool == true
+  - role: sssd
+    when: "'sssd' in group_names"
+
