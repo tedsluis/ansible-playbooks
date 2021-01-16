@@ -27,6 +27,10 @@
     when: "'ldapclient' in group_names"
   - role: letsencrypt
     when: "'letsencrypt' in group_names"
+  - role: openldap
+    when: "'openldap' in group_names"
+  - role: sssd
+    when: "'sssd' in group_names"
   - role: jenkins
     when: "'jenkins' in group_names"
   - role: httpd
