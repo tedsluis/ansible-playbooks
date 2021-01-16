@@ -15,8 +15,10 @@ _admin_password: !vault |
           3562
 
 _all_groups:
-  - { group: 'tedsluis', gid: '1000' }
-  - { group: 'ansible',  gid: '1001' }
+  - { group: 'tedsluis',    gid: '1000' }
+  - { group: 'ansible',     gid: '1001' }
+  - { group: 'linuxadmins', gid: '2000' }
+  - { group: 'linuxusers',  gid: '2001' }
 
 _all_users:
   - { user: 'tedsluis', comment: 'user tedsluis', uid: '1000', groups: 'tedsluis,wheel', create_home: 'true', shell: '/bin/bash' }
@@ -239,6 +241,10 @@ _slack_webhook_secret: !vault |
           66646136313938633634643466353566653661646563373162636334336663346134333162303064
           6634323565383631636231643235636533616135333737303738
 
+_sudoers:
+  - linuxadmins
+  - linuxusers  
+          
 _timezone: Europe/Amsterdam
 
 _tls_ca_file: '/etc/ssl/certs/ca-bundle.trust.crt'
