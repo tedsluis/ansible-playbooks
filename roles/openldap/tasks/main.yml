@@ -279,5 +279,5 @@
     attributes:
       uniqueMember: ''
   become: true
-  with_items: "{{groups_ldap}}"
+  with_items: "{{_groups_ldap}}"
   
