@@ -1,0 +1,26 @@
+---
+
+- name: stop sssd.service
+  listen: _restart_sssd
+  systemd:
+    name: sssd
+    state: stopped
+  become: true
+  
+- name: daemon reload sssd.service
+  listen: _restart_sssd
+  systemd:
+    name: sssd
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start sssd.service
+  listen: _restart_sssd
+  systemd:
+    name: sssd
+    state: started
+  become: true
+
+
+

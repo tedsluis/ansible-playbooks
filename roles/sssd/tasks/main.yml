@@ -10,14 +10,20 @@
   become: true
   notify: _restart_sssd
 
-  authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
-  authselect select sssd with-mkhomedir --force
-
-- name: start and enable openldap.service
+- name: start and enable sssd and oddjobd
   systemd:
-    name: openldap
+    name: "{{item}}"
     state: started
     enabled: true
+  become: true
+  with_items: 
+    - sssd
+    - oddjobd
+
+- name: enable sssd authentication with home directory
+  shell: |
+    authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
+    authselect select sssd with-mkhomedir --force
   become: true
 
 - name: trigger handelers
