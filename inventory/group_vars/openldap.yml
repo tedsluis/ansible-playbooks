@@ -1,13 +1,13 @@
 _ldap_domain: dc=bachstraat20,dc=duckdns,dc=org
 
 _groups_ldap:
-  - { cn: 'administrators', gid: '2000', ou: 'groups', description: 'admin group' }
-  - { cn: 'testers',        gid: '2001', ou: 'groups', description: 'testers group' }
-  - { cn: 'allowedusers',   gid: '2002', ou: 'groups', description: 'allowed users' } 
+  - { cn: 'linuxadmins',  gid: '2000', ou: 'groups', description: 'administrators group' }
+  - { cn: 'linuxusers',   gid: '2001', ou: 'groups', description: 'users group' }
+  - { cn: 'allowedusers', gid: '2002', ou: 'groups', description: 'allowed users' } 
 
 _users_ldap:
-  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '{{_admin_password}}', ou: 'users', group: 'testers' }
-  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: '{{_admin_password}}', ou: 'users', group: 'administrators' }  
+  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '{{_admin_password}}', ou: 'users', group: 'linuxusers' }
+  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: '{{_admin_password}}', ou: 'users', group: 'linuxadmins' }  
 
 _ous_ldap:
   - users
