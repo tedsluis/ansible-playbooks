@@ -90,8 +90,15 @@ fed159
 fed160
 pihole
 
-[openldap]
+[openldap:children]
+openldap1
+openldap2
+
+[openldap1]
 fed157
+
+[openldap2]
+fed149
 
 [pihole]
 pihole
@@ -106,4 +113,13 @@ fed160
 fed160
 
 [sssd]
+fed120
+fed127
 fed130
+fed143
+fed149
+fed157
+fed159
+fed160
+lenovo
+msi

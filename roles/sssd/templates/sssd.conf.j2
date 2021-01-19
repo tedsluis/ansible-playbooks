@@ -22,7 +22,7 @@ auth_provider = ldap
 chpass_provider = ldap
 access_provider = ldap
 sudo_provider = ldap
-ldap_uri = ldaps://{{hostvars[groups['openldap'][0]]['_openldap_fqdn']}}:636
+ldap_uri = {{hostvars[groups['openldap'][0]]['_openldap_uris']}}
 ldap_default_bind_dn = cn=readonly,{{hostvars[groups['openldap'][0]]['_ldap_domain']}}
 ldap_default_authtok = {{hostvars[groups['openldap'][0]]['_openldap_readonly_password']}}
 ldap_tls_reqcert = demand

@@ -28,7 +28,10 @@ Deploys openldap using ansible.
 ## ldap search query
 
 ```bash
-$ ldapsearch -x -H ldap://ldap.bachstraat20.duckdns.org:389 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD
-$ ldapsearch -x -H ldaps://ldap.bachstraat20.duckdns.org:636 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w 
+$ ldapsearch -x -H  ldap://ldap1.bachstraat20.duckdns.org:389 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD
+$ ldapsearch -x -H ldaps://ldap1.bachstraat20.duckdns.org:636 -b dc=bachstraat20,dc=duckdns,dc=org -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD
+$ ldapsearch -x -LLL -b ou=groups,dc=bachstraat20,dc=duckdns,dc=org  "(cn=linuxusers)"  -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD  
+$ ldapsearch -x -LLL -b  ou=users,dc=bachstraat20,dc=duckdns,dc=org  "(uid=ted.sluis)"  -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD  
+$ ldapsearch -x -LLL -b           dc=bachstraat20,dc=duckdns,dc=org  "(ou=linuxadmins)" -D "cn=admin,dc=bachstraat20,dc=duckdns,dc=org" -w $ADMINPASSWORD  
 ```
 

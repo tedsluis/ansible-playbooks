@@ -30,7 +30,7 @@ _openldap_groups:
 _openldap_users:
   - { user: 'ldap',comment: 'user for ldap',uid: '1043',groups: 'ldap',create_home: 'false',shell: '/bin/nologin' }
 
-_openldap_fqdn: ldap.bachstraat20.duckdns.org
+_openldap_uris: ldaps://ldap1.bachstraat20.duckdns.org:636, ldaps://ldap2.bachstraat20.duckdns.org:636
 
 _openldap_admin_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

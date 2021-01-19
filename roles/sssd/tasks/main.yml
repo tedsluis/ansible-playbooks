@@ -22,9 +22,9 @@
 
 - name: enable sssd authentication with home directory
   shell: |
-    authconfig --enablesssd --enablesssdauth --enablelocauthorize --update
     authselect select sssd with-mkhomedir --force
   become: true
+  notify: _restart_sssd
 
 - name: trigger handelers
   meta: flush_handlers
