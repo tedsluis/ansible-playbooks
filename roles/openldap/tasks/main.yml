@@ -118,6 +118,7 @@
     name: openldap
     state: started
     enabled: true
+    daemon_reload: true
   become: true
 
 - name: start and enable phpldapadmin.service

@@ -11,7 +11,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               --cidfile /%t/%n-cid \
                               -d \
                               --name=openldap \
-                              --hostname ldap.bachstraat20.duckdns.org \
+                              --hostname {{_openldap_fqdn}} \
                               -p 389:389 \
                               -p 636:636 \
                               --network openldap \
@@ -20,9 +20,9 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -v /var/lib/openldap/certs:/container/service/slapd/assets/certs/:z \
                               --restart unless-stopped \
                               -e LDAP_LOG_LEVEL=256 \
-                              -e LDAP_ORGANISATION=bachstraat20 \
-                              -e LDAP_DOMAIN=bachstraat20.duckdns.org \
-                              -e LDAP_BASE_DN=dc=bachstraat20,dc=duckdns,dc=org \
+                              -e LDAP_ORGANISATION={{_openldap_organisation}} \
+                              -e LDAP_DOMAIN={{_domain}} \
+                              -e LDAP_BASE_DN={{_ldap_domain}} \
                               -e LDAP_ADMIN_PASSWORD={{_openldap_admin_password}} \
                               -e LDAP_CONFIG_PASSWORD={{_openldap_admin_password}} \
                               -e LDAP_READONLY_USER=true \
@@ -38,7 +38,10 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -e LDAP_TLS_ENFORCE=false \
                               -e LDAP_TLS_CIPHER_SUITE=SECURE256:-VERS-SSL3.0 \
                               -e LDAP_TLS_VERIFY_CLIENT=try \
-                              -e LDAP_REPLICATION=false \
+                              -e LDAP_REPLICATION=true \
+                              -e LDAP_REPLICATION_HOSTS=#PYTHON2BASH:['{{_openldap_uris.split(',') | join("','") }}'] \
+                              -e LDAP_REPLICATION_CONFIG_SYNCPROV='binddn="cn=admin,cn=config" bindmethod=simple credentials=$LDAP_CONFIG_PASSWORD searchbase="cn=config" type=refreshAndPersist retry="60 +" timeout=1 starttls=critical' \
+                              -e LDAP_REPLICATION_DB_SYNCPROV='binddn="cn=admin,{{_ldap_domain}}" bindmethod=simple credentials=$LDAP_ADMIN_PASSWORD searchbase="{{_ldap_domain}}" type=refreshAndPersist interval=00:00:00:10 retry="60 +" timeout=1 starttls=critical' \
                               -e KEEP_EXISTING_CONFIG=false \
                               -e LDAP_REMOVE_CONFIG_AFTER_SETUP=true \
                               -e LDAP_SSL_HELPER_PREFIX=ldap \

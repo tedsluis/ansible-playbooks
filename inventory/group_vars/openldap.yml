@@ -1,5 +1,7 @@
 _ldap_domain: dc=bachstraat20,dc=duckdns,dc=org
 
+_openldap_organisation: bachstraat20
+
 _groups_ldap:
   - { cn: 'linuxadmins',  gid: '2000', ou: 'groups', description: 'administrators group' }
   - { cn: 'linuxusers',   gid: '2001', ou: 'groups', description: 'users group' }

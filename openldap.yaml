@@ -3,17 +3,17 @@
 - name: openldap
 
   hosts:
-    - fed157
+    - fed149,fed157
 
   vars:
     ansible_user: ansible
 
   roles:
-#  - packages
-#  - users-and-groups
-#  - firewall
-#  - role: dnsmasq
-#    when: _wants_dnsmasq|bool == true
+  - packages
+  - users-and-groups
+  - firewall
+  - role: dnsmasq
+    when: _wants_dnsmasq|bool == true
   - role: openldap
     when: "'openldap' in group_names"
 

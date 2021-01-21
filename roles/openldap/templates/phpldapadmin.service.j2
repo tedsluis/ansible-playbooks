@@ -15,7 +15,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               --network openldap \
                               -v /var/lib/openldap/certs:/container/service/phpldapadmin/assets/apache2/certs:z \
                               --restart unless-stopped \
-                              -e PHPLDAPADMIN_LDAP_HOSTS=ldap.bachstraat20.duckdns.org \
+                              -e PHPLDAPADMIN_LDAP_HOSTS={{_openldap_fqdn}} \
                               -e PHPLDAPADMIN_HTTPS_CRT_FILENAME=fullchain.pem \
                               -e PHPLDAPADMIN_HTTPS_KEY_FILENAME=privkey.pem \
                               -e PHPLDAPADMIN_HTTPS_CA_CRT_FILENAME=ca-bundle.crt \
