@@ -7,11 +7,12 @@
     state: present
     line: '{{ item.line }}'
   loop:
-    - { regex: '#?max_usb_current=', line: 'max_usb_current=1' }
-    - { regex: '#?hdmi_group=',      line: 'hdmi_group=2' }
-    - { regex: '#?mode=',            line: 'hdmi_mode=87' }
-    - { regex: '#?hdmi_cvt',         line: 'hdmi_cvt 1024 600 60 6 0 0 0' }
-    - { regex: '#?hdmi_drive=',      line: 'hdmi_drive=1' }
+    - { regex: '#?max_usb_current=',    line: 'max_usb_current=1' }
+    - { regex: '#?hdmi_group=',         line: 'hdmi_group=2' }
+    - { regex: '#?mode=',               line: 'hdmi_mode=87' }
+    - { regex: '#?hdmi_cvt',            line: 'hdmi_cvt 1024 600 60 6 0 0 0' }
+    - { regex: '#?hdmi_drive=',         line: 'hdmi_drive=1' }
+    - { regex: '#?hdmi_force_hotplug=', line: 'hdmi_force_hotplug=1' }
   become: true
 
 
