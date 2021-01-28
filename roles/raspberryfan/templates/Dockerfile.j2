@@ -10,8 +10,10 @@ RUN  mkdir -p /tmp; \
      make; \
      make install
 
-{% if ( ( _lib64.stat.exists is defined ) and ( _lib64.stat.isdir == true ) )  %}
+{% if ( ( _lib64.stat.exists is defined ) and ( _lib64.stat.isdir is defined ) and ( _lib64.stat.isdir == true ) )  %}
 RUN  cp /usr/local/lib/lib*gpio.so.1 /usr/lib64/
+{% else %}
+RUN  cp /usr/local/lib/liblgpio.so.1 /usr/lib/
 {% endif %}
 
 RUN  mkdir /src
