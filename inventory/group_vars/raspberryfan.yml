@@ -1,0 +1,14 @@
+---
+
+_raspberry_packages:
+  - podman
+
+_raspberryfan_min_temp: 40
+  
+_raspberryfan_max_temp: 70
+  
+_raspberryfan_fan_low: 20
+
+_raspberryfan_fan_high: 100
+
+_raspberryfan_wait_time: 10

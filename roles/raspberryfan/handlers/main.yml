@@ -1,0 +1,26 @@
+---
+
+- name: stop raspberryfan.service
+  listen: _restart_raspberryfan
+  systemd:
+    name: raspberryfan
+    state: stopped
+  become: true
+  
+- name: daemon reload raspberryfan.service
+  listen: _restart_raspberryfan
+  systemd:
+    name: raspberryfan
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start raspberryfan.service
+  listen: _restart_raspberryfan
+  systemd:
+    name: raspberryfan
+    state: started
+  become: true
+
+
+

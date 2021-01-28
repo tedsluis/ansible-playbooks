@@ -109,6 +109,15 @@ fed143
 [prometheus]
 fed160
 
+[raspberryfan]
+fed127
+fed130
+fed143
+fed149
+fed157
+fed159
+fed160
+
 [snmpexporter]
 fed160
 

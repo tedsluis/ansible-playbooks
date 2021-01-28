@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+
+- name: raspberryfan
+
+  hosts:
+    - fed127,fed130,fed143,fed149,fed157,fed159,fed160
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - role: dnsmasq
+    when: _wants_dnsmasq|bool == true
+  - role: raspberryfan
+    when: "'raspberryfan' in group_names"
+

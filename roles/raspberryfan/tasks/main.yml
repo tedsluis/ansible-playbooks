@@ -1,0 +1,86 @@
+---
+
+- name: create raspberryfan directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/raspberryfan", owner: "root" ,group: "root" ,mode: "0774" }
+
+- name: "pull fedora:latest"
+  shell: |
+    podman pull fedora:latest
+  register: _image_pull
+  become: true
+
+- debug:
+    var: _image_pull
+
+- name: Check if path exists
+  stat:
+    path: /usr/lib64/
+  register: _lib64
+
+- name: create /var/lib/raspberryfan/Dockerfile
+  template:
+    src: Dockerfile.j2
+    dest: /var/lib/raspberryfan/Dockerfile
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_raspberryfan
+
+- name: create /var/lib/raspberryfan/fan.py
+  copy:
+    src: fan.py
+    dest: /var/lib/raspberryfan/fan.py
+    owner: root
+    group: root
+    mode: 0777
+  become: true
+  notify: _restart_raspberryfan
+
+- name: build image
+  shell: |
+    cd /var/lib/raspberryfan
+    podman build --tag gpio --file /var/lib/raspberryfan/Dockerfile
+  become: true
+  register: _build_image
+
+- debug:
+    var: _build_image
+
+- name: create /etc/systemd/system/raspberryfan.service
+  template:
+    src: raspberryfan.service.j2
+    dest: /etc/systemd/system/raspberryfan.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_raspberryfan
+
+- name: start and enable raspberryfan.service
+  systemd:
+    name: raspberryfan
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: raspberryfan container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=raspberryfan'
+  register: _raspberryfan_state
+  become: true
+
+- debug:
+    var: _raspberryfan_state
+
+- name: trigger handelers
+  meta: flush_handlers
