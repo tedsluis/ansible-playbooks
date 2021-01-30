@@ -211,6 +211,7 @@
       - account
       - posixAccount
       - shadowAccount
+      - extensibleObject
     attributes:
       cn: "{{item.cn}}"
       uid: "{{item.cn}}"
@@ -223,6 +224,7 @@
       shadowLastChange: 0
       shadowMax: 0
       shadowWarning: 0
+      mail: "{{item.mail}}"
   become: true
   with_items: "{{_users_ldap}}"
 

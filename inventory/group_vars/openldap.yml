@@ -8,8 +8,8 @@ _groups_ldap:
   - { cn: 'allowedusers', gid: '2002', ou: 'groups', description: 'allowed users' } 
 
 _users_ldap:
-  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '{{_admin_password}}', ou: 'users', group: 'linuxusers' }
-  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: '{{_admin_password}}', ou: 'users', group: 'linuxadmins' }  
+  - { cn: 'ted.sluis',       uid: '3000', gid: '2001', password: '{{_admin_password}}', ou: 'users', group: 'linuxusers',  mail: 'ted.sluis@gmail.com' }
+  - { cn: 'ted.sluis.admin', uid: '3001', gid: '2000', password: '{{_admin_password}}', ou: 'users', group: 'linuxadmins', mail: 'ted.sluis@gmail.com' }  
 
 _ous_ldap:
   - users
