@@ -75,14 +75,17 @@
   become: true
   notify: _restart_grafana
 
-- name: create /var/lib/grafana/etc/grafana.ini
+- name: create /var/lib/grafana/etc/grafana.ini and ldap.toml
   template:
-    src: grafana.ini.j2
-    dest: /var/lib/grafana/etc/grafana.ini
+    src: "{{item}}.j2"
+    dest: /var/lib/grafana/etc/{{item}}
     owner: grafana
     group: grafana
     mode: 0666
   become: true
+  with_items:
+    - ldap.toml
+    - grafana.ini
   notify: _restart_grafana
 
 - name: create /var/lib/grafana/etc/dashboards/dashboard.*.json

@@ -1,11 +1,18 @@
+---
+
 _grafana_image_tag: latest
+
 _grafana_firewall:
   - 3000/tcp
+  
 _grafana_packages:
   - podman
+  
 _grafana_groups:
   - { group: 'grafana',gid: '1039' }
+  
 _grafana_users:
   - { user: 'grafana',comment: 'user for grafana',uid: '1039',groups: 'grafana',create_home: 'false',shell: '/bin/nologin' }
+  
 _grafana_hostname: grafana.bachstraat20.duckdns.org
 
