@@ -1,0 +1,46 @@
+---
+
+- name: stop piaware.service
+  listen: _restart_piaware
+  systemd:
+    name: piaware
+    state: stopped
+  become: true
+  
+- name: daemon reload piaware.service
+  listen: _restart_piaware
+  systemd:
+    name: piaware
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start piaware.service
+  listen: _restart_piaware
+  systemd:
+    name: piaware
+    state: started
+  become: true
+
+- name: stop dump1090exporter.service
+  listen: _restart_dump1090exporter
+  systemd:
+    name: dump1090exporter
+    state: stopped
+  become: true
+  
+- name: daemon reload dump1090exporter.service
+  listen: _restart_dump1090exporter
+  systemd:
+    name: dump1090exporter
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start dump1090exporter.service
+  listen: _restart_dump1090exporter
+  systemd:
+    name: dump1090exporter
+    state: started
+  become: true
+

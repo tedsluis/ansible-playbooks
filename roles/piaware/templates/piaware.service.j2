@@ -1,0 +1,29 @@
+
+[Unit]
+Description=piaware
+After=network-online.target
+Wants=network.target
+
+[Service]
+Restart=on-failure
+RestartSec=10s
+ExecStartPre=-/usr/bin/podman rm piaware
+ExecStart=/usr/bin/podman run --name=piaware \
+                              --device /dev/bus/usb \
+                              --restart unless-stopped \
+                              -e TZ={{_timezone}} \
+                              -e LAT={{_lat}} \
+                              -e LONG={{_long}} \
+                              -e FEEDER_ID={{_piaware_feeder_id}} \
+                              -e RECEIVER_TYPE=rtlsdr \
+                              -e ALLOW_MLAT=yes \
+                              -e MLAT_RESULTS=yes \
+                              -p 8080:80 \
+                              mikenye/piaware:{{_piaware_image_tag}}
+
+ExecStop=-/usr/bin/podman stop -t 2 piaware
+ExecStopPost=/usr/bin/podman rm piaware
+
+[Install]
+WantedBy=multi-user.target
+

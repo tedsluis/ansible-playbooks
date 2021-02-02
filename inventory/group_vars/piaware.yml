@@ -1,0 +1,23 @@
+---
+_piaware_image_tag: latest
+
+_dump1090exporter_image_tag: 1.0
+
+_piaware_firewall:
+  - 8080/tcp
+  - 30003/tcp
+  - 30005/tcp
+  - 30105/tcp
+  - 30978/tcp
+  - 30979/tcp
+
+_piaware_packages:
+  - podman
+
+_lat: 52.085624
+
+_long: 5.0890591 
+
+_dump1090exporter_targets:
+  - piaware1.bachstraat20.duckdns.org:9105
+  - piaware2.bachstraat20.duckdns.org:9105

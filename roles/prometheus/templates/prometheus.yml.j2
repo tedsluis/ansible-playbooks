@@ -157,3 +157,11 @@ scrape_configs:
             - {{hostvars[groups['karma'][0]]['_karma_fqdn']}}:8080
 
 
+  - job_name: 'dump1090exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: 
+{% for target in hostvars[groups['piaware'][0]]['_dump1090exporter_targets'] %}
+        - "{{ target }}"
+{% endfor %}
+

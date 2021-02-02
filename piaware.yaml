@@ -1,0 +1,18 @@
+#!/usr/bin/env ansible-playbook
+
+- name: piaware
+
+  hosts:
+    - fed171,fed178
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    #  - packages
+    #  - firewall
+    #  - role: dnsmasq
+    #    when: _wants_dnsmasq|bool == true
+  - role: piaware
+    when: "'piaware' in group_names"
+

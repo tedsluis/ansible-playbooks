@@ -1,0 +1,104 @@
+---
+
+- name: create piaware directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/piaware", owner: "root" ,group: "root" ,mode: "0774" }
+
+- name: pull images
+  shell: |
+    podman pull {{item}}
+  register: _image_pull
+  become: true
+  with_items:
+    - "mikenye/piaware:{{_piaware_image_tag}}"
+    - "docker.io/flightawareadsb/dump1090exporter:{{_dump1090exporter_image_tag}}"
+
+- debug:
+    var: _image_pull
+
+- name: create /etc/modprobe.d/blacklist-rtl2832.conf
+  copy:
+    content: |
+      blacklist dvb_usb_rtl28xxu
+      blacklist dvb_usb_rtl28xxu
+      blacklist dvb_usb_rtl2832u
+      blacklist dvb_usb_v2
+      blacklist e4000
+      blacklist r820t
+      blacklist rtl2830
+      blacklist rtl_2830
+      blacklist rtl2832
+      blacklist rtl2832U
+      blacklist rtl2832_sdr
+      blacklist rtl2838
+      blacklist RTL2838UHIDIR
+    dest: /etc/modprobe.d/blacklist-rtl2832.conf
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_piaware
+
+- name: create /etc/systemd/system/piaware.service
+  template:
+    src: piaware.service.j2
+    dest: /etc/systemd/system/piaware.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_piaware
+
+- name: create /etc/systemd/system/dump1090exporter.service
+  template:
+    src: dump1090exporter.service.j2
+    dest: /etc/systemd/system/dump1090exporter.service
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  notify: _restart_dump1090exporter
+
+- name: start and enable piaware.service
+  systemd:
+    name: piaware
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: start and enable dump1090exporter.service
+  systemd:
+    name: dump1090exporter
+    state: started
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: piaware container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=piaware'
+  register: _piaware_state
+  become: true
+
+- debug:
+    var: _piaware_state
+    
+- name: dump1090exprter container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=dump1090exporter'
+  register: _dump1090exporter_state
+  become: true
+
+- debug:
+    var: _dump1090exporter_state
+
+- name: trigger handelers
+  meta: flush_handlers
