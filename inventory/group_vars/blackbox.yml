@@ -26,8 +26,8 @@ _blackbox_http_2xx_targets:
   - http://karma.bachstraat20.duckdns.org:8080
   - https://ldap1.bachstraat20.duckdns.org:6443
   - https://ldap2.bachstraat20.duckdns.org:6443
-  - http://piaware1.bachstraat20.duckdns.org:80
-  - http://piaware2.bachstraat20.duckdns.org:80
+  - http://piaware1.bachstraat20.duckdns.org:8080
+  - http://piaware2.bachstraat20.duckdns.org:8080
   - https://pihole.bachstraat20.duckdns.org:443
   - http://prometheus.bachstraat20.duckdns.org:9090
   - http://personalcloud.bachstraat20.duckdns.org:80
