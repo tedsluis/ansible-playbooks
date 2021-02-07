@@ -18,6 +18,8 @@ ExecStart=/usr/bin/podman run --name=piaware \
                               -e RECEIVER_TYPE=rtlsdr \
                               -e ALLOW_MLAT=yes \
                               -e MLAT_RESULTS=yes \
+                              -e RTLSDR_GAIN={{_rtlsdr_gain}} \
+                              -e ALLOW_MODEAC=yes \
                               -p 8080:80 \
                               mikenye/piaware:{{_piaware_image_tag}}
 

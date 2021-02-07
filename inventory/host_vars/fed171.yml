@@ -8,3 +8,5 @@ _host_type: raspberry-2b-1gb
 
 _piaware_feeder_id: c0e96c2f-73f4-4d51-af97-8fc935ed9e15
 
+# set the gain from 0 to 50 or use -10 for maximum gain (automatic gain). 
+_rtlsdr_gain: -10
