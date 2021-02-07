@@ -3,7 +3,7 @@
 - name: nodeexporter
 
   hosts:
-    - pihole,fed160,fed159,fed157,fed149,fed143,fed127,fed130
+    - pihole,fed178,fed171,fed160,fed159,fed157,fed149,fed143,fed127,fed130
 
   vars:
     ansible_user: ansible

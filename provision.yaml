@@ -3,7 +3,7 @@
 - name: provision
 
   hosts:
-    - pihole,fed120,fed127,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo
+    - pihole,fed171,fed178,fed120,fed127,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo
 
   vars:
     ansible_user: ansible
@@ -55,4 +55,8 @@
     when: "'raspberryfan' in group_names"
   - role: awx
     when: "'awx' in group_names"
+  - role: piaware
+    when: "'piaware' in group_names"
+
+
 
