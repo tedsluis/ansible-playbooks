@@ -13,7 +13,7 @@ ExecStart=/usr/bin/podman run --name=dump1090exporter \
                               -e TZ={{_timezone}} \
                               -p 9105:9105 \
                               flightawareadsb/dump1090exporter:{{_dump1090exporter_image_tag}} \
-                              --url=http://{{_ip_address}}:8080/dump1090-fa 
+                              --url=http://localhost:8080/dump1090-fa 
                               --debug
 
 ExecStop=-/usr/bin/podman stop -t 2 dump1090exporter

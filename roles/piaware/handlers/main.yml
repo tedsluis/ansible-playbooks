@@ -1,5 +1,13 @@
 ---
 
+- name: daemon reload piaware.service
+  listen: _restart_piaware
+  systemd:
+    name: piaware
+    enabled: true
+    daemon_reload: true
+  become: true
+
 - name: stop piaware.service
   listen: _restart_piaware
   systemd:
@@ -7,19 +15,19 @@
     state: stopped
   become: true
   
-- name: daemon reload piaware.service
-  listen: _restart_piaware
-  systemd:
-    name: piaware
-    state: stopped
-    daemon_reload: true
-  become: true
-
 - name: start piaware.service
   listen: _restart_piaware
   systemd:
     name: piaware
     state: started
+  become: true
+
+- name: daemon reload dump1090exporter.service
+  listen: _restart_dump1090exporter
+  systemd:
+    name: dump1090exporter
+    enabled: true
+    daemon_reload: true
   become: true
 
 - name: stop dump1090exporter.service
@@ -29,18 +37,32 @@
     state: stopped
   become: true
   
-- name: daemon reload dump1090exporter.service
-  listen: _restart_dump1090exporter
-  systemd:
-    name: dump1090exporter
-    state: stopped
-    daemon_reload: true
-  become: true
-
 - name: start dump1090exporter.service
   listen: _restart_dump1090exporter
   systemd:
     name: dump1090exporter
+    state: started
+  become: true
+  
+- name: daemon reload haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: haproxy
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: haproxy
+    state: stopped
+  become: true
+  
+- name: start haproxy.service
+  listen: _restart_dump1090exporter
+  systemd:
+    name: haproxy
     state: started
   become: true
 

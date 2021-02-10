@@ -48,7 +48,14 @@ $ ansible -i "localhost," all  -m debug -a 'msg="{{ _slack_webhook_secret }}"'  
 ## dependicies
 
 ```bash
-$  ansible-galaxy collection install community.general
+$ ansible-galaxy collection install community.general
+$ ansible-galaxy collection install containers.podman
+$ sudo dnf install python3-pip
+$ sudo pip3 install virtualenv
+$ virtualenv venv
+$ source venv/bin/activate          # deactivate to exit
+$ virtualenv -p python3 myenv
+$ pip install ansible
 ```
 
 

@@ -9,19 +9,42 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/piaware", owner: "root" ,group: "root" ,mode: "0774" }
+    - { directory: "/var/lib/piaware",         owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/piaware/certs",   owner: "root" ,group: "root" ,mode: "0774" }
+    - { directory: "/var/lib/piaware/haproxy", owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: pull images
-  shell: |
-    podman pull {{item}}
-  register: _image_pull
+- name: pull piaware image
+  podman_image:
+    pull: true
+    name: mikenye/piaware
+    tag: "{{_piaware_image_tag}}"
   become: true
-  with_items:
-    - "mikenye/piaware:{{_piaware_image_tag}}"
-    - "docker.io/flightawareadsb/dump1090exporter:{{_dump1090exporter_image_tag}}"
+  register: _piaware_image_pulled
 
 - debug:
-    var: _image_pull
+    var: _piaware_image_pulled
+
+- name: pull dump1090exporter image
+  podman_image:
+    pull: true
+    name: docker.io/flightawareadsb/dump1090exporter
+    tag: "{{_dump1090exporter_image_tag}}"
+  become: true
+  register: _dump1090exporter_image_pulled
+  
+- debug:
+    var: _dump1090exporter_image_pulled
+
+- name: pull haproxy image
+  podman_image:
+    pull: true
+    name: haproxy
+    tag: "{{_haproxy_image_tag}}"
+  become: true
+  register: _haproxy_image_pulled
+  
+- debug:
+    var: _haproxy_image_pulled
 
 - name: create /etc/modprobe.d/blacklist-rtl2832.conf
   copy:
@@ -44,43 +67,152 @@
     group: root
     mode: 0664
   become: true
-  notify: _restart_piaware
 
-- name: create /etc/systemd/system/piaware.service
-  template:
-    src: piaware.service.j2
-    dest: /etc/systemd/system/piaware.service
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: copy cert and key to host
+  copy:
+    src: /var/lib/certs/{{item}}
+    dest: /var/lib/piaware/certs/{{item}}
     owner: root
     group: root
     mode: 0664
   become: true
-  notify: _restart_piaware
+  with_items:
+    - fullchain.pem
+    - privkey.pem
+  notify: _restart_haproxy
 
-- name: create /etc/systemd/system/dump1090exporter.service
-  template:
-    src: dump1090exporter.service.j2
-    dest: /etc/systemd/system/dump1090exporter.service
+- name: create pem file
+  ansible.builtin.assemble:
+    src: /var/lib/piaware/certs/
+    dest: /var/lib/piaware/haproxy/{{ inventory_hostname }}-crt-key.pem
     owner: root
     group: root
     mode: 0664
   become: true
+
+- name: create haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /var/lib/piaware/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: _restart_haproxy
+
+- name: create piaware pod 
+  containers.podman.podman_pod:
+    name: piawarepod
+    state: started
+    ports:
+      - 8443:8443
+      #    - 8080:80
+      - 9105:9105
+  become: true
+
+- name: create piaware container
+  containers.podman.podman_container:
+    name: piaware
+    pod: piawarepod
+    image: mikenye/piaware:{{_piaware_image_tag}}
+    state: present
+    recreate: "{{_piaware_image_pulled.changed|default(false)}}"
+    device: /dev/bus/usb
+    env:
+      TZ: "{{_timezone}}"
+      LAT: "{{_lat}}"
+      LONG: "{{_long}}"
+      FEEDER_ID: "{{_piaware_feeder_id}}"
+      RECEIVER_TYPE: "rtlsdr"
+      ALLOW_MLAT: "yes"
+      MLAT_RESULTS: "yes"
+      RTLSDR_GAIN: "{{_rtlsdr_gain}}"
+      ALLOW_MODEAC: "yes"
+    restart_policy: always
+    conmon_pidfile: /run/piaware.pid
+  become: true
+  register: _piaware_container_created
+  notify: _restart_piaware
+
+- name: create systemd piaware file
+  shell: |
+    podman generate systemd --name piaware > /etc/systemd/system/piaware.service 
+  become: true
+  when: _piaware_container_created.changed
+  notify: _restart_piaware
+
+- name: create dump1090exporter container
+  containers.podman.podman_container:
+    name: dump1090exporter
+    pod: piawarepod
+    image: flightawareadsb/dump1090exporter:{{_dump1090exporter_image_tag}}
+    state: started
+    recreate: "{{_dump1090exporter_image_pulled.changed|default(false)}}"
+    env:
+      TZ: "{{_timezone}}"
+    command: [ '--debug','--url=http://localhost:8080/dump1090-fa' ]
+    restart_policy: always
+  become: true
+  register: _dump1090exporter_container_created
   notify: _restart_dump1090exporter
 
-- name: start and enable piaware.service
-  systemd:
-    name: piaware
-    state: started
-    enabled: true
-    daemon_reload: true
+- name: create systemd dump1090exporter file
+  shell: |
+    podman generate systemd --name dump1090exporter > /etc/systemd/system/dump1090exporter.service 
   become: true
+  when: _dump1090exporter_container_created.changed
+  notify: _restart_dump1090exporter
 
-- name: start and enable dump1090exporter.service
-  systemd:
-    name: dump1090exporter
+- name: create haproxy container
+  containers.podman.podman_container:
+    name: haproxy
+    pod: piawarepod
     state: started
-    enabled: true
-    daemon_reload: true
+    recreate: "{{_haproxy_image_pulled.changed|default(false)}}"
+    image: haproxy:{{_haproxy_image_tag}}
+    debug: true
+    privileged: true
+    volume:
+      #- /var/lib/piaware/haproxy:/usr/local/etc/haproxy
+      - /var/lib/piaware/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - /var/lib/piaware/haproxy/{{ inventory_hostname }}-crt-key.pem:/{{ inventory_hostname }}-crt-key.pem
+    conmon_pidfile: /run/haproxy.pid
+    restart_policy: always
   become: true
+  register: _haproxy_container_created
+  notify: _restart_haproxy
+
+- name: create systemd haproxy file
+  shell: |
+    podman generate systemd --name haproxy > /etc/systemd/system/haproxy.service 
+  become: true
+  when: _haproxy_container_created.changed
+  notify: _restart_haproxy
+
+- name: trigger handelers
+  meta: flush_handlers
 
 - name: piaware container state
   shell: |
@@ -100,5 +232,12 @@
 - debug:
     var: _dump1090exporter_state
 
-- name: trigger handelers
-  meta: flush_handlers
+- name: haproxy container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=haproxy'
+  register: _haproxy_state
+  become: true
+
+- debug:
+    var: _haproxy_state
+
