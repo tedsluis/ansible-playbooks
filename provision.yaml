@@ -21,6 +21,8 @@
     when: "'nfsclient' in group_names"
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
+  - role: registry
+    when: "'registry' in group_names"
   - role: pihole
     when: "'pihole' in group_names"
   - role: ldapclient

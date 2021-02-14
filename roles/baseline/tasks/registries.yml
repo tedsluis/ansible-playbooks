@@ -1,0 +1,10 @@
+---
+
+- name: Add local registry to /etc/containers/registries.conf
+  lineinfile:
+    dest: "/etc/containers/registries.conf"
+    regexp: '^unqualified-search-registries'
+    state: present
+    line: 'unqualified-search-registries = ["{{_image_registry}}", "registry.fedoraproject.org", "registry.access.redhat.com", "registry.centos.org", "docker.io"]'
+  become: true
+

@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+
+- name: registry
+
+  hosts:
+    - fed149
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - firewall
+  - role: registry
+    when: "'registry' in group_names"
+

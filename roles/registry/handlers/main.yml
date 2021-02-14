@@ -1,0 +1,25 @@
+---
+
+- name: daemon reload registry.service
+  listen: _restart_registry
+  systemd:
+    name: registry
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop registry.service
+  listen: _restart_registry
+  systemd:
+    name: registry
+    state: stopped
+  become: true
+  
+- name: start registry.service
+  listen: _restart_registry
+  systemd:
+    name: registry
+    state: started
+  become: true
+
+

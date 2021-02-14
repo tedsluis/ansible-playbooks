@@ -10,11 +10,12 @@ letsencrypt
 nfsclient
 nfsserver
 nodeexporter
+openvpn
 piaware
 pihole
 postgres
 prometheus
-openvpn
+registry
 
 [all]
 fed120
@@ -133,6 +134,9 @@ fed149
 fed157
 fed159
 fed160
+
+[registry]
+fed149
 
 [snmpexporter]
 fed160

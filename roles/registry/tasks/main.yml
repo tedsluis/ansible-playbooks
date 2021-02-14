@@ -1,0 +1,119 @@
+---
+
+- name: create registry directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/registry",       owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/auth",  owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/certs", owner: "root" ,group: "root" ,mode: "0774" }
+    - { directory: "/var/lib/registry/data",  owner: "root" ,group: "root" ,mode: "0777" }
+
+- name: pull registry image
+  podman_image:
+    pull: true
+    name: docker.io/library/registry
+    tag: "{{_registry_image_tag}}"
+  become: true
+  register: _registry_image_pulled
+
+- debug:
+    var: _registry_image_pulled
+
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: copy cert and key to host
+  copy:
+    src: /var/lib/certs/{{item}}
+    dest: /var/lib/registry/certs/{{item}}
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items:
+    - fullchain.pem
+    - privkey.pem
+  notify: _restart_registry
+
+- name: set registry password
+  shell: |
+    htpasswd -bBc /var/lib/registry/auth/htpasswd registry {{_registry_password}}
+  become: true
+  notify: _restart_registry
+
+- name: create registry pod 
+  containers.podman.podman_pod:
+    name: registrypod
+    state: started
+    ports:
+      - 5000:5000
+  become: true
+
+- name: create registry container
+  containers.podman.podman_container:
+    name: registry
+    pod: registrypod
+    image: docker.io/library/registry:{{_registry_image_tag}}
+    state: present
+    recreate: "{{_registry_image_pulled.changed|default(false)}}"
+    env:
+      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: "/auth/htpasswd"
+      REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/fullchain.pem"
+      REGISTRY_HTTP_TLS_KEY: "/certs/privkey.pem"
+      REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED: true
+    privileged: true
+    volume:
+      - /var/lib/registry/certs:/certs:z
+      - /var/lib/registry/data:/var/lib/registry:z
+      - /var/lib/registry/auth:/auth:z
+    restart_policy: always
+    conmon_pidfile: /run/registry.pid
+  become: true
+  register: _registry_container_created
+  notify: _restart_registry
+
+- name: create systemd registry file
+  shell: |
+    podman generate systemd --name registry > /etc/systemd/system/registry.service 
+  become: true
+  when: _registry_container_created.changed
+  notify: _restart_registry
+
+- name: trigger handelers
+  meta: flush_handlers
+
+- name: registry container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=registry'
+  register: _registry_state
+  become: true
+
+- debug:
+    var: _registry_state
