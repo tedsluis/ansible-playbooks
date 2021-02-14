@@ -1,0 +1,13 @@
+---
+
+_openvpn_image_tag: latest
+
+_alpine_image_tag: latest
+
+_openvpn_firewall:
+  - 1194/udp
+
+_openvpn_packages:
+  - podman
+
+_openvpn_dns_server: 192.168.1.17

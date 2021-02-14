@@ -1,0 +1,8 @@
+---
+
+_hostname: openvpn
+
+_ip_address: '192.168.1.10'
+
+_host_type: raspberry-3b-1gb
+

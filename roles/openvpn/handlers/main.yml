@@ -1,0 +1,25 @@
+---
+
+- name: daemon reload openvpn.service
+  listen: _restart_openvpn
+  systemd:
+    name: openvpn
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop openvpn.service
+  listen: _restart_openvpn
+  systemd:
+    name: openvpn
+    state: stopped
+  become: true
+  
+- name: start openvpn.service
+  listen: _restart_openvpn
+  systemd:
+    name: openvpn
+    state: started
+  become: true
+
+

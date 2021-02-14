@@ -1,0 +1,122 @@
+---
+
+- name: create openvpn directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/openvpn",                     owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/openvpn/data",                owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/openvpn/clone",               owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/openvpn/clone/docker-openvpn",owner: "root" ,group: "root" ,mode: "0777" }
+
+- name: "pull docker.io/alpine:{{_alpine_image_tag}} image"
+  shell: |
+    podman pull docker.io/alpine:{{_alpine_image_tag}}
+  register: _alpine_image_pull
+  become: true
+
+- debug:
+    var: _alpine_image_pull
+
+- name: clone docker-openvpn in /var/lib/openvpn/clone/docker-openvpn
+  git:
+    repo: 'https://github.com/kylemanna/docker-openvpn.git'
+    dest: /var/lib/openvpn/clone/docker-openvpn
+    force: true
+  become: true
+
+- name: copy files to /var/lib/openvpn/clone/docker-openvpn/ for podman build
+  template:
+    src: "Dockerfile.j2"
+    dest: "/var/lib/openvpn/clone/docker-openvpn/Dockerfile"
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: get image info before build
+  shell: |
+    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/openvpn | grep {{_openvpn_image_tag}}
+  become: true
+  register: _image_info1
+  failed_when:
+    - _image_info1.rc != 0
+    - _image_info1.stdout != ""
+
+- name: build openvpn image
+  shell: |
+    cd /var/lib/openvpn/clone/docker-openvpn
+    podman images
+    #podman build -t openvpn:{{_openvpn_image_tag}} -f /var/lib/openvpn/clone/docker-openvpn/Dockerfile
+  become: true
+  register: _build
+  failed_when: false
+
+- debug:
+    var: _build.stdout
+
+- name: get image info after build
+  shell: |
+    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/openvpn | grep {{_openvpn_image_tag}}
+  become: true
+  register: _image_info2
+  failed_when:
+    - _image_info2.rc != 0
+    - _image_info2.stdout != ""
+
+- debug:
+    msg: "_image_info1={{_image_info1.stdout}} <> _image_info2={{_image_info2.stdout}}"
+  when: _image_info1.stdout != _image_info2.stdout
+  notify: _restart_openvpn
+
+- name: check pod
+  command: podman pod ps
+  register: _pods
+
+- name: create openvpn pod 
+  containers.podman.podman_pod:
+    name: openvpnpod
+    state: started
+    ports:
+      - 1194:1194/udp
+  become: true
+  when: _pods.stdout is not search('openvpnpod')
+
+- name: create openvpn container
+  shell: |
+    podman create --pod openvpnpod \
+                  --name openvpn \
+                  -v /var/lib/openvpn/data:/etc/openvpn:z \
+                  --restart on-failure \
+                  --cap-add=NET_ADMIN \
+                  --tz {{_timezone}} \
+                  localhost/openvpn:{{_openvpn_image_tag}}
+  become: true
+  when: _image_info1.stdout != _image_info2.stdout
+  register: _openvpn_container_created
+  notify: _restart_openvpn
+
+- name: create systemd openvpn file
+  shell: |
+    podman generate systemd --name openvpn > /etc/systemd/system/openvpn.service 
+  become: true
+  when: _openvpn_container_created.changed
+  notify: _restart_openvpn
+
+- name: trigger handelers
+  meta: flush_handlers
+
+- name: openvpn container state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=openvpn'
+  register: _openvpn_state
+  become: true
+
+- debug:
+    var: _openvpn_state
+    

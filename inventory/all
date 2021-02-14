@@ -14,6 +14,7 @@ piaware
 pihole
 postgres
 prometheus
+openvpn
 
 [all]
 fed120
@@ -26,9 +27,10 @@ fed159
 fed160
 fed171
 fed178
-pihole
-msi
 lenovo
+msi
+openvpn
+pihole
 
 [awx]
 fed149
@@ -94,6 +96,7 @@ fed159
 fed160
 fed171
 fed178
+openvpn
 pihole
 
 [openldap:children]
@@ -105,6 +108,9 @@ fed157
 
 [openldap2]
 fed149
+
+[openvpn]
+openvpn
 
 [pihole]
 pihole

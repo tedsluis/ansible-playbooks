@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+
+- name: openvpn
+
+  hosts:
+    - openvpn
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    #- packages
+    #- firewall
+  - role: openvpn
+    when: "'openvpn' in group_names"
+
