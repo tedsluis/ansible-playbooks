@@ -1,0 +1,14 @@
+#!/usr/bin/env ansible-playbook
+
+- name: get-images
+
+  hosts:
+    - fed149
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    - role: get-images
+      when: "'get-images' in group_names"
+
