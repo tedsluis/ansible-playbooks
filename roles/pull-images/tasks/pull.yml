@@ -1,0 +1,48 @@
+---
+
+- debug:
+    msg: "VAR:{{item}}"
+
+   
+- name: set image, tag, external and internal
+  set_fact:
+    _image:     "{{lookup('vars',item+'_name')}}"
+    _external:  "{{lookup('vars',item+'_external')}}"
+    _internal:  "{{lookup('vars',item+'_internal')}}"
+    _image_tag: "{{lookup('vars',item+'_tag')}}"
+
+- debug:
+    msg: "IMAGE:{{_image}}, TAG:{{_image_tag}}, EXTERNAL:{{_external}}, INTERNAL:{{_internal}}"
+
+- block:
+    - name: pull {{_image_registry_url}}{{_internal}}{{_image}}:{{_image_tag}}
+      podman_image:
+        pull: true
+        force: true
+        name: "{{_image_registry_url}}{{_internal}}{{_image}}"
+        tag: "{{_image_tag}}"
+        username: registry
+        password: "{{hostvars[groups['registry'][0]]['_registry_password']}}"
+      become: true
+      register: _image_pulled
+
+  rescue:
+    - name: pull image {{_external}}{{_image}}:{{_image_tag}} 
+      podman_image:
+        pull: true
+        force: true
+        name: "{{_external}}{{_image}}"
+        tag: "{{_image_tag}}"
+      become: true
+      register: _image_pulled
+
+    - name: tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+      shell: |
+        podman tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+      become: true
+
+  always:
+    - debug:
+        var: _image_pulled
+
+
