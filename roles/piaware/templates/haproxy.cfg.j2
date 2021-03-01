@@ -21,7 +21,7 @@ defaults
     maxconn                 3000
 
 frontend portal
-   bind *:8443 ssl crt /{{ inventory_hostname }}-crt-key.pem ssl-min-ver TLSv1.2
+   bind *:8443 ssl crt /{{ _piaware_fqdn }}-crt-key.pem ssl-min-ver TLSv1.2
    default_backend piaware
 
 backend piaware
