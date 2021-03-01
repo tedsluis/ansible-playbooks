@@ -11,4 +11,4 @@ _piaware_feeder_id: 33bf56df-7557-41d2-a1ab-12e0b7275c0e
 # set the gain from 0 to 50 or use -10 for maximum gain (automatic gain). 
 _rtlsdr_gain: -10
 
-
+_piaware_fqdn: piaware2.bachstraat20.duckdns.org
