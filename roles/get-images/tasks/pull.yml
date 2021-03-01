@@ -1,0 +1,49 @@
+---
+
+- debug:
+    msg: "VAR:{{item.var}}, GROUP:{{item.group}}"
+
+- name: set image, tag, external and internal
+  set_fact:
+    _image:     "{{hostvars[groups[item.group][0]][item.var+'_name']}}"
+    _external:  "{{hostvars[groups[item.group][0]][item.var+'_external']}}"
+    _internal:  "{{hostvars[groups[item.group][0]][item.var+'_internal']}}"
+    _image_tag: "{{hostvars[groups[item.group][0]][item.var+'_tag']}}"
+
+- name: pull image {{_external}}{{_image}}:{{_image_tag}}
+  podman_image:
+    pull: true
+    force: true
+    name: "{{_external}}{{_image}}"
+    tag: "{{_image_tag}}"
+  become: true
+  register: _image_pulled
+
+- debug:
+    var: _image_pulled
+
+- name: tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+  shell: |
+    podman tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+  become: true
+
+- name: push image {{_external}}{{_image}}:{{_image_tag}} to {{_internal}}{{_image}}:{{_image_tag}}
+  podman_image:
+    push: true
+    force: true
+    name: "registry.bachstraat20.duckdns.org:5000/{{_internal}}{{_image}}"
+    tag: "{{_image_tag}}"
+    username: registry
+    password: "{{hostvars[groups['registry'][0]]['_registry_password']}}"
+    push_args:
+      dest: "registry.bachstraat20.duckdns.org:5000/{{_internal}}"
+  become: true
+  register: _image_pushed
+
+- debug:
+    var: _image_pushed
+
+
+
+
+
