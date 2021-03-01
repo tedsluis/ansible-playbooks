@@ -1,5 +1,11 @@
 ---
 
+- name: check if /etc/containers/registries.conf exists
+  stat:
+    path: /etc/containers/registries.conf
+  become: true
+  register: _stat_registries_conf
+
 - name: Add local registry to /etc/containers/registries.conf
   lineinfile:
     dest: "/etc/containers/registries.conf"
@@ -7,4 +13,5 @@
     state: present
     line: 'unqualified-search-registries = ["{{_image_registry}}", "registry.fedoraproject.org", "registry.access.redhat.com", "registry.centos.org", "docker.io"]'
   become: true
+  when: _stat_registries_conf.stat.exists
 
