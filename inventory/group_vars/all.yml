@@ -218,6 +218,8 @@ _id_rsa_pub:
 
 _image_registry: registy.bachstraat20.duckdns.org
 
+_image_registry_url: registry.bachstraat20.duckdns.org:5000/
+
 _mail_address: ted.sluis@gmail.com
 
 _mail_hubhost: smtp.gmail.com

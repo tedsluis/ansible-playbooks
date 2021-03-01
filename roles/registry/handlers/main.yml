@@ -22,4 +22,47 @@
     state: started
   become: true
 
+- name: daemon reload registry-ui.service
+  listen: _restart_registry_ui
+  systemd:
+    name: registry-ui
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop registry-ui.service
+  listen: _restart_registry_ui
+  systemd:
+    name: registry-ui
+    state: stopped
+  become: true
+  
+- name: start registry-ui.service
+  listen: _restart_registry_ui
+  systemd:
+    name: registry-ui
+    state: started
+  become: true
+
+- name: daemon reload registry-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: registry-haproxy
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop registry-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: registry-haproxy
+    state: stopped
+  become: true
+
+- name: start registry-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: registry-haproxy
+    state: started
+  become: true
 

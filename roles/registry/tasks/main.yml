@@ -9,21 +9,20 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/registry",       owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/registry/auth",  owner: "root" ,group: "root" ,mode: "0777" }
-    - { directory: "/var/lib/registry/certs", owner: "root" ,group: "root" ,mode: "0774" }
-    - { directory: "/var/lib/registry/data",  owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry",        owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/auth",   owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/certs",  owner: "root" ,group: "root" ,mode: "0774" }
+    - { directory: "/var/lib/registry/data",   owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/config", owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/registry/haproxy",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: pull registry image
-  podman_image:
-    pull: true
-    name: docker.io/library/registry
-    tag: "{{_registry_image_tag}}"
-  become: true
-  register: _registry_image_pulled
-
-- debug:
-    var: _registry_image_pulled
+- include_role:
+    name: pull-images
+  vars:
+    _images: 
+      - _registry_image
+      - _docker_registry_ui_image
+      - _haproxy_image
 
 - name: create local /var/lib/certs directory for certs
   file:
@@ -60,6 +59,35 @@
     - privkey.pem
   notify: _restart_registry
 
+- name: create pem file
+  ansible.builtin.assemble:
+    src: /var/lib/registry/certs/
+    dest: /var/lib/registry/haproxy/{{ _registry_fqdn }}-crt-key.pem
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: create haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /var/lib/registry/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: _restart_haproxy
+
+- name: create registry config.yml file
+  template:
+    src: config.yml.j2
+    dest: /var/lib/registry/config/config.yml
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: _restart_registry
+
 - name: set registry password
   shell: |
     htpasswd -bBc /var/lib/registry/auth/htpasswd registry {{_registry_password}}
@@ -72,13 +100,14 @@
     state: started
     ports:
       - 5000:5000
+      - 5443:5443
   become: true
 
 - name: create registry container
   containers.podman.podman_container:
     name: registry
     pod: registrypod
-    image: docker.io/library/registry:{{_registry_image_tag}}
+    image: "{{_image_registry_url}}{{_registry_image_internal}}{{_registry_image_name}}:{{_registry_image_tag}}"
     state: present
     recreate: "{{_registry_image_pulled.changed|default(false)}}"
     env:
@@ -93,8 +122,10 @@
       - /var/lib/registry/certs:/certs:z
       - /var/lib/registry/data:/var/lib/registry:z
       - /var/lib/registry/auth:/auth:z
+      - /var/lib/registry/config/config.yml:/etc/docker/registry/config.yml:z
     restart_policy: always
     conmon_pidfile: /run/registry.pid
+    log_options: max_size=100mb
   become: true
   register: _registry_container_created
   notify: _restart_registry
@@ -106,14 +137,70 @@
   when: _registry_container_created.changed
   notify: _restart_registry
 
+- name: create registry-ui container
+  containers.podman.podman_container:
+    name: registry-ui
+    pod: registrypod
+    image: "{{_image_registry_url}}{{_docker_registry_ui_image_internal}}{{_docker_registry_ui_image_name}}:{{_docker_registry_ui_image_tag}}"
+    state: present
+    recreate: "{{_registry_ui_image_pulled.changed|default(false)}}"
+    env:
+      REGISTRY_URL: https://registry.bachstraat20.duckdns.org:5000
+      DELETE_IMAGES: true
+      REGISTRY_TITLE: "Bachstraat20"
+    restart_policy: always
+    conmon_pidfile: /run/registry-ui.pid
+    log_options: max_size=100mb
+  become: true
+  register: _registry_ui_container_created
+  notify: _restart_registry_ui
+
+- name: create systemd registry file
+  shell: |
+    podman generate systemd --name registry-ui > /etc/systemd/system/registry-ui.service 
+  become: true
+  when: _registry_ui_container_created.changed
+  notify: _restart_registry_ui
+
+- name: create haproxy container
+  containers.podman.podman_container:
+    name: haproxy
+    pod: registrypod
+    state: started
+    recreate: "{{_haproxy_image_pulled.changed|default(false)}}"
+    image: "{{_image_registry_url}}{{_haproxy_image_internal}}{{_haproxy_image_name}}:{{_haproxy_image_tag}}"
+    debug: true
+    privileged: true
+    volume:
+      - /var/lib/registry/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - /var/lib/registry/haproxy/{{ _registry_fqdn }}-crt-key.pem:/{{ _registry_fqdn }}-crt-key.pem
+    conmon_pidfile: /run/haproxy.pid
+    restart_policy: always
+    log_options: max_size=100mb
+  become: true
+  register: _haproxy_container_created
+  notify: _restart_haproxy
+
+- name: create systemd haproxy file
+  shell: |
+    podman generate systemd --name haproxy > /etc/systemd/system/registry-haproxy.service
+  become: true
+  when: _haproxy_container_created.changed
+  notify: _restart_haproxy
+
 - name: trigger handelers
   meta: flush_handlers
 
-- name: registry container state
+- name: containers state
   shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=registry'
-  register: _registry_state
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name={{item}}'
+  register: _containers_state
   become: true
+  with_items:
+    - registry
+    - registry-ui
+    - haproxy
 
 - debug:
-    var: _registry_state
+    var: _containers_state
+
