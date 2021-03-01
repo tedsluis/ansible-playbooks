@@ -106,7 +106,7 @@
 - name: create pem file
   ansible.builtin.assemble:
     src: /var/lib/piaware/certs/
-    dest: /var/lib/piaware/haproxy/{{ inventory_hostname }}-crt-key.pem
+    dest: /var/lib/piaware/haproxy/{{ _piaware_fqdn }}-crt-key.pem
     owner: root
     group: root
     mode: 0664
@@ -128,7 +128,6 @@
     state: started
     ports:
       - 8443:8443
-      #    - 8080:80
       - 9105:9105
   become: true
 
@@ -197,7 +196,7 @@
     volume:
       #- /var/lib/piaware/haproxy:/usr/local/etc/haproxy
       - /var/lib/piaware/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-      - /var/lib/piaware/haproxy/{{ inventory_hostname }}-crt-key.pem:/{{ inventory_hostname }}-crt-key.pem
+      - /var/lib/piaware/haproxy/{{ _piaware_fqdn }}-crt-key.pem:/{{ _piaware_fqdn }}-crt-key.pem
     conmon_pidfile: /run/haproxy.pid
     restart_policy: always
   become: true
