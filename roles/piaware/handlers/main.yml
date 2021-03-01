@@ -60,7 +60,7 @@
   become: true
   
 - name: start haproxy.service
-  listen: _restart_dump1090exporter
+  listen: _restart_haproxy
   systemd:
     name: haproxy
     state: started
