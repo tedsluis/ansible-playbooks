@@ -45,3 +45,5 @@
   when: _wants_sshagent|bool == true
   loop: "{{ _accounts }}"
 
+- include: registries.yml
+  
