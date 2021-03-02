@@ -4,3 +4,4 @@ _images:
   - { var: '_registry_image',                 group: 'registry' }
   - { var: '_docker_registry_ui_image',       group: 'registry' }
   - { var: '_haproxy_image',                  group: 'registry' }
+  - { var: '_alpine_image',                   group: 'openvpn' }

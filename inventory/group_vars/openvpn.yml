@@ -2,12 +2,20 @@
 
 _openvpn_image_tag: latest
 
+_alpine_image_name: alpine
 _alpine_image_tag: latest
+_alpine_image_external: docker.io/library/
+_alpine_image_internal: library/
+
+_openvpnexporter_image_tag: latest
 
 _openvpn_firewall:
   - 1194/udp
+  - 9176
 
 _openvpn_packages:
   - podman
 
 _openvpn_dns_server: 192.168.1.17
+
+_openvpn_fqdn: openvpn.bachstraat20.duckdns.org
