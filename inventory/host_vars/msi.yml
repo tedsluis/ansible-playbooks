@@ -1,8 +1,10 @@
 _hostname: msi
 
-_host_type: intell-x86
+_host_type: intel-x86
 
 _ip_address: '192.168.11.115'
+
+_architecture: adm64
 
 _status_background_tmux: green
 

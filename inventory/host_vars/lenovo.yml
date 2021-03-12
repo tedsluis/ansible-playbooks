@@ -4,6 +4,8 @@ _host_type: nuc
 
 _ip_address: '192.168.11.172'
 
+_architecture: adm64
+
 _status_background_tmux: blue
 
 _status_forground_tmux: white
