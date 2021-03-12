@@ -19,3 +19,5 @@ _fed143_sshkeys:
   - { key_name: 'id_rsa',     key_type: 'private_key',    key_var: '_id_rsa',     owner: 'tedsluis',  group: 'tedsluis', ssh_user: 'tedsluis', ssh_hostname: 'github.com' }
   
 _host_type: raspberry-4b-4gb
+
+_architecture: arm64

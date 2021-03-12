@@ -1,10 +1,22 @@
+---
+
 _hostname: fed149
+
 _ip_address: '192.168.11.149'
+
 _wants_ansible: true
+
 _wants_git: true
+
 _wants_private_key: true
+
 _wants_sshagent: true
+
 _host_type: raspberry-4b-4gb
+
+_architecture: arm64
+
 _status_background_tmux: magenta
+
 _status_forground_tmux: white
 

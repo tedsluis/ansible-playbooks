@@ -6,6 +6,8 @@ _ip_address: '192.168.11.178'
 
 _host_type: raspberry-2b-1gb
 
+_architecture: arm32
+
 _piaware_feeder_id: 33bf56df-7557-41d2-a1ab-12e0b7275c0e
 
 # set the gain from 0 to 50 or use -10 for maximum gain (automatic gain). 

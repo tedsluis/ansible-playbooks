@@ -1,4 +1,11 @@
+---
+
 _hostname: pihole
+
 _ip_address: '192.168.1.17'
+
 _wants_dnsmasq: false
+
 _host_type: raspberry-3b-1gb
+
+_architecture: arm64

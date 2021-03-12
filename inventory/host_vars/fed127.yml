@@ -1,5 +1,9 @@
+---
+
 _hostname: fed127
+
 _ip_address: '192.168.11.127'
+
 _host_type: raspberry-4b-8gb
 
-
+_architecture: arm64
