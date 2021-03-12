@@ -1,7 +1,6 @@
 ---
 
-_images:
-  - { var: '_registry_image',                 group: 'registry' }
-  - { var: '_docker_registry_ui_image',       group: 'registry' }
-  - { var: '_haproxy_image',                  group: 'registry' }
-  - { var: '_alpine_image',                   group: 'openvpn' }
+_pull_host:
+  arm32: fed159
+  arm64: fed149
+  adm64: fed120

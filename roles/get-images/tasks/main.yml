@@ -1,5 +1,43 @@
 ---
 
+- name: set pattern _*_images
+  set_fact:
+    _pattern: '_.*_image$'
+    _groups: "{{groups | reject('search', 'ungrouped') | list }}"
+
+- name: set _host_info
+  set_fact:
+    _host_info: >-
+      {{_host_info | default([]) + hostvars[item] | list | map('regex_search',_pattern) | select('string') | map('regex_replace', '^(.*)$',"\1:"+hostvars[item]['_architecture'] +":"+item)  }}
+  with_items: "{{ groups['all'] }}"
+  
+- debug:
+    msg: "ITEM={{item}}"
+  with_items: "{{_host_info}}"
+
+- debug:
+    msg: "{{hostvars['fed149']['_registry_image']['image']}}"
+
+- name: set _var_info
+  set_fact:
+    _var_info: >-
+      {{_var_info | default([]) + [{ 'var': item.split(":")[0] ,'arch':item.split(":")[1],'host':item.split(":")[2] }] }}
+  with_items: "{{_host_info}}"  
+
+- debug:
+    msg: "VAR={{item.var}}, ARCH={{item.arch}},HOST={{item.host}}"
+  with_items: "{{_var_info}}"
+
+- name: set _images
+  set_fact:
+    _images: >-
+      {{_images | default([]) + [{ 'image': hostvars[item.host][item.var]['image'], 'ext': hostvars[item.host][item.var]['ext'], 'arch': item.arch }] }}  
+  with_items: "{{_var_info}}"
+
+- debug:
+    msg: "{{item.ext}}{{item.image}}-{{item.arch}}"
+  loop: "{{_images}}"
+
 - include: pull.yml
   loop: "{{_images}}"
 
