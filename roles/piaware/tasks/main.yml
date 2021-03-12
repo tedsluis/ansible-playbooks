@@ -13,38 +13,24 @@
     - { directory: "/var/lib/piaware/certs",   owner: "root" ,group: "root" ,mode: "0774" }
     - { directory: "/var/lib/piaware/haproxy", owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: pull piaware image
-  podman_image:
-    pull: true
-    name: mikenye/piaware
-    tag: "{{_piaware_image_tag}}"
+- name: set sysctl fs.inotify
+  ansible.posix.sysctl:
+    name: "{{item.name}}"
+    value: "{{item.value}}"
+    state: present
   become: true
-  register: _piaware_image_pulled
+  with_items:
+    - { name: "fs.inotify.max_queued_events", value: "32768" }
+    - { name: "fs.inotify.max_user_instances", value: "1024" }
+    - { name: "fs.inotify.max_user_watches", value: "16384" }
 
-- debug:
-    var: _piaware_image_pulled
-
-- name: pull dump1090exporter image
-  podman_image:
-    pull: true
-    name: docker.io/flightawareadsb/dump1090exporter
-    tag: "{{_dump1090exporter_image_tag}}"
-  become: true
-  register: _dump1090exporter_image_pulled
-  
-- debug:
-    var: _dump1090exporter_image_pulled
-
-- name: pull haproxy image
-  podman_image:
-    pull: true
-    name: haproxy
-    tag: "{{_haproxy_image_tag}}"
-  become: true
-  register: _haproxy_image_pulled
-  
-- debug:
-    var: _haproxy_image_pulled
+- include_role:
+    name: pull-images
+  vars:
+    _images:
+      - _piaware_image
+      - _dump1090exporter_image
+      - _haproxy_image
 
 - name: create /etc/modprobe.d/blacklist-rtl2832.conf
   copy:
@@ -135,9 +121,8 @@
   containers.podman.podman_container:
     name: piaware
     pod: piawarepod
-    image: mikenye/piaware:{{_piaware_image_tag}}
+    image: "{{_image_registry_url}}{{_piaware_image.image}}-{{_architecture}}"
     state: present
-    recreate: "{{_piaware_image_pulled.changed|default(false)}}"
     device: /dev/bus/usb
     env:
       TZ: "{{_timezone}}"
@@ -166,9 +151,8 @@
   containers.podman.podman_container:
     name: dump1090exporter
     pod: piawarepod
-    image: flightawareadsb/dump1090exporter:{{_dump1090exporter_image_tag}}
+    image: "{{_image_registry_url}}{{_dump1090exporter_image.image}}-{{_architecture}}"
     state: started
-    recreate: "{{_dump1090exporter_image_pulled.changed|default(false)}}"
     env:
       TZ: "{{_timezone}}"
     command: [ '--debug','--url=http://localhost:8080/dump1090-fa' ]
@@ -189,12 +173,10 @@
     name: haproxy
     pod: piawarepod
     state: started
-    recreate: "{{_haproxy_image_pulled.changed|default(false)}}"
-    image: haproxy:{{_haproxy_image_tag}}
+    image: "{{_image_registry_url}}{{_haproxy_image.image}}-{{_architecture}}"
     debug: true
     privileged: true
     volume:
-      #- /var/lib/piaware/haproxy:/usr/local/etc/haproxy
       - /var/lib/piaware/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
       - /var/lib/piaware/haproxy/{{ _piaware_fqdn }}-crt-key.pem:/{{ _piaware_fqdn }}-crt-key.pem
     conmon_pidfile: /run/haproxy.pid
@@ -213,30 +195,16 @@
 - name: trigger handelers
   meta: flush_handlers
 
-- name: piaware container state
+- name: containers state
   shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=piaware'
-  register: _piaware_state
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name={{item}}'
+  register: _containers_state
   become: true
+  with_items:
+    - piaware
+    - dump1090exporter
+    - haproxy
 
 - debug:
-    var: _piaware_state
+    var: _containers_state
     
-- name: dump1090exprter container state
-  shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=dump1090exporter'
-  register: _dump1090exporter_state
-  become: true
-
-- debug:
-    var: _dump1090exporter_state
-
-- name: haproxy container state
-  shell: |
-    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name=haproxy'
-  register: _haproxy_state
-  become: true
-
-- debug:
-    var: _haproxy_state
-
