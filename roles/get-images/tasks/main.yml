@@ -10,15 +10,13 @@
     _host_info: >-
       {{_host_info | default([]) + hostvars[item] | list | map('regex_search',_pattern) | select('string') | map('regex_replace', '^(.*)$',"\1:"+hostvars[item]['_architecture'] +":"+item)  }}
   with_items: "{{ groups['all'] }}"
+  when: hostvars[item]['_architecture'] is defined
   
 - debug:
     msg: "ITEM={{item}}"
   with_items: "{{_host_info}}"
 
-- debug:
-    msg: "{{hostvars['fed149']['_registry_image']['image']}}"
-
-- name: set _var_info
+- name: "set _var_info= var: '...', arch: '...', host: '...'"
   set_fact:
     _var_info: >-
       {{_var_info | default([]) + [{ 'var': item.split(":")[0] ,'arch':item.split(":")[1],'host':item.split(":")[2] }] }}
@@ -28,11 +26,12 @@
     msg: "VAR={{item.var}}, ARCH={{item.arch}},HOST={{item.host}}"
   with_items: "{{_var_info}}"
 
-- name: set _images
+- name: "set _image= image: '...', ext: '...', arch: '...'"
   set_fact:
     _images: >-
       {{_images | default([]) + [{ 'image': hostvars[item.host][item.var]['image'], 'ext': hostvars[item.host][item.var]['ext'], 'arch': item.arch }] }}  
   with_items: "{{_var_info}}"
+  when: hostvars[item.host][item.var]['ext'] is defined
 
 - debug:
     msg: "{{item.ext}}{{item.image}}-{{item.arch}}"
