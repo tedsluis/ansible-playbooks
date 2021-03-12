@@ -4,41 +4,38 @@
     msg: "VAR:{{item}}"
 
    
-- name: set image, tag, external and internal
+- name: set external and internal
   set_fact:
-    _image:     "{{lookup('vars',item+'_name')}}"
-    _external:  "{{lookup('vars',item+'_external')}}"
-    _internal:  "{{lookup('vars',item+'_internal')}}"
-    _image_tag: "{{lookup('vars',item+'_tag')}}"
+    _image: "{{lookup('vars',item)}}"
 
 - debug:
-    msg: "IMAGE:{{_image}}, TAG:{{_image_tag}}, EXTERNAL:{{_external}}, INTERNAL:{{_internal}}"
+    msg: "IMAGE:{{_image}}"
+
+- set_fact:
+    _internal: "{{_image_registry_url}}{{_image.image}}-{{_architecture}}"
+    _external: "{{_image.ext}}{{_image.image}}"
+
+- debug:
+    msg: "INTERNAL:{{_internal}}, EXTERNAL:{{_external}}"
 
 - block:
-    - name: pull {{_image_registry_url}}{{_internal}}{{_image}}:{{_image_tag}}
-      podman_image:
-        pull: true
-        force: true
-        name: "{{_image_registry_url}}{{_internal}}{{_image}}"
-        tag: "{{_image_tag}}"
-        username: registry
-        password: "{{hostvars[groups['registry'][0]]['_registry_password']}}"
+    - name: pull {{_internal}}
+      shell: |
+        podman login -u registry -p "{{hostvars[groups['registry'][0]]['_registry_password']}}" "{{_image_registry_url}}"
+        podman pull {{_internal}}
       become: true
       register: _image_pulled
 
   rescue:
-    - name: pull image {{_external}}{{_image}}:{{_image_tag}} 
-      podman_image:
-        pull: true
-        force: true
-        name: "{{_external}}{{_image}}"
-        tag: "{{_image_tag}}"
+    - name: pull image {{_external}}
+      shell: |
+        podman pull {{_external}}
       become: true
       register: _image_pulled
 
-    - name: tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+    - name: tag {{_external}} {{_internal}}
       shell: |
-        podman tag {{_external}}{{_image}}:{{_image_tag}} {{_image_registry_url}}{{_internal}}{{_image}}
+        podman tag {{_external}} {{_internal}}
       become: true
 
   always:
