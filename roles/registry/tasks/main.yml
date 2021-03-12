@@ -107,9 +107,8 @@
   containers.podman.podman_container:
     name: registry
     pod: registrypod
-    image: "{{_image_registry_url}}{{_registry_image_internal}}{{_registry_image_name}}:{{_registry_image_tag}}"
+    image: "{{_image_registry_url}}{{_registry_image.image}}-{{_architecture}}"
     state: present
-    recreate: "{{_registry_image_pulled.changed|default(false)}}"
     env:
       REGISTRY_AUTH: "htpasswd"
       REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
@@ -141,9 +140,8 @@
   containers.podman.podman_container:
     name: registry-ui
     pod: registrypod
-    image: "{{_image_registry_url}}{{_docker_registry_ui_image_internal}}{{_docker_registry_ui_image_name}}:{{_docker_registry_ui_image_tag}}"
+    image: "{{_image_registry_url}}{{_docker_registry_ui_image.image}}-{{_architecture}}"
     state: present
-    recreate: "{{_registry_ui_image_pulled.changed|default(false)}}"
     env:
       REGISTRY_URL: https://registry.bachstraat20.duckdns.org:5000
       DELETE_IMAGES: true
@@ -167,8 +165,7 @@
     name: haproxy
     pod: registrypod
     state: started
-    recreate: "{{_haproxy_image_pulled.changed|default(false)}}"
-    image: "{{_image_registry_url}}{{_haproxy_image_internal}}{{_haproxy_image_name}}:{{_haproxy_image_tag}}"
+    image: "{{_image_registry_url}}{{_haproxy_image.image}}-{{_architecture}}"
     debug: true
     privileged: true
     volume:

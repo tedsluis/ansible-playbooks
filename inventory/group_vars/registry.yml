@@ -1,19 +1,16 @@
 ---
 
-_registry_image_name: registry
-_registry_image_tag: latest
-_registry_image_external: docker.io/library/
-_registry_image_internal: library/
+_registry_image: 
+  ext: 'docker.io/'
+  image: 'library/registry:latest'
 
-_docker_registry_ui_image_name: docker-registry-ui
-_docker_registry_ui_image_tag: static
-_docker_registry_ui_image_external: docker.io/joxit/
-_docker_registry_ui_image_internal: joxit/
+_docker_registry_ui_image:
+  ext: 'docker.io/'
+  image: 'joxit/docker-registry-ui:static'
 
-_haproxy_image_name: haproxy
-_haproxy_image_tag: latest
-_haproxy_image_external: docker.io/
-_haproxy_image_internal: ""
+_haproxy_image:
+  ext: 'docker.io/'
+  image: 'haproxy:latest'
 
 _registry_firewall:
   - 5000/tcp
