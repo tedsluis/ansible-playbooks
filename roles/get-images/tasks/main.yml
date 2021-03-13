@@ -31,7 +31,9 @@
     _images: >-
       {{_images | default([]) + [{ 'image': hostvars[item.host][item.var]['image'], 'ext': hostvars[item.host][item.var]['ext'], 'arch': item.arch }] }}  
   with_items: "{{_var_info}}"
-  when: hostvars[item.host][item.var]['ext'] is defined
+  when: 
+    - hostvars[item.host][item.var]['ext'] is defined
+    - hostvars[item.host][item.var]['build'] is undefined
 
 - debug:
     msg: "{{item.ext}}{{item.image}}-{{item.arch}}"
