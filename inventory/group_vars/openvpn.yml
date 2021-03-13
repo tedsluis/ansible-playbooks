@@ -1,13 +1,22 @@
 ---
 
-_openvpn_image_tag: latest
+_alpine_image:
+  ext: 'docker.io/'
+  image: 'library/alpine:latest'
 
-_alpine_image_name: alpine
-_alpine_image_tag: latest
-_alpine_image_external: docker.io/library/
-_alpine_image_internal: library/
+_golang_buster_image:
+  ext: 'docker.io/'
+  image: 'golang:1.14-buster'
 
-_openvpnexporter_image_tag: latest
+_openvpn_image:
+  build: 'openvpn'
+  ext: 'docker.io/'  
+  image: 'tedsluis/openvpn:latest'
+
+_openvpnexporter_image:
+  build: 'openvpn-exporter'
+  ext: 'docker.io/'
+  image: 'tedsluis/openvpn-exporter:latest'
 
 _openvpn_firewall:
   - 1194/udp
