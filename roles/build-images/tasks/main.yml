@@ -1,0 +1,44 @@
+---
+
+- name: set pattern _*_images
+  set_fact:
+    _pattern: '_.*_image$'
+    _groups: "{{groups | reject('search', 'ungrouped') | list }}"
+
+- name: set _host_info
+  set_fact:
+    _host_info: >-
+      {{_host_info | default([]) + hostvars[item] | list | map('regex_search',_pattern) | select('string') | map('regex_replace', '^(.*)$',"\1:"+hostvars[item]['_architecture'] +":"+item)  }}
+  with_items: "{{ groups['all'] }}"
+  when: hostvars[item]['_architecture'] is defined
+  
+- debug:
+    msg: "ITEM={{item}}"
+  with_items: "{{_host_info}}"
+
+- name: "set _var_info= var: '...', arch: '...', host: '...'"
+  set_fact:
+    _var_info: >-
+      {{_var_info | default([]) + [{ 'var': item.split(":")[0] ,'arch':item.split(":")[1],'host':item.split(":")[2] }] }}
+  with_items: "{{_host_info}}"  
+
+- debug:
+    msg: "VAR={{item.var}}, ARCH={{item.arch}},HOST={{item.host}}"
+  with_items: "{{_var_info}}"
+
+- name: "set _image= image: '...', build: '...', arch: '...', ext: '...'"
+  set_fact:
+    _builds: >-
+      {{_builds | default([]) + [{ 'image': hostvars[item.host][item.var]['image'], 'build': hostvars[item.host][item.var]['build'], 'arch': item.arch, 'ext': hostvars[item.host][item.var]['ext'] }] }}  
+  with_items: "{{_var_info}}"
+  when: 
+    - hostvars[item.host][item.var]['build'] is defined
+    - hostvars[item.host][item.var]['ext'] is defined
+
+- debug:
+    msg: "{{item.build}}={{item.image}}-{{item.arch}}"
+  loop: "{{_builds}}"
+
+- include: "{{item.build}}.yml"
+  loop: "{{_builds}}"
+
