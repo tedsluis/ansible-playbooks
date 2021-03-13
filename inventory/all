@@ -42,6 +42,9 @@ fed160
 [blackbox]
 fed160
 
+[build-images]
+fed149
+
 [get-images]
 fed149
 
