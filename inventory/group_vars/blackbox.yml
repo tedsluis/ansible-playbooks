@@ -31,6 +31,7 @@ _blackbox_http_2xx_targets:
   - https://pihole.bachstraat20.duckdns.org:443
   - http://prometheus.bachstraat20.duckdns.org:9090
   - http://personalcloud.bachstraat20.duckdns.org:80
+  - https://registry.bachstraat20.duckdns.org:5443
   - http://ziggorouter.bachstraat20.duckdns.org:80
   - http://netgear-gs274t.bachstraat20.duckdns.org:80
   - http://rb750.bachstraat20.duckdns.org:80
