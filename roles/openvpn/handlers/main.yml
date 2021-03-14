@@ -22,4 +22,26 @@
     state: started
   become: true
 
+- name: daemon reload openvpnexporter.service
+  listen: _restart_open_vpn_exporter
+  systemd:
+    name: openvpnexporter
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop openvpnexporter.service
+  listen: _restart_open_vpn_exporter
+  systemd:
+    name: openvpnexporter
+    state: stopped
+  become: true
+  
+- name: start openvpnexporter.service
+  listen: _restart_open_vpn_exporter
+  systemd:
+    name: openvpnexporter
+    state: started
+  become: true
+
 

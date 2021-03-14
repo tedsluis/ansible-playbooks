@@ -28,3 +28,6 @@ _openvpn_packages:
 _openvpn_dns_server: 192.168.1.17
 
 _openvpn_fqdn: openvpn.bachstraat20.duckdns.org
+
+_openvpnexporter_targets:
+  - openvpn.bachstraat20.duckdns.org:9176

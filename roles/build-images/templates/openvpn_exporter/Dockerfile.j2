@@ -1,12 +1,9 @@
-FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{_architecture}} AS builder
+FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{_architecture}}
 
 RUN mkdir -p /go/src/openvpn-exporter
 COPY . /go/src/openvpn-exporter
 WORKDIR /go/src/openvpn-exporter
 RUN go build
 
-FROM scratch
-
-COPY --from=builder /go/src/openvpn-exporter/openvpn_exporter /bin/openvpn_exporter
-ENTRYPOINT ["/bin/openvpn_exporter"]
+ENTRYPOINT ["/go/src/openvpn-exporter/openvpn_exporter"]
 CMD [ "-h" ]
