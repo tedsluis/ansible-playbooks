@@ -3,7 +3,7 @@
 - name: raspberryfan
 
   hosts:
-    - fed127,fed130,fed143,fed149,fed157,fed159,fed160
+    - pihole,openvpn,fed127,fed130,fed143,fed149,fed157,fed159,fed160
 
   vars:
     ansible_user: ansible
