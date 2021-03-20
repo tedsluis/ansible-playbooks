@@ -46,4 +46,6 @@
   loop: "{{ _accounts }}"
 
 - include: registries.yml
-  
+
+- include: sysctl.yml
+  when: "'raspberry' in _host_type"
