@@ -13,17 +13,6 @@
     - { directory: "/var/lib/piaware/certs",   owner: "root" ,group: "root" ,mode: "0774" }
     - { directory: "/var/lib/piaware/haproxy", owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: set sysctl fs.inotify
-  ansible.posix.sysctl:
-    name: "{{item.name}}"
-    value: "{{item.value}}"
-    state: present
-  become: true
-  with_items:
-    - { name: "fs.inotify.max_queued_events", value: "32768" }
-    - { name: "fs.inotify.max_user_instances", value: "1024" }
-    - { name: "fs.inotify.max_user_watches", value: "16384" }
-
 - include_role:
     name: pull-images
   vars:
@@ -155,7 +144,7 @@
     state: started
     env:
       TZ: "{{_timezone}}"
-    command: [ '--debug','--url=http://localhost:8080/dump1090-fa' ]
+    command: [ '--debug','--url=http://localhost:8080/skyaware' ]
     restart_policy: always
   become: true
   register: _dump1090exporter_container_created
