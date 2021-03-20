@@ -7,16 +7,14 @@ _jenkins_firewall:
 _jenkins_packages:
   - podman
 
-_jenkins_image_tag: 2.262-alpine-arm64
-
-_jenkins4eval_image:
+_ubuntu_image:
   ext: 'docker.io/'
-  image: 'jenkins4eval/jenkins:2.280-alpine-arm64'
+  image: 'ubuntu:latest'
 
 _jenkins_image:
   build: 'jenkins'
   ext: 'docker.io/'
-  image: 'tedsluis/jenkins:2.280-alpine'
+  image: 'tedsluis/jenkins:latest'
 
 _jenkins_plugins:
   - cloudbees-folder:latest
@@ -51,13 +49,13 @@ _jenkins_password: !vault |
 _packages_for_jenkins:
   - ansible 
   - ca-certificates 
+  - ca-certificates-java
   - curl 
   - git 
-  - java-cacerts
   - jq
   - openssl 
   - openssh-client 
-  - python 
+  - python3 
   - rsync 
   - sudo 
   - tar 
