@@ -12,16 +12,16 @@ ExecStart=/usr/bin/podman run --name=raspberryfan \
                               -v /var/lib/node_exporter:/var/lib/node_exporter:z \
                               --device=/dev/gpiochip0 \
                               --restart unless-stopped \
-                              localhost/gpio \
+                              {{_image_registry_url}}{{_raspberryfan_image.image}}-{{_architecture}} \
                               /usr/bin/python /src/fan.py \
-                              --node-exporter \
-                              --min-temp={{_raspberryfan_min_temp}} \
-                              --max-temp={{_raspberryfan_max_temp}} \
-                              --fan-low={{_raspberryfan_fan_low}} \
-                              --fan-high={{_raspberryfan_fan_high}} \
-                              --wait-time={{_raspberryfan_wait_time}} \
-                              --pwm-gpio=18 \
-                              --pwm-freq=10000 
+                                --node-exporter \
+                                --min-temp={{_raspberryfan_min_temp}} \
+                                --max-temp={{_raspberryfan_max_temp}} \
+                                --fan-low={{_raspberryfan_fan_low}} \
+                                --fan-high={{_raspberryfan_fan_high}} \
+                                --wait-time={{_raspberryfan_wait_time}} \
+                                --pwm-gpio=18 \
+                                --pwm-freq=10000 
 
 ExecStop=-/usr/bin/podman stop -t 2 raspberryfan
 ExecStopPost=/usr/bin/podman rm raspberryfan
