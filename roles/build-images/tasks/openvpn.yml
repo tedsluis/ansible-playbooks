@@ -6,6 +6,9 @@
     _external: "{{item.ext}}{{item.image}}"
     _buildhost: "{{_build_host[item.arch]}}"
 
+- debug:
+    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, BUILDHOST={{_buildhost}}, ARCH={{hostvars[_buildhost]['_architecture']}}"
+
 - name: "{{_buildhost}}: create openvpn directories"
   delegate_to: "{{_buildhost}}"
   file:
@@ -16,49 +19,43 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/var/lib/docker-openvpn",owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/build-images/docker-openvpn",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: "{{_buildhost}}: set sysctl fs.inotify"
-  delegate_to: "{{_buildhost}}"
-  ansible.posix.sysctl:
-    name: "{{item.name}}"
-    value: "{{item.value}}"
-    state: present
-  become: true
-  with_items:
-    - { name: "fs.inotify.max_queued_events", value: "32768" }
-    - { name: "fs.inotify.max_user_instances", value: "1024" }
-    - { name: "fs.inotify.max_user_watches", value: "16384" }
-
-- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}-{{_architecture}}"
+- name: "prune images"
   delegate_to: "{{_buildhost}}"
   shell: |
-    podman pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}-{{_architecture}}
+    podman image prune --all --force
   become: true
 
-- name: "{{_buildhost}}: clone docker-openvpn in /var/lib/docker-openvpn"
+- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+  become: true
+
+- name: "{{_buildhost}}: clone docker-openvpn in /var/lib/build-images/docker-openvpn"
   delegate_to: "{{_buildhost}}"
   git:
     repo: 'https://github.com/kylemanna/docker-openvpn.git'
-    dest: /var/lib/docker-openvpn
+    dest: /var/lib/build-images/docker-openvpn
     force: true
   become: true
 
-- name: "{{_buildhost}}: copy files to /var/lib/docker-openvpn/ for podman build"
+- name: "{{_buildhost}}: copy files to /var/lib/build-images/docker-openvpn/ for podman build"
   delegate_to: "{{_buildhost}}"
   template:
     src: "openvpn/Dockerfile.j2"
-    dest: "/var/lib/docker-openvpn/Dockerfile"
+    dest: "/var/lib/build-images/docker-openvpn/Dockerfile"
     owner: root
     group: root
     mode: 0664
   become: true
 
-- name: "{{_buildhost}}: build openvpn image"
+- name: "{{_buildhost}}: build openvpn image {{_internal}}"
   delegate_to: "{{_buildhost}}"
   shell: |
-    cd /var/lib/docker-openvpn
-    podman build -t {{_internal}} -f /var/lib/docker-openvpn/Dockerfile
+    cd /var/lib/build-images/docker-openvpn
+    podman build -t {{_internal}} -f /var/lib/build-images/docker-openvpn/Dockerfile
   become: true
   register: _build
   failed_when: false
@@ -91,3 +88,9 @@
 - debug:
     var: _openvpn_image.stdout
 
+- name: clean up build directory
+  delegate_to: "{{_buildhost}}"
+  file: 
+    path: /var/lib/build-images/docker-openvpn
+    state: absent
+  become: true    
