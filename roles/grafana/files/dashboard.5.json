@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 11,
-  "iteration": 1611858246331,
+  "iteration": 1616261015759,
   "links": [],
   "panels": [
     {
@@ -57,7 +57,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -156,7 +156,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -268,7 +268,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.7",
+      "pluginVersion": "7.4.0",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -341,7 +341,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -360,6 +360,7 @@
         },
         "datasource": "Prometheus",
         "definition": "label_values(node_exporter_build_info, instance)",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -367,9 +368,12 @@
         "multi": true,
         "name": "node",
         "options": [],
-        "query": "label_values(node_exporter_build_info, instance)",
+        "query": {
+          "query": "label_values(node_exporter_build_info, instance)",
+          "refId": "Prometheus-node-Variable-Query"
+        },
         "refresh": 1,
-        "regex": "/(fed127|fed130|fed143|fed149|fed157|fed159|fed160):9100/",
+        "regex": "/(fed127|fed130|fed143|fed149|fed157|fed159|fed160|pihole|openvpn):9100/",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -388,5 +392,5 @@
   "timezone": "",
   "title": "Raspberry fan speed",
   "uid": "_jKggRYMk",
-  "version": 10
+  "version": 13
 }
