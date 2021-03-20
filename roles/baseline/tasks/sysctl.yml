@@ -1,0 +1,13 @@
+---
+
+- name: "set sysctl fs.inotify"
+  ansible.posix.sysctl:
+    name: "{{item.name}}"
+    value: "{{item.value}}"
+    state: present
+  become: true
+  with_items:
+    - { name: "fs.inotify.max_queued_events", value: "32768" }
+    - { name: "fs.inotify.max_user_instances", value: "256" }
+    - { name: "fs.inotify.max_user_watches", value: "16384" }
+
