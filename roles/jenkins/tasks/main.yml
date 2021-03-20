@@ -1,8 +1,5 @@
 ---
 
-- name: "include ansible secrets to get duckdns token"
-  include_vars: inventory/group_vars/vault.yaml
-
 - name: create local /var/lib/certs directory for certs
   file:
     path: /var/lib/certs
@@ -22,68 +19,17 @@
     state: directory
   become: true
   with_items:
-    - { directory: "/root/jenkins"                       ,owner: "root"    ,group: "root"    ,mode: "0775" }
-    - { directory: "/var/lib/jenkins"                    ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
-    - { directory: "/var/lib/jenkins/data"               ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
-    - { directory: "/var/lib/jenkins/certs"              ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
-    - { directory: "/var/lib/jenkins/data/keystore"      ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
-    - { directory: "/var/lib/jenkins/data/init.groovy.d" ,owner: "jenkins" ,group: "jenkins" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins"                    ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/data"               ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/certs"              ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/data/keystore"      ,owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/jenkins/data/init.groovy.d" ,owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: "pull docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}} image"
-  shell: |
-    podman pull docker.io/jenkins4eval/jenkins:{{_jenkins_image_tag}}
-  register: _image_pull
-  become: true
-
-- debug:
-    var: _image_pull
-    
-- name: copy files to /root/jenkins/ for podman build 
-  template:
-    src: "{{item}}.j2"
-    dest: "/root/jenkins/{{item}}"
-    owner: jenkins
-    group: jenkins
-    mode: 0664
-  become: true
-  with_items:
-    - Dockerfile
-    - plugins.txt
-  notify: _restart_jenkins
-
-- name: get image info before build
-  shell: |
-    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/jenkins | grep {{_jenkins_image_tag}}
-  become: true
-  register: _image_info1
-  failed_when:
-    - _image_info1.rc != 0
-    - _image_info1.stdout != ""
-  
-- name: build jenkins image
-  shell: |
-    cd /root/jenkins
-    podman build -t jenkins:{{_jenkins_image_tag}} -f /root/jenkins/Dockerfile
-  become: true
-  register: _build
-  failed_when: false
-
-- debug:
-    var: _build.stdout
- 
-- name: get image info after build
-  shell: |
-    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep localhost/jenkins | grep {{_jenkins_image_tag}}
-  become: true
-  register: _image_info2
-  failed_when:
-    - _image_info2.rc != 0
-    - _image_info2.stdout != ""
- 
-- debug:
-    msg: "_image_info1={{_image_info1.stdout}} <> _image_info2={{_image_info2.stdout}}"
-  when: _image_info1.stdout != _image_info2.stdout
-  notify: _restart_jenkins
+- include_role:
+    name: pull-images
+  vars:
+    _images:
+      - _jenkins_image
 
 - name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
   delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
@@ -114,7 +60,7 @@
   shell: |
     podman run --rm -it \
         -v /var/lib/jenkins/certs:/certs:z \
-        jenkins:{{_jenkins_image_tag}} \
+        {{_jenkins_image.image}} \
         /bin/bash -c 'openssl pkcs12 \
             -export \
             -out /certs/jenkins.p12 \
@@ -129,7 +75,7 @@
   shell: |
     podman run --rm -it \
         -v /var/lib/jenkins/certs:/certs:z \
-        jenkins:{{_jenkins_image_tag}} \
+        {{_jenkins_image.image}} \
         /bin/bash -c 'keytool -importkeystore \
             -srckeystore /certs/jenkins.p12 \
             -srcstorepass {{_jenkins_passphrase}}  \

@@ -3,7 +3,7 @@
 - name: jenkins
 
   hosts:
-    - fed149
+    - fed130
 
   vars:
     ansible_user: ansible

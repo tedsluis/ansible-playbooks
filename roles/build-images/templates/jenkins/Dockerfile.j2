@@ -1,0 +1,54 @@
+FROM openjdk:slim-buster
+
+EXPOSE 8080
+
+RUN apt-get update; apt-get --yes install \
+    apt-transport-https \
+    curl \
+    git \
+    ca-certificates \
+    gnupg-agent \
+    software-properties-common && 
+
+ENV JENKINS_HOME /usr/local/jenkins
+
+RUN mkdir -p /usr/local/jenkins
+RUN useradd --no-create-home --shell /bin/sh jenkins 
+RUN chown -R jenkins:jenkins /usr/local/jenkins/
+ADD http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war /usr/local/jenkins.war
+RUN chmod 644 /usr/local/jenkins.war
+
+CMD ["/usr/bin/java", "-jar", "/usr/local/jenkins.war"]
+
+
+
+
+
+
+
+
+#FROM {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_jenkins4eval_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+#
+#USER root
+#
+#RUN apk add --no-cache {% for package in hostvars[groups['jenkins'][0]]['_packages_for_jenkins'] %} {{ package }} {% endfor %} 
+#
+#RUN /usr/sbin/update-ca-certificates
+#
+#USER jenkins
+#
+## install jenkins plugins
+#COPY ./plugins.txt /usr/share/jenkins/plugins
+#RUN while read i ; \ 
+#        do /usr/local/bin/install-plugins.sh $i ; \
+#    done < /usr/share/jenkins/plugins
+#
+## allows to skip Jenkins setup wizard
+#ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+#
+#ENV JENKINS_URL {{hostvars[groups['jenkins'][0]]['_jenkins_fqdn']}}
+#
+#ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8443 --httpsKeyStore=/var/jenkins_home/keystore/jenkins.jks --httpsKeyStorePassword="{{hostvars[groups['jenkins'][0]]['_jenkins_passphrase']}}"
+#
+#EXPOSE 8443
+#

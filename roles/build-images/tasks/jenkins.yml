@@ -1,0 +1,91 @@
+---
+
+- name: set external and internal
+  set_fact:
+    _internal: "{{_image_registry_url}}{{item.image}}-{{item.arch}}"
+    _external: "{{item.ext}}{{item.image}}"
+    _buildhost: "{{_build_host[item.arch]}}"
+
+- debug:
+    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, BUILDHOST={{_buildhost}}, ARCH={{hostvars[_buildhost]['_architecture']}}"
+
+- name: "{{_buildhost}}: create jenkins directories"
+  delegate_to: "{{_buildhost}}"
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/build-images/jenkins",owner: "root" ,group: "root" ,mode: "0777" }
+
+- name: "prune images"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman image prune --all --force
+  become: true
+
+- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_jenkins4eval_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_jenkins4eval_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+  become: true
+
+- name: "{{_buildhost}}: copy files to /var/lib/build-images/jenkins for podman build"
+  delegate_to: "{{_buildhost}}"
+  template:
+    src: "jenkins/{{item}}.j2"
+    dest: "/var/lib/build-images/jenkins/{{item}}"
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  with_items:
+    - Dockerfile
+    - plugins.txt
+
+- name: "{{_buildhost}}: build jenkins image {{_internal}}"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    cd /var/lib/build-images/jenkins
+    podman build -t {{_internal}} -f /var/lib/build-images/jenkins/Dockerfile
+  become: true
+  register: _build
+  failed_when: false
+
+- debug:
+    var: _build.stdout
+
+- name: "{{_buildhost}}: tag {{_internal}} {{_external}}"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman tag {{_internal}} {{_external}}
+  become: true
+
+- name: "{{_buildhost}}: push image to {{_external}} and {{_internal}}"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman login -u registry -p "{{hostvars[groups['registry'][0]]['_registry_password']}}" "{{_image_registry_url}}"
+    podman push {{_internal}}
+    podman login -u "{{_dockerio_username}}" -p "{{_dockerio_token}}" "{{_dockerio_url}}"
+    podman push {{_external}}
+  become: true
+
+- name: "{{_buildhost}}: get image info after build"
+  delegate_to: "{{_buildhost}}"
+  shell: |
+    podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep jenkins
+  become: true
+  register: _jenkins_image
+
+- debug:
+    var: _jenkins_image.stdout
+
+- name: clean up build directory
+  delegate_to: "{{_buildhost}}"
+  file: 
+    path: /var/lib/build-images/jenkins
+    state: absent
+  become: true    

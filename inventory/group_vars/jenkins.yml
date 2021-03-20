@@ -4,25 +4,31 @@ _jenkins_firewall:
   - 5000/tcp
   - 8443/tcp
 
-_jenkins_groups:
-  - { group: 'jenkins',gid: '1037' }
-
-_jenkins_users:
-  - { user: 'jenkins',comment: 'user for jenkins',uid: '1037',groups: 'jenkins',create_home: 'false',shell: '/bin/nologin' }
-
 _jenkins_packages:
   - podman
 
 _jenkins_image_tag: 2.262-alpine-arm64
 
+_jenkins4eval_image:
+  ext: 'docker.io/'
+  image: 'jenkins4eval/jenkins:2.280-alpine-arm64'
+
+_jenkins_image:
+  build: 'jenkins'
+  ext: 'docker.io/'
+  image: 'tedsluis/jenkins:2.280-alpine'
+
 _jenkins_plugins:
   - cloudbees-folder:latest
   - pipeline-stage-view:latest
   - ws-cleanup:latest
-  #- credentials-binding:latest
-  #- gradle:latest
-  #- mailer:latest
-  #- timestamper:latest
+  
+#- credentials-binding:latest
+#- gradle:latest
+#- mailer:latest
+#- timestamper:latest
+#git:latest
+#matrix-auth:latest
 
 _jenkins_fqdn: jenkins.bachstraat20.duckdns.org
 
