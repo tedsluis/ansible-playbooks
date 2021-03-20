@@ -58,7 +58,7 @@ fed160
 fed143
 
 [jenkins]
-fed149
+fed130
 
 [karma]
 fed160
@@ -140,6 +140,8 @@ fed149
 fed157
 fed159
 fed160
+openvpn
+pihole
 
 [registry]
 fed149
