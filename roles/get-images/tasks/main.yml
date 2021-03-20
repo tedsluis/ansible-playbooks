@@ -40,5 +40,4 @@
   loop: "{{_images}}"
 
 - include: pull.yml
-  loop: "{{_images}}"
-
+  loop: "{{_images|unique}}"
