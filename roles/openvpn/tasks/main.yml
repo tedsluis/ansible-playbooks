@@ -16,17 +16,6 @@
     - { directory: "/var/lib/openvpn/clone",               owner: "root" ,group: "root" ,mode: "0777" }
     - { directory: "/var/lib/openvpn/clone/docker-openvpn",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: set sysctl fs.inotify
-  ansible.posix.sysctl:
-    name: "{{item.name}}"
-    value: "{{item.value}}"
-    state: present
-  become: true
-  with_items:
-    - { name: "fs.inotify.max_queued_events", value: "32768" }
-    - { name: "fs.inotify.max_user_instances", value: "2048" }
-    - { name: "fs.inotify.max_user_watches", value: "16384" }
-
 - include_role:
     name: pull-images
   vars:
