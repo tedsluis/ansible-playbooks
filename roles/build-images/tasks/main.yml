@@ -37,8 +37,8 @@
 
 - debug:
     msg: "{{item.build}}={{item.image}}-{{item.arch}}"
-  loop: "{{_builds}}"
+  loop: "{{_builds|unique}}"
 
 - include: "{{item.build}}.yml"
-  loop: "{{_builds}}"
+  loop: "{{_builds | unique}}"
 
