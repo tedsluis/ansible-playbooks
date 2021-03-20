@@ -27,10 +27,18 @@
     podman image prune --all --force
   become: true
 
-- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_jenkins4eval_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
+- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
   delegate_to: "{{_buildhost}}"
   shell: |
-    podman pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_jenkins4eval_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+    podman pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+  become: true
+
+- name: "{{_buildhost}}: clone jenkins in /var/lib/build-images/jenkins"
+  delegate_to: "{{_buildhost}}"
+  git:
+    repo: 'https://github.com/jenkinsci/docker.git'
+    dest: /var/lib/build-images/jenkins
+    force: true
   become: true
 
 - name: "{{_buildhost}}: copy files to /var/lib/build-images/jenkins for podman build"
@@ -44,7 +52,6 @@
   become: true
   with_items:
     - Dockerfile
-    - plugins.txt
 
 - name: "{{_buildhost}}: build jenkins image {{_internal}}"
   delegate_to: "{{_buildhost}}"
