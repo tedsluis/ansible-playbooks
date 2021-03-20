@@ -12,3 +12,14 @@ _raspberryfan_fan_low: 20
 _raspberryfan_fan_high: 100
 
 _raspberryfan_wait_time: 10
+
+
+_fedora_image:
+  ext: 'docker.io/'
+  image: 'fedora:latest'
+
+_raspberryfan_image:
+  build: 'raspberryfan'
+  ext: 'docker.io/'
+  image: 'tedsluis/raspberryfan:latest'
+
