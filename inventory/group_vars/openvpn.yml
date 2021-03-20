@@ -20,7 +20,7 @@ _openvpnexporter_image:
 
 _openvpn_firewall:
   - 1194/udp
-  - 9176
+  - 9176/tcp
 
 _openvpn_packages:
   - podman
