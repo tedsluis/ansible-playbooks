@@ -9,9 +9,9 @@
     ansible_user: ansible
 
   roles:
-  - packages
-  - users-and-groups
-  - firewall
+  #- packages
+  #- users-and-groups
+  #- firewall
   - role: dnsmasq
     when: _wants_dnsmasq|bool == true
   - role: letsencrypt
