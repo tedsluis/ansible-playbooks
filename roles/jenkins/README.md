@@ -37,3 +37,15 @@ default variable values can be found in [defaults/main.yml](defaults/main.yml)
 | _jenkins_plugins                | inventory/group_vars/jenkins.yml     | list of jenkins plugins        |
 | _letsencrypt_inventory_hostname | inventory/group_vars/letsencrypt.yml | Letsencrypt inventory hostname |
 
+
+# Jenkins CLI
+
+```bash
+$ wget https://jenkins.bachstraat20.duckdns.org:8443/jnlpJars/jenkins-cli.jar -O jenkins-cli.jar
+
+$ java -jar jenkins-cli.jar -s https://jenkins.bachstraat20.duckdns.org:8443 -auth admin:$PASSWORD list-plugins
+
+$ java -jar jenkins-cli.jar -s https://jenkins.bachstraat20.duckdns.org:8443 -auth admin:$PASSWORD install-plugin git matrix-auth -restart
+Installing git from update center
+Installing matrix-auth from update center
+```
