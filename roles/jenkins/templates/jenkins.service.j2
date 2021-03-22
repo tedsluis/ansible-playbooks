@@ -16,7 +16,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -v /var/lib/jenkins/data:/var/jenkins_home:z \
                               -v /var/lib/jenkins/certs:/certs:z \
                               --restart unless-stopped \
-                              {{_jenkins_image.image}}
+                              {{_image_registry_url}}{{_jenkins_image.image}}-{{_architecture}}
 
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
 PIDFile=/%t/%n-pid
