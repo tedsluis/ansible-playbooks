@@ -7,6 +7,12 @@ _jenkins_firewall:
 _jenkins_packages:
   - podman
 
+# https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/
+_jenkins_version: 2.277.1
+
+# jenkins war checksum https://updates.jenkins-ci.org/download/war/
+_jenkins_sha_256: 399741db1152ee7bbe8dc08e0972efa0b128a1b55a0f8b10c087fefeec66d151
+
 _ubuntu_image:
   ext: 'docker.io/'
   image: 'ubuntu:latest'
@@ -14,19 +20,21 @@ _ubuntu_image:
 _jenkins_image:
   build: 'jenkins'
   ext: 'docker.io/'
-  image: 'tedsluis/jenkins:latest'
+  image: 'tedsluis/jenkins:{{_jenkins_version}}'
 
 _jenkins_plugins:
-  - cloudbees-folder:latest
-  - pipeline-stage-view:latest
-  - ws-cleanup:latest
+  - ':git:'
+  - ':matrix-auth:'
+  - ':maven-plugin:'
+  - ':blueocean:'
+  - ':cloudbees-folder:'
+  - ':pipeline-stage-view:'
+  - ':ws-cleanup:'
+  - ':timestamper:'
   
 #- credentials-binding:latest
 #- gradle:latest
 #- mailer:latest
-#- timestamper:latest
-#git:latest
-#matrix-auth:latest
 
 _jenkins_fqdn: jenkins.bachstraat20.duckdns.org
 
@@ -38,6 +46,8 @@ _jenkins_passphrase: !vault |
           6439616637636163370a376131343337333133326632613261373239396232363863623466623464
           6463
 
+_jenkins_user: admin         
+          
 _jenkins_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           62343731613432656538623533376134303039376338353463306535383261383539303335623862
