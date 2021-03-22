@@ -59,6 +59,6 @@
     when: "'awx' in group_names"
   - role: piaware
     when: "'piaware' in group_names"
-
-
+  - role: openvpn
+    when: "'openvpn' in group_names"
 
