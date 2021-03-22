@@ -40,6 +40,7 @@ _all_packages:
   - net-tools
   - rsync
   - ssmtp
+  - sqlite
   - tmux
   - vim
   - wget
