@@ -137,4 +137,57 @@
 - debug:
     var: _container_state
 
+- name: "pause until jenkins is reachable"
+  uri:
+    url: "https://{{_jenkins_fqdn}}:8443"
+    follow_redirects: none
+    method: POST
+    url_username: "{{_jenkins_user}}"
+    url_password: "{{_jenkins_password}}"
+    force_basic_auth: yes
+    follow_redirects: all
+  register: _result
+  until: _result.status == 200
+  retries: 10 # 10 * 5 seconds
+  delay: 5 # Every 5 seconds
+  failed_when: false
 
+- debug:
+    msg: "status:{{_result.status}}"
+
+- name: get jenkins-cli
+  shell: |
+    podman exec -it jenkins /usr/bin/wget https://{{_jenkins_fqdn}}:8443/jnlpJars/jenkins-cli.jar -O /tmp/jenkins-cli.jar
+  become: true
+
+- name: get installed plugins
+  shell: |
+    podman exec -it jenkins /usr/bin/java -jar /tmp/jenkins-cli.jar -s https://{{_jenkins_fqdn}}:8443 -auth {{_jenkins_user}}:{{_jenkins_password}} list-plugins | awk '{print ":" $1 ":"}'
+  become: true
+  register: _current_jenkins_plugins
+
+- debug:
+    msg: "current plugins:{{_current_jenkins_plugins.stdout_lines}}"
+
+- name: create list of plugins not yet installed
+  set_fact:
+    _new_plugins: "{{_new_plugins|default([]) + [item|replace(':','')]}}"
+  loop: "{{_jenkins_plugins}}"
+  when: item not in _current_jenkins_plugins.stdout_lines
+
+- debug:
+    msg: "list of plugins not yet installed:{{_new_plugins}}"
+  when: _new_plugins is defined
+
+- name: install plugins
+  shell: |
+    podman exec -it jenkins /usr/bin/java -jar /tmp/jenkins-cli.jar -s https://{{_jenkins_fqdn}}:8443 -auth {{_jenkins_user}}:{{_jenkins_password}} install-plugin {{_new_plugins|join(' ')}} -restart
+  become: true
+  when: 
+    - _new_plugins is defined
+    - _new_plugins | length > 0
+  register: _result_install_plugins
+
+- debug:
+    msg: "{{_result_install_plugins.stdout_lines|default('empty')}}"
+  when: _result_install_plugins is defined
