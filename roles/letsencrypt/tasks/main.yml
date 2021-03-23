@@ -1,8 +1,5 @@
 ---
 
-- name: "include ansible secrets to get duckdns token"
-  include_vars: inventory/group_vars/vault.yaml
-
 - name: create letsencrypt directories
   file:
     path: "{{item.directory}}"
@@ -14,14 +11,11 @@
   with_items:
     - { directory: "/var/lib/letsencrypt",owner: "letsencrypt",group: "letsencrypt",mode: "0664" }
 
-- name: "pull docker.io/linuxserver/swag:{{_letsencrypt_image_tag}} image"
-  shell: |
-    podman pull docker.io/linuxserver/swag:{{_letsencrypt_image_tag}}
-  register: _image_pull
-  become: true
-
-- debug:
-    var: _image_pull
+- include_role:
+    name: pull-images
+  vars:
+    _images:
+      - _swag_image
 
 - name: create /etc/systemd/system/letsencrypt-swag.service
   template:
@@ -53,4 +47,22 @@
 
 - name: trigger handelers
   meta: flush_handlers
+
+- name: show certificate expire in seconds
+  shell: |
+    echo $(( $(podman exec -it letsencrypt-swag openssl x509 -in /config/keys/letsencrypt/fullchain.pem -noout -dates | grep notAfter | sed 's/notAfter=//' | xargs -I {} date -d '{}' +"%s") - $(date +%s) ))
+  become: true
+  register: _certificate_expire_time
+
+- debug:
+    msg: "_certificate_expire_time:{{_certificate_expire_time.stdout}}"
+
+- name: restart when expire in less than 30 days
+  ansible.builtin.service:
+    name: letsencrypt-swag.service
+    state: restarted
+  become: true
+  when: ( _certificate_expire_time.stdout | int < 2592000 )
+    
+
 
