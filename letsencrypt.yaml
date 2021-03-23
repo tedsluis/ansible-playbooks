@@ -1,0 +1,13 @@
+#!/usr/bin/env ansible-playbook
+
+- name: letsencrypt
+
+  hosts:
+    - fed143
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - role: letsencrypt
+    when: "'letsencrypt' in group_names"
