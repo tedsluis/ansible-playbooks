@@ -10,6 +10,10 @@ _letsencrypt_users:
 
 _letsencrypt_image_tag: 1.8.0-ls11
 
+_swag_image:
+  ext: 'docker.io/'
+  image: 'linuxserver/swag:version-1.13.0'
+
 _letsencrypt_packages:
   - podman
 
