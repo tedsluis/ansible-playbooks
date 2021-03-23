@@ -23,7 +23,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile /%t/%n-pid  \
                               -e STAGING={{_letsencrypt_staging}} \
                               -v /var/lib/letsencrypt:/config:z \
                               --restart unless-stopped \
-                              docker.io/linuxserver/swag:{{_letsencrypt_image_tag}}
+                              {{_image_registry_url}}{{_swag_image.image}}-{{_architecture}}
 
 ExecStop=/usr/bin/sh -c "/usr/bin/podman rm -f `cat /%t/%n-cid`"
 PIDFile=/%t/%n-pid
