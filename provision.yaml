@@ -3,7 +3,7 @@
 - name: provision
 
   hosts:
-    - pihole,fed171,fed178,fed120,fed127,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo,openvpn
+    - pihole,fed168,fed171,fed178,fed120,fed127,fed130,fed143,fed149,fed160,fed159,fed157,msi,lenovo,openvpn
 
   vars:
     ansible_user: ansible
