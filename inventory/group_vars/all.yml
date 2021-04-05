@@ -103,7 +103,7 @@ _fqdns:
   - { ip: '192.168.11.160',  fqdn:      'blackbox.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:  'snmpexporter.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:         'karma.bachstraat20.duckdns.org' }
-  - { ip: '192.168.11.171',  fqdn:      'piaware1.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.168',  fqdn:      'piaware1.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.178',  fqdn:      'piaware2.bachstraat20.duckdns.org' }
 
 
