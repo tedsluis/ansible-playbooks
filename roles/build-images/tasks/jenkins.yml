@@ -3,7 +3,7 @@
 - name: set external and internal
   set_fact:
     _internal: "{{_image_registry_url}}{{item.image}}-{{item.arch}}"
-    _external: "{{item.ext}}{{item.image}}"
+    _external: "{{item.ext}}{{item.image}}-{{item.arch}}"
     _buildhost: "{{_build_host[item.arch]}}"
 
 - debug:
