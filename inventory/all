@@ -26,6 +26,7 @@ fed149
 fed157
 fed159
 fed160
+fed168
 fed171
 fed178
 lenovo
@@ -86,6 +87,9 @@ fed149
 fed157
 fed159
 fed160
+fed168
+fed178
+fed178
 lenovo
 msi
 
@@ -101,6 +105,7 @@ fed149
 fed157
 fed159
 fed160
+fed168
 fed171
 fed178
 openvpn
@@ -123,6 +128,7 @@ openvpn
 pihole
 
 [piaware]
+fed168
 fed171
 fed178
 
