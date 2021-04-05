@@ -49,6 +49,7 @@ _blackbox_http_nodeexporter_2xx_targets:
   - https://fed157.bachstraat20.duckdns.org:9100
   - https://fed159.bachstraat20.duckdns.org:9100
   - https://fed160.bachstraat20.duckdns.org:9100
+  - https://fed168.bachstraat20.duckdns.org:9100
   - https://fed171.bachstraat20.duckdns.org:9100
   - https://fed178.bachstraat20.duckdns.org:9100
   - https://pihole.bachstraat20.duckdns.org:9100
