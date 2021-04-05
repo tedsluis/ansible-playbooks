@@ -3,7 +3,7 @@
 - name: piaware
 
   hosts:
-    - fed171,fed178
+    - fed171,fed168,fed178
 
   vars:
     ansible_user: ansible
