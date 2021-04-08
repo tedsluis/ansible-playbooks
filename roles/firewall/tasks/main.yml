@@ -26,6 +26,7 @@
     state: enabled
     immediate: true
   become: true
+  failed_when: false
   with_items: "{{_firewall}}"
 
 - name: close firewall ports that should not be open
@@ -37,4 +38,5 @@
   become: true
   with_items: "{{_open_ports.stdout_lines}}"
   when: item not in _firewall
+  failed_when: false
 
