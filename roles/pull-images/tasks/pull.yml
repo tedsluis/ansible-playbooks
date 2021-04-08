@@ -33,11 +33,6 @@
       become: true
       register: _image_pulled
 
-    - name: tag {{_external}} {{_internal}}
-      shell: |
-        podman tag {{_external}} {{_internal}}
-      become: true
-
   always:
     - debug:
         var: _image_pulled
