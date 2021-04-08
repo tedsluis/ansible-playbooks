@@ -1,0 +1,31 @@
+global
+    log stdout  format raw  local0  info
+    maxconn     4000
+    daemon
+
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 3000
+
+frontend portal
+   bind *:9443 ssl crt /{{ _linkding_fqdn }}-crt-key.pem ssl-min-ver TLSv1.2
+   default_backend linkding
+
+backend linkding
+   http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
+   option forwardfor
+   mode http
+   server master0 0.0.0.0:9090 check

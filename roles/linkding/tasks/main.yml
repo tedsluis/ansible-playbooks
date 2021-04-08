@@ -1,0 +1,147 @@
+---
+
+- name: create linkding directories
+  file:
+    path: "{{item.directory}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+    state: directory
+  become: true
+  with_items:
+    - { directory: "/var/lib/linkding",        owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/linkding/certs",  owner: "root" ,group: "root" ,mode: "0774" }
+    - { directory: "/var/lib/linkding/data",   owner: "root" ,group: "root" ,mode: "0777" }
+    - { directory: "/var/lib/linkding/haproxy",owner: "root" ,group: "root" ,mode: "0777" }
+
+- include_role:
+    name: pull-images
+  vars:
+    _images: 
+      - _linkding_image
+      - _haproxy_image
+
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: copy cert and key to host
+  copy:
+    src: /var/lib/certs/{{item}}
+    dest: /var/lib/linkding/certs/{{item}}
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items:
+    - fullchain.pem
+    - privkey.pem
+  notify: _restart_linkding
+
+- name: create pem file
+  ansible.builtin.assemble:
+    src: /var/lib/linkding/certs/
+    dest: /var/lib/linkding/haproxy/{{ _linkding_fqdn }}-crt-key.pem
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: create haproxy config
+  template:
+    src: haproxy.cfg.j2
+    dest: /var/lib/linkding/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+  notify: _restart_haproxy
+
+- name: create linkding pod 
+  containers.podman.podman_pod:
+    name: linkdingpod
+    state: started
+    ports:
+      - 9443:9443
+  become: true
+
+- name: create linkding container
+  containers.podman.podman_container:
+    name: linkding
+    pod: linkdingpod
+    image: "{{_image_registry_url}}{{_linkding_image.image}}-{{_architecture}}"
+    state: present
+    volume:
+      - /var/lib/linkding/data:/etc/linkding/data:z
+    restart_policy: always
+    conmon_pidfile: /run/linkding.pid
+    log_options: max_size=100mb
+  become: true
+  register: _linkding_container_created
+  notify: _restart_linkding
+
+- name: create systemd linkding file
+  shell: |
+    podman generate systemd --name linkding > /etc/systemd/system/linkding.service 
+  become: true
+  when: _linkding_container_created.changed
+  notify: _restart_linkding
+
+- name: create haproxy container
+  containers.podman.podman_container:
+    name: haproxy
+    pod: linkdingpod
+    state: started
+    image: "{{_image_registry_url}}{{_haproxy_image.image}}-{{_architecture}}"
+    debug: true
+    privileged: true
+    volume:
+      - /var/lib/linkding/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - /var/lib/linkding/haproxy/{{ _linkding_fqdn }}-crt-key.pem:/{{ _linkding_fqdn }}-crt-key.pem
+    conmon_pidfile: /run/linkding-haproxy.pid
+    restart_policy: always
+    log_options: max_size=100mb
+  become: true
+  register: _haproxy_container_created
+  notify: _restart_haproxy
+
+- name: create systemd haproxy file
+  shell: |
+    podman generate systemd --name haproxy > /etc/systemd/system/linkding-haproxy.service
+  become: true
+  when: _haproxy_container_created.changed
+  notify: _restart_haproxy
+
+- name: trigger handelers
+  meta: flush_handlers
+
+- name: containers state
+  shell: |
+    podman ps -a --format "{{ '{{' }}.Status{{ '}}' }}  {{ '{{' }}.Names{{ '}}' }}  {{ '{{' }}.ID{{ '}}' }}" --filter 'name={{item}}'
+  register: _containers_state
+  become: true
+  with_items:
+    - linkding
+    - haproxy
+
+- debug:
+    var: _containers_state
+

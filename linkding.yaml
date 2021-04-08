@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+
+- name: linkding
+
+  hosts:
+    - fed157
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+  - firewall
+  - role: linkding
+    when: "'linkding' in group_names"
+

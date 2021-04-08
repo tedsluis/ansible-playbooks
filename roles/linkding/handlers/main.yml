@@ -1,0 +1,46 @@
+---
+
+- name: daemon reload linkding.service
+  listen: _restart_linkding
+  systemd:
+    name: linkding
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop linkding.service
+  listen: _restart_linkding
+  systemd:
+    name: linkding
+    state: stopped
+  become: true
+  
+- name: start linkding.service
+  listen: _restart_linkding
+  systemd:
+    name: linkding
+    state: started
+  become: true
+
+- name: daemon reload linkding-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: linkding-haproxy
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: stop linkding-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: linkding-haproxy
+    state: stopped
+  become: true
+
+- name: start linkding-haproxy.service
+  listen: _restart_haproxy
+  systemd:
+    name: linkding-haproxy
+    state: started
+  become: true
+
