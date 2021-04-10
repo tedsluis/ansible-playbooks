@@ -26,6 +26,7 @@ _blackbox_http_2xx_targets:
   - http://karma.bachstraat20.duckdns.org:8080
   - https://ldap1.bachstraat20.duckdns.org:6443
   - https://ldap2.bachstraat20.duckdns.org:6443
+  - https://linkding.bachstraat20.duckdns.org:9443
   - https://piaware1.bachstraat20.duckdns.org:8443
   - https://piaware2.bachstraat20.duckdns.org:8443
   - https://pihole.bachstraat20.duckdns.org:443
