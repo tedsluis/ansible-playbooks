@@ -35,12 +35,14 @@ _all_firewall:
 _all_packages:
   - chrony
   - curl
+  - dnsmasq
   - git
   - jq
   - net-tools
   - rsync
   - ssmtp
   - sqlite
+  - tar
   - tmux
   - vim
   - wget
@@ -97,6 +99,7 @@ _fqdns:
   - { ip: '192.168.11.149',  fqdn:      'registry.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.157',  fqdn:         'ldap1.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.157',  fqdn: 'phpldapadmin1.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.157',  fqdn:      'linkding.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:    'prometheus.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:       'grafana.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.160',  fqdn:  'alertmanager.bachstraat20.duckdns.org' }
