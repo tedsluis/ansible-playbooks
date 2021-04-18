@@ -6,6 +6,7 @@ build-images
 get-images
 gitea
 grafana
+haproxy-keepalived
 httpd
 jenkins
 karma
@@ -63,6 +64,10 @@ fed143
 
 [grafana]
 fed160
+
+[haproxy-keepalived]
+fed159
+fed171
 
 [httpd]
 fed143
