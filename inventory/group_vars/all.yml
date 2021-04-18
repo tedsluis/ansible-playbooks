@@ -111,6 +111,10 @@ _fqdns:
 
 
 _hostnames:
+  - { ip: '192.168.1.11',   hostname: 'fed159-ext' }
+  - { ip: '192.168.1.12',   hostname: 'fed171-ext' }
+  - { ip: '192.168.1.100',  hostname: 'vip1' }
+  - { ip: '192.168.1.101',  hostname: 'vip2' }
   - { ip: '192.168.11.169', hostname: 'personalcloud' }
   - { ip: '192.168.1.254',  hostname: 'ziggorouter' }
   - { ip: '192.168.11.200', hostname: 'netgear-gs274t' }
