@@ -1,0 +1,6 @@
+{% for _route in _routes %}
+# ROUTE TO {{_route.name}}
+ADDRESS{{loop.index0}}={{_route.ip}}
+NETMASK{{loop.index0}}={{_route.mask|default(_default_mask)}}
+GATEWAY{{loop.index0}}={{_route.gw|default(_default_gw)}}
+{% endfor %}

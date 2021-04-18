@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+
+- name: haproxy-keepalived
+
+  hosts:
+    - fed159,fed171
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+    #- packages
+    #- role: dnsmasq
+    #  when: _wants_dnsmasq|bool == true
+    - role: haproxy-keepalived
+    #  when: "'haproxy-keepalived' in group_names"
+

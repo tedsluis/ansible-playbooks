@@ -7,3 +7,10 @@ _ip_address: '192.168.11.159'
 _host_type: raspberry-2b-1gb
 
 _architecture: arm32
+
+_ext_device_ip: 192.168.1.11
+
+_keepalived_state: BACKUP
+
+_keepalived_priority: 100
+                            

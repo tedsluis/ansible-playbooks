@@ -1,0 +1,24 @@
+---
+- name: _restart_haproxy
+  systemd:
+    name: haproxy
+    state: restarted
+  become: true
+
+- name: _restart_keepalived
+  systemd:
+    name: keepalived
+    state: restarted
+  become: true
+
+- name: _restart_rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+  become: true
+
+- name: _reload_networkmanager
+  shell: |
+    ifup {{ _int_device_conn }}
+  become: true
+

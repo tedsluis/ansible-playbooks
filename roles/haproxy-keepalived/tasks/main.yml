@@ -1,0 +1,214 @@
+---
+
+- name: create local /var/lib/certs directory for certs
+  file:
+    path: /var/lib/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  delegate_to: localhost
+  become: true
+
+- name: fetch keys from /var/lib/letsencrypt/keys/letsencrypt/
+  delegate_to: "{{hostvars[groups['letsencrypt'][0]]['_letsencrypt_inventory_hostname']}}"
+  run_once: yes
+  fetch:
+    src: "/var/lib/letsencrypt/keys/letsencrypt/{{item}}"
+    dest: "/var/lib/certs/"
+    flat: yes
+  become: true
+  with_items:
+    - privkey.pem
+    - fullchain.pem
+
+- name: create /var/lib/haproxy-keepalived/certs directory for certs
+  file:
+    path: /var/lib/haproxy-keepalived/certs
+    owner: root
+    group: root
+    mode: 0777
+    state: directory
+  become: true
+
+- name: copy cert and key to host
+  copy:
+    src: /var/lib/certs/{{item}}
+    dest: /var/lib/haproxy-keepalived/certs/{{item}}
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  with_items:
+    - fullchain.pem
+    - privkey.pem
+  notify: _restart_haproxy
+
+- name: create pem file
+  ansible.builtin.assemble:
+    src: /var/lib/haproxy-keepalived/certs/
+    dest: /etc/haproxy/haproxy.pem
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: "change external firewall zone: disable ssh"
+  ansible.posix.firewalld:
+    zone: "{{ _firewall_external_zone }}"
+    service: ssh
+    permanent: true
+    immediate: true
+    state: disabled
+  become: true
+
+- name: "change external firewall zone: enable https ports"
+  ansible.posix.firewalld:
+    zone: "{{ _firewall_external_zone }}"
+    port: "{{item}}"
+    permanent: true
+    immediate: true
+    state: enabled
+  become: true
+  loop:
+    - 9443/tcp
+    - 8443/tcp
+    - 3000/tcp
+
+- name: "change internal filrewall rule: enable nodeexporter and keepalived"
+  firewalld:
+    zone: "{{ _firewall_internal_zone }}"
+    port: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  become: true
+  loop:
+  - 9000/tcp 
+  - 9100/tcp
+
+- name: configure internal nic
+  shell: |
+    nmcli con mod "{{ _int_device_conn }}" \
+    ipv4.method manual ipv4.address "{{ _ip_address }}/24" \
+    ipv4.gateway "{{ _int_device_gw }}" \
+    ipv4.dns "{{ _int_device_dns1 }}" \
+    +ipv4.dns "{{ _int_device_dns2 }}" \
+    ipv4.dns-search "{{ _int_device_dns_search }}" \
+    connection.autoconnect yes connection.zone "{{ _firewall_internal_zone }}"
+  become: true
+
+- name: configure external nic
+  shell: |
+    nmcli con mod "{{ _ext_device_conn }}" \
+    ipv4.method manual ipv4.address "{{ _ext_device_ip }}" \
+    ipv4.gateway "{{ _ext_device_gw }}" \
+    connection.zone "{{ _firewall_external_zone }}" \
+    connection.autoconnect yes
+  become: true
+
+- name: remove default gateway internal nic 
+  shell: |
+    nmcli con mod "{{ _int_device_conn }}" ipv4.never-default yes
+  notify: _reload_networkmanager
+  become: true
+
+#- name: add static routes
+#  template:
+#    src: routes.j2
+#    dest: /etc/sysconfig/network-scripts/route-eth1
+#  notify: _reload_networkmanager
+#  become: true
+
+- name: keepalived.conf
+  template:
+    src: keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
+  notify: _restart_keepalived
+  become: true
+
+- ansible.posix.firewalld:
+    rich_rule: rule protocol value="vrrp" accept
+    zone: "{{ _firewall_internal_zone }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  become: true
+
+- name: keepalived is enabled and started
+  systemd:
+    name: keepalived
+    state: started
+    enabled: true
+  become: true
+
+- name: activate IP forwarding and non-local binding
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  loop:
+  - net.ipv4.ip_forward
+  - net.ipv4.ip_nonlocal_bind
+  become: true
+
+#- name: cacert.pem is present
+#  copy:
+#    src: cacert.pem
+#    dest: /etc/haproxy/cacert.pem
+#    mode: '0440'
+#  notify: _restart_haproxy
+#  become: true
+
+- name: create dhparams.pem if it is not created already
+  command: openssl dhparam -out /etc/haproxy/dhparams.pem 2048
+  args:
+    creates: /etc/haproxy/dhparams.pem
+  notify: _restart_haproxy
+  become: true
+
+- name: haproxy.cfg is as expected
+  template:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  notify: _restart_haproxy
+  become: true
+
+- name: haproxy whitelist
+  template:
+    src: whitelist.j2
+    dest: /etc/haproxy/whitelist.lst
+  notify: _restart_haproxy
+  become: true
+
+- name: haproxy rsyslog config is as expected
+  copy:
+    src: rsyslog.conf
+    dest: /etc/rsyslog.d/haproxy.conf
+  notify: _restart_rsyslog
+  become: true
+
+- name: change rsyslog.conf
+  replace:
+     path: /etc/rsyslog.conf
+     regexp: ":omusrm.*"
+     replace: "/var/log/messages"
+  notify: _restart_rsyslog
+  become: true
+
+- name: rsyslog is started and enabled
+  systemd:
+    name: rsyslog
+    state: started
+    enabled: true
+  become: true
+
+- name: haproxy is started and enabled
+  systemd:
+    name: haproxy
+    state: started
+    enabled: true
+  become: true
+

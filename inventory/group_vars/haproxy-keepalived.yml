@@ -1,0 +1,95 @@
+---
+
+_haproxykeepalived_packages:
+  - haproxy
+  - keepalived
+  - openssl
+  - rsyslog
+
+# internal network configuration
+_int_device_gw: 192.168.11.1
+_int_device_dns1: 192.168.11.1
+_int_device_dns2: 192.168.1.17
+_int_device_dns_search: "bachstraat20.duckdns.org"
+_int_device_conn: "Wired connection 1"
+_internal_device: "eth0"
+_firewall_internal_zone: public
+
+# external network configuration
+_ext_device_gw: 192.168.1.254
+_ext_device_conn: "Wired connection 2"
+_external_device: "eth1"
+_firewall_external_zone: external
+
+# keepalived configuration
+_keepalived_id1: 42
+_keepalived_vip1_ip: 192.168.1.100
+_keepalived_vip1_name: vip1.bachstraat20.duckdns.org
+_keepalived_vip2_ip: 192.168.1.101
+_keepalived_vip2_name: vip2.bachstraat20.duckdns.org
+
+#haproxy accounts:
+_haproxy_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          39363632396565333865633035396564336634663734663138373464303138393864343366363166
+          3533366535663461346364393261363665383732306638370a313663306532663533323337303730
+          62303632353538633762663231353739323265386335373537313634616131373265326361353836
+          6366336436323565610a663931303836666161636337383736623965356362306265653564333135
+          6531
+
+# haproxy backends:
+_backends:
+  - name: grafana
+    host: grafana
+    uri: grafana.bachstraat20.duckdns.org
+    port: 3000
+    # options:
+    #   - http-request set-header Host grafana.bachstraat20.duckdns.org
+    #   - acl response-is-redirect res.hdr(Location) -m found
+  - name: piaware1
+    host: piaware1
+    uri: piaware1.bachstraat20.duckdns.org
+    port: 8443
+  - name: piaware2
+    host: piaware2
+    uri: piaware2.bachstraat20.duckdns.org
+    port: 8443
+  - name: home1
+    host: home1
+    uri: home.bachstraat20.duckdns.org
+    port: 30443
+  - name: home2
+    host: home
+    uri: home.bachstraat20.duckdns.org
+    port: 31443
+  - name: linkding
+    host: linkding
+    uri: linkding.bachstraat20.duckdns.org
+    port: 9443
+
+# haproxy whitelist
+_whitelist:
+  - name: msi.bachstraat20.duckdns.org
+    ip: 192.168.11.115
+  - name: lenovo.bachstraat20.duckdns.org
+    ip: 192.168.11.172
+  - name: nokia72
+    ip: 192.168.11.128
+
+# haproxy routes:
+_default_gw: 192.168.11.1
+_default_mask: 255.255.255.255
+_routes:
+  - name: fed130
+    ip: 192.168.11.130
+  - name: fed143
+    ip: 192.168.11.143
+  - name: fed149
+    ip: 192.168.11.149
+  - name: fed157
+    ip: 192.168.11.160
+  - name: fed168
+    ip: 192.168.11.168
+  - name: fed178
+    ip: 192.168.11.178
+
