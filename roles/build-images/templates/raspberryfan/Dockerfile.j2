@@ -16,6 +16,8 @@ RUN  cp /usr/local/lib/lib*gpio.so.1 /usr/lib64/
 RUN  cp /usr/local/lib/liblgpio.so.1 /usr/lib/
 {% endif %}
 
+RUN if [ ! -e /usr/bin/python ]; then ln -s /usr/bin/python3 /usr/bin/python; fi
+
 RUN  mkdir /src
 
 COPY fan.py /src
