@@ -26,6 +26,7 @@ frontend portal
 
 backend piaware
    http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
+   http-response set-header Content-Security-Policy upgrade-insecure-requests
    option forwardfor
    mode http
    server master0 0.0.0.0:80 check
