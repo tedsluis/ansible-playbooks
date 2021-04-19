@@ -19,7 +19,7 @@
 
 - name: _reload_networkmanager
   shell: |
-    nmcli c u 
+    nmcli c u "{{item}}"
   loop:
     - "{{ _int_device_conn }}"
     - "{{ _ext_device_conn }}"
