@@ -90,18 +90,21 @@
 - name: configure internal nic
   shell: |
     nmcli con mod "{{ _int_device_conn }}" \
-    ipv4.method manual ipv4.address "{{ _ip_address }}/24" \
+    ipv4.method manual \
+    ipv4.address "{{ _ip_address }}/24" \
     ipv4.gateway "{{ _int_device_gw }}" \
     ipv4.dns "{{ _int_device_dns1 }}" \
     +ipv4.dns "{{ _int_device_dns2 }}" \
     ipv4.dns-search "{{ _int_device_dns_search }}" \
-    connection.autoconnect yes connection.zone "{{ _firewall_internal_zone }}"
+    connection.autoconnect yes\
+    connection.zone "{{ _firewall_internal_zone }}"
   become: true
 
 - name: configure external nic
   shell: |
     nmcli con mod "{{ _ext_device_conn }}" \
-    ipv4.method manual ipv4.address "{{ _ext_device_ip }}" \
+    ipv4.method manual \
+    ipv4.address "{{ _ext_device_ip }}" \
     ipv4.gateway "{{ _ext_device_gw }}" \
     connection.zone "{{ _firewall_external_zone }}" \
     connection.autoconnect yes
