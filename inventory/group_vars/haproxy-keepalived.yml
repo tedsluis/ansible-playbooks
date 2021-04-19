@@ -5,6 +5,7 @@ _haproxykeepalived_packages:
   - keepalived
   - openssl
   - rsyslog
+  - psmisc
 
 # internal network configuration
 _int_device_gw: 192.168.11.1
