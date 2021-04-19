@@ -96,7 +96,7 @@
     ipv4.dns "{{ _int_device_dns1 }}" \
     +ipv4.dns "{{ _int_device_dns2 }}" \
     ipv4.dns-search "{{ _int_device_dns_search }}" \
-    connection.autoconnect yes\
+    connection.autoconnect yes \
     connection.zone "{{ _firewall_internal_zone }}"
   become: true
 
