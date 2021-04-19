@@ -19,6 +19,9 @@
 
 - name: _reload_networkmanager
   shell: |
-    ifup {{ _int_device_conn }}
+    nmcli c u 
+  loop:
+    - "{{ _int_device_conn }}"
+    - "{{ _ext_device_conn }}"
   become: true
 
