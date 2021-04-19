@@ -10,6 +10,7 @@
 
   roles:
     #- packages
+    - firewall
     #- role: dnsmasq
     #  when: _wants_dnsmasq|bool == true
     - role: haproxy-keepalived
