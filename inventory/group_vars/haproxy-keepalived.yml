@@ -1,5 +1,8 @@
 ---
 
+_haproxykeepalived_firewall:
+  - 9000/tcp
+
 _haproxykeepalived_packages:
   - haproxy
   - keepalived
@@ -38,6 +41,57 @@ _haproxy_password: !vault |
           6366336436323565610a663931303836666161636337383736623965356362306265653564333135
           6531
 
+# haproxy frontends:
+_frontends:
+  - name: piaware1
+    backend: piaware1
+    port: 8443
+  - name: piaware2
+    backend: piaware2
+    port: 8444
+  - name: ldap
+    backend: ldap
+    port: 6443
+  - name: home
+    backend: home
+    port: 30443
+  - name: linkding 
+    backend: linkding
+    port: 9443
+  # - name: alertmanager
+  #   backend: alertmanager
+  #   port: 
+  # - name: prometheus
+  #   backend: prometheus
+  #   port: 
+  # - name: blackbox
+  #   backend: blackbox
+  #   port: 
+  # - name: grafana
+  #   backend: grafana
+  #   port: 3443
+  # - name: karma
+  #   backend: karma
+  #   port: 8443
+  - name: rb750
+    backend: rb750
+    port: 2443
+  - name: registry
+    backend: registry
+    port: 5443
+  # - name: 
+  #   backend: status
+  #   port: 
+  # - name: 
+  #   backend: 
+  #   port: 
+  # - name: 
+  #   backend: 
+  #   port: 
+  # - name: 
+  #   backend: 
+  #   port: 
+
 # haproxy backends:
 _backends:
   - name: grafana
@@ -49,24 +103,84 @@ _backends:
     #   - acl response-is-redirect res.hdr(Location) -m found
   - name: piaware1
     host: piaware1
-    uri: piaware1.bachstraat20.duckdns.org
+    uri:  piaware1.bachstraat20.duckdns.org
     port: 8443
   - name: piaware2
     host: piaware2
-    uri: piaware2.bachstraat20.duckdns.org
+    uri:  piaware2.bachstraat20.duckdns.org
     port: 8443
-  - name: home1
+  - name: home
     host: home1
-    uri: home.bachstraat20.duckdns.org
+    balance: roundrobin
+    cookie: SERVERUSED insert indirect nocache
+    uri:  home.bachstraat20.duckdns.org
     port: 30443
-  - name: home2
-    host: home
-    uri: home.bachstraat20.duckdns.org
-    port: 31443
+    host2: home2
+    uri2: home.bachstraat20.duckdns.org
+    port2: 31443
   - name: linkding
     host: linkding
-    uri: linkding.bachstraat20.duckdns.org
+    uri:  linkding.bachstraat20.duckdns.org
     port: 9443
+  - name: ldap
+    host: ldap1
+    balance: roundrobin
+    cookie: SERVERUSED insert indirect nocache
+    port: 6443
+    uri:  ldap1.bachstraat20.duckdns.org
+    host2: ldap2
+    port2: 6443
+    uri2:  ldap2.bachstraat20.duckdns.org
+  - name: alertmanager
+    host: alertmanager
+    port: 9093
+    uri:  alertmanager.bachstraat20.duckdns.org
+  - name: prometheus
+    host: prometheus
+    port: 9090
+    uri:  prometheus.bachstraat20.duckdns.org
+  - name: blackbox
+    host: blackbox
+    port: 9115
+    uri:  blackbox.bachstraat20.duckdns.org
+  - name: karma
+    host: karma
+    uri:  karma.bachstraat20.duckdns.org
+    port: 8080
+  - name: registry
+    host: registry
+    uri:  registry.bachstraat20.duckdns.org
+    port: 5443
+  - name: ziggorouter
+    host: ziggorouter
+    uri:  ziggorouter.bachstraat20.duckdns.org
+    port: 80
+    options:
+      - http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
+      - http-response set-header Content-Security-Policy upgrade-insecure-requests
+      - option forwardfor
+    check: ''
+  - name: rb750
+    host: rb750
+    uri:  rb750.bachstraat20.duckdns.org
+    port: 80
+    options:
+      - http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
+      - http-response set-header Content-Security-Policy upgrade-insecure-requests
+      - option forwardfor
+    check: ''
+  - name: jenkins
+    host: jenkins
+    uri:  jenkins.bachstraat20.duckdns.org
+    port: 8443
+  - name: awx
+    host: awx
+    uri:  awx.bachstraat20.duckdns.org
+    port: 443
+  - name: git
+    host: git
+    uri:  git.bachstraat20.duckdns.org
+    port: 3000
 
 # haproxy whitelist
 _whitelist:
