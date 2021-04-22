@@ -71,9 +71,17 @@
     state: enabled
   become: true
   loop:
-    - 9443/tcp
-    - 8443/tcp
+    - 443/tcp
+    - 2443/tcp
     - 3000/tcp
+    - 5443/tcp
+    - 6443/tcp
+    - 6444/tcp
+    - 8443/tcp
+    - 8444/tcp
+    - 9443/tcp
+    - 30443/tcp
+    - 31443/tcp
 
 - name: "change internal filrewall rule: enable nodeexporter and keepalived"
   firewalld:
