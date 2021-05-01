@@ -60,7 +60,7 @@
   shell: |
     podman run --rm -it \
         -v /var/lib/jenkins/certs:/certs:z \
-        {{_jenkins_image.image}} \
+        {{_image_registry_url}}{{_jenkins_image.image}}-{{_architecture}} \
         /bin/bash -c 'openssl pkcs12 \
             -export \
             -out /certs/jenkins.p12 \
@@ -75,7 +75,7 @@
   shell: |
     podman run --rm -it \
         -v /var/lib/jenkins/certs:/certs:z \
-        {{_jenkins_image.image}} \
+        {{_image_registry_url}}{{_jenkins_image.image}}-{{_architecture}} \
         /bin/bash -c 'keytool -importkeystore \
             -srckeystore /certs/jenkins.p12 \
             -srcstorepass {{_jenkins_passphrase}}  \
