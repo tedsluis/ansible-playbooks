@@ -37,6 +37,7 @@ _all_packages:
   - curl
   - dnsmasq
   - git
+  - iotop
   - jq
   - net-tools
   - rsync
