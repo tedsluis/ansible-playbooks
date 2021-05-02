@@ -1,6 +1,8 @@
 ---
 # tasks file for baseline
 
+- include: remove-cockpit.yml
+
 - include: localesettings.yml
 
 - include: aliasses.yml

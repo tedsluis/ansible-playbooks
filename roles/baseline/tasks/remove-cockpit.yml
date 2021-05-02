@@ -1,0 +1,17 @@
+---
+
+- name: stop cockcpit.socket
+  systemd:
+    name: cockpit.socket
+    state: stopped
+    enabled: no
+    masked: yes
+  become: true
+
+- name: stop cockcpit
+  systemd:
+    name: cockpit
+    state: stopped
+    enabled: no
+    masked: yes
+  become: true
