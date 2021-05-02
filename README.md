@@ -3,9 +3,22 @@
 ## Scope
 
 * raspberry 2b, 3b, 3b+, 4b-4gb, 4b-8gb, Lenovo Thinkpad T580, Intel Nuc
-* fedora 32, 33
+* fedora 32, 33, 34
 * ansible & ansible-vault
 
+## what runs where
+
+| fed127  | fed130  | fed143      | fed149       | fed157   | fed159     | fed160        | fed168           | fed171     | fed178           | openvpn         | pihole  | 
+| rpi4b8g | rpi4b8g | rpi4b4g     | rpi4b4g      | rpi3b+   | rpi2b      | rpi4b8g       | rpi4b8g          | rpi2b      | rpi2b            | rpi3b           | rpi3b   |
+| nvme128 | nvme128 | nvme512     | nvme1024     |          |            | nvme128       |                  |            |                  |                 |         |
+|---------|---------|-------------|--------------|----------|------------|---------------|------------------|------------|------------------|-----------------|---------|
+|         | jenkins | gitea       | awx          | linkding | haproxy    | alert manager | piaware          | haproxy    | piaware          | openvpn         | pihole  |
+|         |         | httpd       | build-images | openldap | keepalived | blackbox      | dump1090exporter | keepalived | dump1090exporter | openvpnexporter |         |
+|         |         | letsencrypt | get-images   |          |            | grafana       |                  |            |                  |                 |         |
+|         |         | postgres    | nfsserver    |          |            | karma         |                  |            |                  |                 |         |
+|         |         |             | openldap     |          |            | prometheus    |                  |            |                  |                 |         |
+|         |         |             | registry     |          |            | snmpexporter  |                  |            |                  |                 |         |
+|         |         |             |              |          |            |               |                  |            |                  |                 |         |
 
 ## Playbooks:
 
