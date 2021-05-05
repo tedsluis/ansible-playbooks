@@ -7,6 +7,7 @@
     enabled: no
     masked: yes
   become: true
+  failed_when: false
 
 - name: stop cockcpit
   systemd:
@@ -15,3 +16,4 @@
     enabled: no
     masked: yes
   become: true
+  failed_when: false
