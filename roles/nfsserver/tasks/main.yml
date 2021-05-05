@@ -24,7 +24,7 @@
     dest: /etc/exports.ansible
   become: true
   when: 
-    - _nfs_exports is defined
+    - _nfsserver_exports is defined
   changed_when: false
 
 - name: get checksum of /etc/exports.ansible
@@ -47,7 +47,7 @@
     dest: /etc/exports
   become: true
   when: 
-    - _nfs_exports is defined
+    - _nfsserver_exports is defined
     - exp2.stat.checksum != exp1.stat.checksum
   notify: _reload_nfs
 
