@@ -11,7 +11,7 @@
 | fed127  | fed130  | fed143      | fed149       | fed157           | fed159     | fed160        | fed168   | fed171     | fed178           | openvpn         | pihole  | 
 | rpi4b8g | rpi4b8g | rpi4b4g     | rpi4b4g      | rpi3b+           | rpi2b      | rpi4b8g       | rpi4b8g  | rpi2b      | rpi2b            | rpi3b           | rpi3b   |
 | nvme128 | nvme128 | nvme512     | nvme1024     |                  |            | nvme128       |          |            |                  |                 |         |
-| f34     | f34     | f34         |              |                  |            | f34           |          |            |                  |                 |         |
+| f34     | f34     | f34         | f34          | f34              |            | f34           | f34      |            |                  |                 |         |
 |---------|---------|-------------|--------------|------------------|------------|---------------|----------|------------|------------------|-----------------|---------|
 |         | jenkins | gitea       | build-images | piaware          | haproxy    | alert manager | awx      | haproxy    | piaware          | openvpn         | pihole  |
 |         |         | httpd       | get-images   | dump1090exporter | keepalived | blackbox      | linkding | keepalived | dump1090exporter | openvpnexporter |         |
