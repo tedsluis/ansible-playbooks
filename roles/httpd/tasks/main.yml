@@ -97,6 +97,16 @@
     - "{{_httpd_sites}}"
     - "{{_httpd_pages}}"
 
+- name: create create-users.sh
+  template:
+    src: create-users.sh
+    dest: '/var/lib/httpd-{{item.sitename}}/www/create-users.sh'
+    owner: httpd
+    group: httpd
+    mode: 0664
+  become: true
+  loop: "{{_httpd_sites}}"
+
 - name: "pull docker.io/httpd:{{_httpd_image_tag}} image"
   shell: |
     podman pull docker.io/httpd:{{_httpd_image_tag}}
