@@ -6,7 +6,7 @@ _registry_image:
 
 _docker_registry_ui_image:
   ext: 'docker.io/'
-  image: 'joxit/docker-registry-ui:static'
+  image: 'joxit/docker-registry-ui:latest'
 
 _haproxy_image:
   ext: 'docker.io/'
