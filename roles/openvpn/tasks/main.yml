@@ -115,7 +115,7 @@
                   --restart on-failure \
                   --privileged \
                   --tz {{_timezone}} \
-                  {{_image_registry_url}}{{_openvpn_image.image}}-{{_architecture}}
+                  {{_image_registry_url}}{{_openvpn_image.image}}
                   #--cap-add NET_ADMIN,NET_RAW \
   become: true
   when: '"openvpn" not in _check_containers.stdout'
@@ -136,7 +136,7 @@
                   -v /var/lib/openvpn/status/status:/etc/openvpn_exporter/status:z \
                   --restart on-failure \
                   --tz {{_timezone}} \
-                  {{_image_registry_url}}{{_openvpnexporter_image.image}}-{{_architecture}} -openvpn.status_paths /etc/openvpn_exporter/status
+                  {{_image_registry_url}}{{_openvpnexporter_image.image}} -openvpn.status_paths /etc/openvpn_exporter/status
   become: true
   when: '"open_vpn_exporter" not in _check_containers.stdout'
   register: _open_vpn_exporter_container_created
