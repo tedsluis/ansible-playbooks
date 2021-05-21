@@ -1,7 +1,7 @@
 # Original credit: https://github.com/jpetazzo/dockvpn
 
 # Smallest base image
-FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_alpine_image']['image']}}
 
 LABEL maintainer="Kyle Manna <kyle@kylemanna.com>"
 
