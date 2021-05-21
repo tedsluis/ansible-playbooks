@@ -39,7 +39,31 @@
     msg: "{{item.build}}={{item.image}}-{{item.arch}}"
   loop: "{{_builds|unique}}"
 
-- include: "{{item.build}}.yml"
+- name: "prune images"
+  shell: |
+    podman image prune --all --force
+  become: true
+
+- include: "{{outer_item.build}}.yml"
   loop: "{{_builds | unique}}"
+  loop_control:
+    loop_var: outer_item
   #when: "'jenkins' in item.build"
 
+- name: create dictionary of images and add tags
+  set_fact: 
+    _manifest: "{{ _manifest | default({}) | combine ({ item.image : _manifest[item.image] | default([]) + [item.arch] }) }}"
+  loop: "{{_builds|unique}}"
+
+- debug:
+    var: _manifest
+
+- include: manifest.yml
+  loop: "{{_manifest|list}}"
+  loop_control:
+    loop_var: outer_item
+
+- name: "prune images"
+  shell: |
+    podman image prune --all --force
+  become: true

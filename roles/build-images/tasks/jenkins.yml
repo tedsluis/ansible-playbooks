@@ -2,15 +2,14 @@
 
 - name: set external and internal
   set_fact:
-    _internal: "{{_image_registry_url}}{{item.image}}-{{item.arch}}"
-    _external: "{{item.ext}}{{item.image}}-{{item.arch}}"
-    _buildhost: "{{_build_host[item.arch]}}"
+    _internal: "{{_image_registry_url}}{{outer_item.image}}-{{outer_item.arch}}"
+    _external: "{{outer_item.ext}}{{outer_item.image}}-{{outer_item.arch}}"
+    _arch: "{{outer_item.arch}}"
 
 - debug:
-    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, BUILDHOST={{_buildhost}}, ARCH={{hostvars[_buildhost]['_architecture']}}"
+    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, ARCH={{_arch}}"
 
-- name: "{{_buildhost}}: create jenkins directories"
-  delegate_to: "{{_buildhost}}"
+- name: "create jenkins directories"
   file:
     path: "{{item.directory}}"
     owner: "{{item.owner}}"
@@ -21,58 +20,45 @@
   with_items:
     - { directory: "/var/lib/build-images/jenkins",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: "prune images"
-  delegate_to: "{{_buildhost}}"
+- name: "pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{_arch}}"
   shell: |
-    podman image prune --all --force
+    #podman pull --arch {{_arch}} --creds "registry:{{hostvars[groups['registry'][0]]['_registry_password']}}" {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{_arch}}
+    podman pull --arch {{_arch}} {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{_arch}}
   become: true
 
-- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
-  delegate_to: "{{_buildhost}}"
-  shell: |
-    podman pull {{_image_registry_url}}{{hostvars[groups['jenkins'][0]]['_ubuntu_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
-  become: true
-
-- name: "{{_buildhost}}: clone jenkins in /var/lib/build-images/jenkins"
-  delegate_to: "{{_buildhost}}"
+- name: "clone jenkins in /var/lib/build-images/jenkins"
   git:
     repo: 'https://github.com/jenkinsci/docker.git'
     dest: /var/lib/build-images/jenkins
     force: true
   become: true
 
-- name: "{{_buildhost}}: copy files to /var/lib/build-images/jenkins for podman build"
-  delegate_to: "{{_buildhost}}"
+- name: "copy file to /var/lib/build-images/jenkins for podman build"
   template:
-    src: "jenkins/{{item}}.j2"
-    dest: "/var/lib/build-images/jenkins/{{item}}"
+    src: "jenkins/Dockerfile.j2"
+    dest: "/var/lib/build-images/jenkins/Dockerfile"
     owner: root
     group: root
     mode: 0666
   become: true
-  with_items:
-    - Dockerfile
 
-- name: "{{_buildhost}}: build jenkins image {{_internal}}"
-  delegate_to: "{{_buildhost}}"
+- name: "build jenkins image {{_arch}} {{_internal}}"
   shell: |
     cd /var/lib/build-images/jenkins
-    podman build -t {{_internal}} -f /var/lib/build-images/jenkins/Dockerfile
+    podman build --arch {{_arch}} -t {{_internal}} -f /var/lib/build-images/jenkins/Dockerfile
   become: true
   register: _build
-  failed_when: false
+  #failed_when: false
 
 - debug:
     var: _build.stdout
 
-- name: "{{_buildhost}}: tag {{_internal}} {{_external}}"
-  delegate_to: "{{_buildhost}}"
+- name: "tag {{_internal}} {{_external}}"
   shell: |
     podman tag {{_internal}} {{_external}}
   become: true
 
-- name: "{{_buildhost}}: push image to {{_external}} and {{_internal}}"
-  delegate_to: "{{_buildhost}}"
+- name: "push image to {{_external}} and {{_internal}}"
   shell: |
     podman login -u registry -p "{{hostvars[groups['registry'][0]]['_registry_password']}}" "{{_image_registry_url}}"
     podman push {{_internal}}
@@ -80,8 +66,7 @@
     podman push {{_external}}
   become: true
 
-- name: "{{_buildhost}}: get image info after build"
-  delegate_to: "{{_buildhost}}"
+- name: "get image info after build"
   shell: |
     podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep jenkins
   become: true
@@ -91,7 +76,6 @@
     var: _jenkins_image.stdout
 
 - name: clean up build directory
-  delegate_to: "{{_buildhost}}"
   file: 
     path: /var/lib/build-images/jenkins
     state: absent

@@ -2,15 +2,14 @@
 
 - name: set external and internal
   set_fact:
-    _internal: "{{_image_registry_url}}{{item.image}}-{{item.arch}}"
-    _external: "{{item.ext}}{{item.image}}-{{item.arch}}"
-    _buildhost: "{{_build_host[item.arch]}}"
+    _internal: "{{_image_registry_url}}{{outer_item.image}}-{{outer_item.arch}}"
+    _external: "{{outer_item.ext}}{{outer_item.image}}-{{outer_item.arch}}"
+    _arch: "{{outer_item.arch}}"
 
 - debug:
-    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, BUILDHOST={{_buildhost}}, ARCH={{hostvars[_buildhost]['_architecture']}}" 
+    msg: "INTERNAL={{_internal}}, EXTERNAL={{_external}}, ARCH={{_arch}}" 
 
-- name: "{{_buildhost}}: create openvpn-exporter directories"
-  delegate_to: "{{_buildhost}}"
+- name: "create openvpn-exporter directories"
   file:
     path: "{{item.directory}}"
     owner: "{{item.owner}}"
@@ -21,28 +20,19 @@
   with_items:
     - { directory: "/var/lib/build-images/openvpn_exporter",owner: "root" ,group: "root" ,mode: "0777" }
 
-- name: "prune images"
-  delegate_to: "{{_buildhost}}"
+- name: "pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{_arch}}"
   shell: |
-    podman image prune --all --force
+    podman pull --arch {{_arch}} {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{_arch}}
   become: true
 
-- name: "{{_buildhost}}: pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}"
-  delegate_to: "{{_buildhost}}"
-  shell: |
-    podman pull {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
-  become: true
-
-- name: "{{_buildhost}}: clone https://github.com/kumina/openvpn_exporter.git in /var/lib/openvpn_exporter"
-  delegate_to: "{{_buildhost}}"
+- name: "clone https://github.com/kumina/openvpn_exporter.git in /var/lib/openvpn_exporter"
   git:
     repo: 'https://github.com/kumina/openvpn_exporter.git'
     dest: /var/lib/openvpn_exporter
     force: true
   become: true
 
-- name: "{{_buildhost}}: copy files to /var/lib/openvpn_exporter/ for podman build"
-  delegate_to: "{{_buildhost}}"
+- name: "copy files to /var/lib/openvpn_exporter/ for podman build"
   template:
     src: "openvpn_exporter/Dockerfile.j2"
     dest: "/var/lib/openvpn_exporter/Dockerfile"
@@ -51,11 +41,10 @@
     mode: 0664
   become: true
 
-- name: "{{_buildhost}}: build openvpn-exporter image {{_internal}}"
-  delegate_to: "{{_buildhost}}"
+- name: "build openvpn-exporter image {{_internal}}"
   shell: |
     cd /var/lib/openvpn_exporter
-    podman build -t {{_internal}} -f /var/lib/openvpn_exporter/Dockerfile
+    podman build --arch {{_arch}} -t {{_internal}} -f /var/lib/openvpn_exporter/Dockerfile
   become: true
   register: _build
   failed_when: false
@@ -63,14 +52,12 @@
 - debug:
     var: _build.stdout
 
-- name: "{{_buildhost}}: tag {{_internal}} {{_external}}"
-  delegate_to: "{{_buildhost}}"
+- name: "tag {{_internal}} {{_external}}"
   shell: |
     podman tag {{_internal}} {{_external}}
   become: true
 
-- name: "{{_buildhost}}: push image to {{_external}} and {{_internal}}"
-  delegate_to: "{{_buildhost}}"
+- name: "push image to {{_external}} and {{_internal}}"
   shell: |
     podman login -u registry -p "{{hostvars[groups['registry'][0]]['_registry_password']}}" "{{_image_registry_url}}"
     podman push {{_internal}}
@@ -78,8 +65,7 @@
     podman push {{_external}}
   become: true
 
-- name: "{{_buildhost}}: get image info after build"
-  delegate_to: "{{_buildhost}}"
+- name: "get image info after build"
   shell: |
     podman images --format "{{ '{{' }}.ID{{ '}}' }} {{ '{{' }}.Repository{{ '}}' }} {{ '{{' }}.Tag{{ '}}' }}  {{ '{{' }}.Digest{{ '}}' }}" | grep openvpn-exporter
   become: true
@@ -89,7 +75,6 @@
     var: _openvpn_exporter_image.stdout
 
 - name: clean up build directory
-  delegate_to: "{{_buildhost}}"
   file:
     path: /var/lib/build-images/openvpn_exporter
     state: absent
