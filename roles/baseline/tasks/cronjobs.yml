@@ -12,9 +12,9 @@
     - dnf-update.service
     - dnf-update.timer
 
-- name: start dnf-update.service
-  systemd:
-    name: dnf-update
-    state: started
-  become: true
+    #- name: start dnf-update.service
+    #systemd:
+      #name: dnf-update
+      #state: started
+      #become: true
 
