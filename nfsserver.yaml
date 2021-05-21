@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+
+- name: provision
+
+  hosts:
+    - fed149
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+#  - packages
+#  - users-and-groups
+#  - baseline
+#  - chrony
+#  - firewall
+  - role: nfsserver
+    when: "'nfsserver' in group_names"
+
