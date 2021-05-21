@@ -1,7 +1,3 @@
 ---
 
-_build_host:
-  arm32: fed159
-  arm64: fed149
-  adm64: fed120
 
