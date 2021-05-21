@@ -9,8 +9,8 @@
     ansible_user: ansible
 
   roles:
-  - packages
-  - firewall
+#  - packages
+#  - firewall
   - role: registry
     when: "'registry' in group_names"
 
