@@ -12,7 +12,7 @@ ExecStart=/usr/bin/podman run --name=raspberryfan \
                               -v /var/lib/node_exporter:/var/lib/node_exporter:z \
                               --device=/dev/gpiochip0 \
                               --restart unless-stopped \
-                              {{_image_registry_url}}{{_raspberryfan_image.image}}-{{_architecture}} \
+                              {{_image_registry_url}}{{_raspberryfan_image.image}} \
                               /usr/bin/python /src/fan.py \
                                 --node-exporter \
                                 --min-temp={{_raspberryfan_min_temp}} \
