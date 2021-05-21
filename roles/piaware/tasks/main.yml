@@ -97,20 +97,32 @@
   become: true
   notify: _restart_haproxy
 
-- name: create piaware pod 
-  containers.podman.podman_pod:
-    name: piawarepod
-    state: started
-    ports:
-      - 8443:8443
-      - 9105:9105
+#- name: create piaware pod 
+#  containers.podman.podman_pod:
+#    name: piawarepod
+#    state: started
+#    ports:
+#      - 8443:8443
+#      - 9105:9105
+#  become: true
+
+- name: check for pod
+  shell: |
+    podman pod ps
+  register: _piaware_pod_exists
   become: true
+
+#- name: create pod
+#  shell: |
+#    podman pod create --name=piawarepod --publish 8443:8443,9105:9105
+#  when: '"piawarepod" not in _piaware_pod_exists.stdout'
+#  become: true
 
 - name: create piaware container
   containers.podman.podman_container:
     name: piaware
     pod: piawarepod
-    image: "{{_image_registry_url}}{{_piaware_image.image}}-{{_architecture}}"
+    image: "{{_image_registry_url}}{{_piaware_image.image}}"
     state: present
     device: /dev/bus/usb
     env:
@@ -128,6 +140,10 @@
   become: true
   register: _piaware_container_created
   notify: _restart_piaware
+  #failed_when: false
+  
+- debug:
+    msg: "_piaware_container_created:{{_piaware_container_created}}"
 
 - name: create systemd piaware file
   shell: |
@@ -140,7 +156,7 @@
   containers.podman.podman_container:
     name: dump1090exporter
     pod: piawarepod
-    image: "{{_image_registry_url}}{{_dump1090exporter_image.image}}-{{_architecture}}"
+    image: "{{_image_registry_url}}{{_dump1090exporter_image.image}}"
     state: started
     env:
       TZ: "{{_timezone}}"
