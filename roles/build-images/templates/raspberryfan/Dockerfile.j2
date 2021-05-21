@@ -1,7 +1,7 @@
-FROM {{_image_registry_url}}{{hostvars[groups['raspberryfan'][0]]['_fedora_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+FROM {{_image_registry_url}}{{hostvars[groups['raspberryfan'][0]]['_fedora_image']['image']}}
 
-RUN  dnf -y update
-RUN  dnf -y install libgpiod-utils python3-libgpiod swig python2 python2-setuptools python-setuptools python-devel python3-devel python-setuptools python3-setuptools unzip curl wget make gcc which
+RUN  dnf -y {% if _arch == "arm" %} --forcearch armv7hl {% endif %} update
+RUN  dnf -y {% if _arch == "arm" %} --forcearch armv7hl {% endif %} install libgpiod-utils python3-libgpiod swig python2 python2-setuptools python-setuptools python-devel python3-devel python-setuptools python3-setuptools unzip curl wget make gcc which
 
 RUN  mkdir -p /tmp; \
      wget https://github.com/joan2937/lg/archive/master.zip;  \
@@ -10,7 +10,7 @@ RUN  mkdir -p /tmp; \
      make; \
      make install
 
-{% if ( ( hostvars[_buildhost]['_architecture'] == "arm64" ) or ( hostvars[_buildhost]['_architecture'] == "adm64" ) )  %}
+{% if ( ( _arch == "arm64" ) or ( _arch == "adm64" ) )  %}
 RUN  cp /usr/local/lib/lib*gpio.so.1 /usr/lib64/
 {% else %}
 RUN  cp /usr/local/lib/liblgpio.so.1 /usr/lib/
