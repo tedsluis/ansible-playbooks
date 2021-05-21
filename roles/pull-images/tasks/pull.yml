@@ -12,8 +12,10 @@
     msg: "IMAGE:{{_image}}"
 
 - set_fact:
-    _internal: "{{_image_registry_url}}{{_image.image}}-{{_architecture}}"
-    _external: "{{_image.ext}}{{_image.image}}-{{_architecture}}"
+    _internal: "{{_image_registry_url}}{{_image.image}}"
+    #_internal: "{{_image_registry_url}}{{_image.image}}-{{_architecture}}"
+    _external: "{{_image.ext}}{{_image.image}}"
+    #_external: "{{_image.ext}}{{_image.image}}-{{_architecture}}"
 
 - debug:
     msg: "INTERNAL:{{_internal}}, EXTERNAL:{{_external}}"
