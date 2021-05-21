@@ -16,7 +16,7 @@ _raspberryfan_wait_time: 10
 
 _fedora_image:
   ext: 'docker.io/'
-  image: 'fedora:latest'
+  image: 'fedora:32'
 
 _raspberryfan_image:
   build: 'raspberryfan'
