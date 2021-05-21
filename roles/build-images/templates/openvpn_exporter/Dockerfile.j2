@@ -1,4 +1,4 @@
-FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}-{{hostvars[_buildhost]['_architecture']}}
+FROM {{_image_registry_url}}{{hostvars[groups['openvpn'][0]]['_golang_buster_image']['image']}}
 
 RUN mkdir -p /go/src/openvpn-exporter
 COPY . /go/src/openvpn-exporter
