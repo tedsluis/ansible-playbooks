@@ -148,6 +148,16 @@
 
 - debug:
     var: _gitea_root_user
+    
+- name: set gitea ldap config
+  shell: |
+    podman exec gitea /usr/local/bin/gitea admin auth add-ldap --name bachstraat20 --security-protocol LDAPS --host ldap1.bachstraat20.duckdns.org --port 636 --user-search-base OU=users,DC=bachstaat,DC=duckdns,DC=org --user-filter "(&(objectClass=posixAccount)(uid=%s)(memberOf=CN=linuxusers,OU=groups,DC=bachstraat20,DC=duckdns,DC=org))" --admin-filter "(&(objectClass=posixAccount)(uid=%s)(memberOf=CN=linuxadmins,OU=groups,DC=bachstraat20,DC=duckdns,DC=org))" --bind-dn CN=readonly,DC=bachstraat20,DC=duckdns,DC=org --bind-password {{_gitea_admin_password}} --synchronize-users --username-attribute uid --email-attribute mail --attributes-in-bind || echo "ldap config is alreay present"
+  become: true
+  register: _gitea_ldap_config
+
+- debug:
+    var: _gitea_ldap_config
+
 
 - name: "/var/lib/gitea/gitea/conf/app.ini replace RUN_USER=root with RUN_USER=git"
   lineinfile:
