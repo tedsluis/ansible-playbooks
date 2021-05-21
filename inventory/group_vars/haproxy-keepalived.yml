@@ -159,7 +159,7 @@ _backends:
       - http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
       - http-response set-header Content-Security-Policy upgrade-insecure-requests
       - option forwardfor
-    check: ''
+    check: check port 80
   - name: rb750
     host: rb750
     uri:  rb750.bachstraat20.duckdns.org
@@ -168,7 +168,7 @@ _backends:
       - http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
       - http-response set-header Content-Security-Policy upgrade-insecure-requests
       - option forwardfor
-    check: ''
+    check: check port 80
   - name: jenkins
     host: jenkins
     uri:  jenkins.bachstraat20.duckdns.org
