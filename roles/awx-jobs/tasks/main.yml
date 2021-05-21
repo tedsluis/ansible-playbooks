@@ -1,0 +1,206 @@
+---
+
+- name: Create a new token using username/password
+  awx.awx.tower_token:
+    tower_host: {{_awx_fqdn}}
+    validate_certs: false
+    description: ansibletoken
+    scope: "write"
+    state: present
+    tower_username: "{{ _tower_username }}"
+    tower_password: "{{ _tower_password }}"
+  register: _result
+  ignore_errors: yes
+  retries: 30
+  delay: 10
+  until: _result.failed|bool == false
+
+- name: Add ansible credentials
+  tower_credential:
+    tower_host: {{_awx_fqdn}}
+    validate_certs: false
+    tower_oauthtoken: "{{ tower_token }}"
+    name: "ansible-private-key"
+    description: "ansible private key"
+    credential_type: "Machine"
+    organization: bachstraat20
+    inputs:
+      username: ansible
+      become_method: "sudo"
+      ssh_key_data: "{{ lookup('file','ansible-privatekey.yml') }}"
+  register: _result
+  ignore_errors: yes
+  retries: 30
+  delay: 10
+  until: _result.failed|bool == false
+
+- debug:
+    msg: "_result={{_result}}"
+
+- name: Git credential
+  tower_credential:
+    tower_host: {{_awx_fqdn}}
+    validate_certs: false
+    tower_oauthtoken: "{{ tower_token }}"
+    name: "git-private-key"
+    description: "gitea private key"
+    credential_type: "Source Control"
+    organization: bachstraat20
+    inputs:
+      username: tedsluis
+      ssh_key_data: "{{ lookup('file','gitea-privatekey.yml') }}"
+  register: _result
+  ignore_errors: yes
+  retries: 30
+  delay: 10
+  until: _result.failed|bool == false
+
+- debug:
+    msg: "_result={{_result}}"
+
+- name: Add deploy project
+  tower_project:
+    tower_host: {{_awx_fqdn}}
+    validate_certs: false
+    tower_oauthtoken: "{{ tower_token }}"
+    name: "deploy project"
+    description: "deploy project"
+    organization: "bachstraat20"
+    scm_credential: "git-private-key"
+    scm_type: "git"
+    scm_url: "ssh://git@{{_bitbucket_url}}/"
+    scm_branch: "master"
+    scm_update_on_launch: true
+    scm_update_cache_timeout: 60
+    allow_override: true
+    state: present
+  register: _result
+  ignore_errors: yes
+  retries: 30
+  delay: 10
+  until: _result.failed|bool == false
+
+  - debug:
+      msg: "_result={{_result}}"
+
+  - name: Add PLS inventory project
+    tower_project:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      validate_certs: false
+      tower_oauthtoken: "{{ tower_token }}"
+      name: "PLS inventory"
+      description: "PLS inventory project"
+      organization: "PLS"
+      scm_credential: "Bitbucket Platformteambb"
+      scm_type: "git"
+      scm_url: "ssh://git@{{_bitbucket_url}}/tb/inventory.git"
+      scm_branch: "master"
+      scm_update_on_launch: true
+      scm_update_cache_timeout: 60
+      allow_override: true
+      state: present
+    register: _result
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _result.failed|bool == false
+
+  - debug:
+      msg: "_result={{_result}}"
+
+  - name: Add PLS inventory
+    tower_inventory:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      validate_certs: false
+      tower_oauthtoken: "{{ tower_token }}"
+      name: "PLS inventory"
+      description: "PLS inventory"
+      organization: "PLS"
+      state: present
+    register: _result
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _result.failed|bool == false
+
+  - debug:
+      msg: "_result={{_result}}"
+
+  - name: Add PLS inventory source
+    tower_inventory_source:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      validate_certs: false
+      tower_oauthtoken: "{{ tower_token }}"
+      name: "PLS inventory source"
+      description: Source for inventory PLS
+      inventory: "PLS inventory"
+      overwrite: true
+      source: scm
+      source_project: "PLS inventory"
+      source_path: ""
+      update_on_project_update: true
+    register: _result
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _result.failed|bool == false
+
+  - debug:
+      msg: "_result={{_result}}"
+
+  - name: Create check job template
+    tower_job_template:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      validate_certs: false
+      tower_oauthtoken: "{{ tower_token }}"
+      name: "PLS awx check"
+      job_type: "run"
+      organization: "PLS"
+      inventory: "PLS inventory"
+      project: "PLS test project"
+      playbook: "check.yml"
+      limit: "dso{{_targetOpenshift}}*{{_domain}}"
+      credentials:
+        - "Ansible {{_targetOpenshift|upper}}"
+      state: "present"
+      survey_enabled: yes
+    register: _result
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _result.failed|bool == false
+
+  - debug:
+      msg: "_result={{_result}}"
+
+  - name: Launch a job with inventory and credential
+    tower_job_launch:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      validate_certs: false
+      tower_oauthtoken: "{{ tower_token }}"
+      job_template: "PLS awx check"
+    register: _job
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _job.failed|bool == false
+
+  - debug:
+      msg: "_job={{_job}}"
+
+  - name: Delete our Token with the token we created
+    awx.awx.tower_token:
+      tower_host: awx-web-svc-{{openshift_project}}.apps.{{_domain}}
+      existing_token: "{{ tower_token }}"
+      state: absent
+      tower_username: "{{ _tower_username }}"
+      tower_password: "{{ _tower_password }}"
+    when: tower_token is defined
+    tags: configure
+    register: _result
+    ignore_errors: yes
+    retries: 30
+    delay: 10
+    until: _result.failed|bool == false
+
+
