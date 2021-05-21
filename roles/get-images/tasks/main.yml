@@ -41,3 +41,20 @@
 
 - include: pull.yml
   loop: "{{_images|unique}}"
+  loop_control:
+    loop_var: outer_item
+  #when: "'swag' in item.image"
+
+- name: create dictionary of images and add tags
+  set_fact: 
+    _manifest: "{{ _manifest | default({}) | combine ({ item.image : _manifest[item.image] | default([]) + [item.arch] }) }}"
+  loop: "{{_images|unique}}"
+
+- debug:
+    var: _manifest
+
+- include: manifest.yml
+  loop: "{{_manifest|list}}"
+  loop_control:
+    loop_var: outer_item
+
