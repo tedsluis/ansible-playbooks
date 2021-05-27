@@ -13,7 +13,7 @@ spec:
   source:
     path: roles/kubernetes/files/argocd/apps/
     targetRevision: HEAD
-    repoURL: 'ssh://git@github.com:tedsluis/ansible-playbooks.git'
+    repoURL: 'git@github.com:tedsluis/ansible-playbooks.git'
   syncPolicy:
     automated:
       prune: true
