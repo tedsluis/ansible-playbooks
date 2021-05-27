@@ -11,10 +11,11 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    path: roles/kubernetes/files/argocd
+    path: roles/kubernetes/files/argocd/apps/
     targetRevision: HEAD
-    repoURL: 'git@github.com:tedsluis/ansible-playbooks.git'
+    repoURL: 'ssh://git@github.com:tedsluis/ansible-playbooks.git'
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+

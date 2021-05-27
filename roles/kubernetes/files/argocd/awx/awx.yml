@@ -1,0 +1,12 @@
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  tower_ingress_type: Route
+  tower_postgres_image: quay.io/dwqimg/postgres:13.2
+  tower_redis_image: quay.io/dwqimg/redis:6.2.1
+  tower_postgres_configuration_secret: awx-postgres-configuration
+  tower_old_postgres_configuration_secret: awx-postgres-configuration
