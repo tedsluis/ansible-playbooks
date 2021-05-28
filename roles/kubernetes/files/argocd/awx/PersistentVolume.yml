@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: nfs.bachstraat20.duckdns.org
+    path: "/var/lib/nfsserver/data/root/kubernetes/awx"
