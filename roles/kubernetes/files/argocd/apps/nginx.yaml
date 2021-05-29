@@ -4,7 +4,7 @@ kind: Application
 metadata:
   name: nginx
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     namespace: nginx
