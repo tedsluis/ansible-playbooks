@@ -10,3 +10,4 @@ spec:
   tower_redis_image: quay.io/dwqimg/redis:6.2.1
   tower_postgres_configuration_secret: awx-postgres-configuration
   tower_old_postgres_configuration_secret: awx-postgres-configuration
+  tower_postgres_storage_class: nfs

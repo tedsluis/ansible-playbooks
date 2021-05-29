@@ -3,10 +3,11 @@ kind: PersistentVolume
 metadata:
   name: nfs
 spec:
+  storageClassName: nfs
   capacity:
-    storage: 8Gi
+    storage: 20Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   nfs:
-    server: nfs.bachstraat20.duckdns.org
+    server: 192.168.11.149
     path: "/var/lib/nfsserver/data/root/kubernetes/awx"
