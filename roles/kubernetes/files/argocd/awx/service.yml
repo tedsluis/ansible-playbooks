@@ -1,0 +1,11 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: awx-service-proxy
+spec:
+  type: ExternalName
+  externalName: awx-service.awx.svc.cluster.local
+  ports:
+  - port: 80
+
