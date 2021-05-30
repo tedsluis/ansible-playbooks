@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nginx
+  name: ingress-nginx
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: roles/kubernetes/files/argocd/nginx
+    path: roles/kubernetes/files/argocd/ingress-nginx
     repoURL: 'git@github.com:tedsluis/ansible-playbooks.git'
     targetRevision: HEAD
   syncPolicy:
@@ -26,4 +26,3 @@ spec:
         maxDuration: 3m
     syncOptions:
     - CreateNamespace=true
-
