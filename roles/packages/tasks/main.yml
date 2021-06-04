@@ -1,5 +1,20 @@
 ---
 
+- name: create kubernetes repo
+  copy:
+    src: kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
+    mode: 0664
+    owner: root
+    group: root
+  become: true
+  when: "'kubernetes' in group_names"
+
+- name: dnf module enable cri-o:1.20
+  shell: |
+    sudo dnf module enable cri-o:1.20 -y
+  when: "'kubernetes' in group_names"
+
 - name: define _packages
   set_fact:
     _packages: []
