@@ -1,0 +1,15 @@
+---
+_kubernetes_firewall:
+  - 80/tcp
+  - 443/tcp
+  - 6443/tcp
+  - 2379-2380/tcp
+  - 10250-10252/tcp
+  - 30000-32767/tcp
+
+_kubernetes_packages:
+  - cri-o
+  - kubeadm 
+  - kubectl  
+  - kubelet
+  - podman
