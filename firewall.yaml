@@ -1,0 +1,9 @@
+#!/usr/bin/env ansible-playbook
+
+- name: firewall
+  hosts: 
+    - all
+  vars:
+    ansible_user: ansible
+  roles:
+  - firewall
