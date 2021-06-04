@@ -1,0 +1,18 @@
+#!/usr/bin/env ansible-playbook
+
+- name: kubernetes
+
+  hosts:
+    - fed120
+
+  vars:
+    ansible_user: ansible
+
+  roles:
+  - packages
+#  - baseline
+#  - chrony
+  - firewall
+  - role: kubernetes
+    when: "'kubernetes' in group_names"
+
