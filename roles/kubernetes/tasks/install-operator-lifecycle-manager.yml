@@ -1,0 +1,26 @@
+---
+
+# https://github.com/operator-framework/operator-lifecycle-manager/releases
+
+- name: install operator lifecycle manager
+  shell: |
+    curl -L https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.18.1/install.sh -o /tmp/olm-install.sh
+    chmod +x /tmp/olm-install.sh
+    /tmp/olm-install.sh v0.18.1 
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout operator lifecycle manager
+  shell: |
+    sleep 10
+    kubectl rollout status -w deployment.apps/catalog-operator --namespace="olm"
+    kubectl rollout status -w deployment.apps/olm-operator --namespace="olm"
+    kubectl rollout status -w deployment.apps/packageserver --namespace="olm"
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5

@@ -1,0 +1,59 @@
+---
+
+# Istall kubernetes cluster
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+
+- name: kubeadm init with pod network 100.64.0.0
+  shell: |
+    kubeadm init --pod-network-cidr=100.64.0.0/16 
+  become: true
+
+# Install pod network
+# https://docs.projectcalico.org/getting-started/kubernetes/quickstart
+
+- name: install Calico tigera operator
+  shell: |
+    kubectl apply -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout Calico tigera operator
+  shell: |
+    kubectl rollout status -w deployment.apps/tigera-operator --namespace="tigera-operator"
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: install Calico custom resources, replace 192.168.0.0 with 100.64.0.0
+  shell: |
+    curl https://docs.projectcalico.org/manifests/custom-resources.yaml | sed 's/192.168.0.0/100.64.0.0/' > /tmp/calico-custom-resources.yaml
+    kubectl create -f /tmp/calico-custom-resources.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout Calico custom resources
+  shell: |
+    sleep 10
+    kubectl rollout status -w deployment.apps/calico-kube-controllers --namespace="calico-system"
+    kubectl rollout status -w daemonset.apps/calico-node --namespace="calico-system"
+    kubectl rollout status -w deployment.apps/calico-typha --namespace="calico-system"
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+# Remove the taints on the master so that you can schedule pods on it.
+- name: allow pod deployments on master node
+  shell: |
+    kubectl taint nodes --all node-role.kubernetes.io/master-
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+
+

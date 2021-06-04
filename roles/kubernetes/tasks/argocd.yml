@@ -1,0 +1,149 @@
+---
+
+# install argocd 
+# https://github.com/argoproj-labs/argocd-operator/blob/master/docs/install/olm.md
+
+- name: install argocd catelog source
+  shell: |
+    kubectl create namespace argocd
+    kubectl create -n olm -f https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/catalog_source.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout argocd catelog source
+  shell: |
+    kubectl get pods -n olm -l olm.catalogSource=argocd-catalog
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  register: _result
+  until: '"Running" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: install argocd operator group
+  shell: |
+    kubectl create -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/operator_group.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout argocd operator group
+  shell: |
+    kubectl get operatorgroups -n argocd
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  register: _result
+  until: '"argocd-operator" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: create subscription argocd operator
+  shell: |
+    kubectl create -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-operator/master/deploy/subscription.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+
+- name: wait for rollout subscription argocd operator
+  shell: |
+    kubectl rollout status -w deployment.apps/argocd-operator --namespace="argocd"
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: copy clusterrolebinding argocd-argocd-application-controller service account
+  ansible.builtin.copy:
+    src: clusterrolebinding.yaml
+    dest: /tmp/clusterrolebinding.yaml
+    owner: root
+    group: root
+    mode: 0660
+  become: true
+    
+- name: create clusterrolebinding argocd-argocd-application-controller service account
+  shell: |
+    kubectl create -n argocd -f /tmp/clusterrolebinding.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+
+# kubernetes secret with git ssh key, ansible-vault encrypted
+# https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys
+- name: copy git-ssh-secret secret
+  ansible.builtin.copy:
+    src: git-ssh-secret.yaml
+    dest: /tmp/git-ssh-secret.yaml
+    owner: root
+    group: root
+    mode: 0660
+  become: true
+    
+- name: create git-ssh-secret
+  shell: |
+    kubectl create -n argocd -f /tmp/git-ssh-secret.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+
+# create argocd argoproj.io/v1alpha1
+- name: copy argocd base
+  ansible.builtin.copy:
+    src: argocd-base.yaml
+    dest: /tmp/argocd-base.yaml
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+    
+- name: install argocd base
+  shell: |
+    kubectl create -n argocd -f /tmp/argocd-base.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+
+- name: wait for rollout argoproj.io/v1alpha1
+  shell: |
+    kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-operator
+    kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-redis
+    kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-repo-server
+    kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-server
+    kubectl rollout status  --namespace="argocd" -w statefulset.apps/argocd-application-controller
+    kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-dex-server
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: copy argocd app of apps
+  ansible.builtin.copy:
+    src: argocd/apps.yaml
+    dest: /tmp/argocd-apps.yaml
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: install argocd app of apps
+  shell: |
+    kubectl create -n argocd -f /tmp/argocd-apps.yaml
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+

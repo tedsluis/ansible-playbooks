@@ -1,0 +1,36 @@
+---
+
+- name: check for /usr/bin/crictl
+  ansible.builtin.stat: 
+    path: /usr/bin/crictl
+  become: true
+  failed_when: false
+  register: _stat_crictl
+
+- name: check for running containers
+  shell: |
+    /usr/bin/crictl ps | grep Running | wc -l
+  become: true
+  when: _stat_crictl.stat.exists
+  register: _containers_running
+
+- include: prepare-k8s.yml
+  when: not _stat_crictl.stat.exists or _containers_running.stdout == "0"
+
+- include: install-k8s.yml
+  when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
+
+- include: copy-k8s-credentials.yml
+  loop: "{{ _accounts }}"
+
+- include: install-operator-lifecycle-manager.yml
+  when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
+  
+- include: sealed-secrets.yml
+  when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
+  
+- include: argocd.yml
+  when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
+
+
+     

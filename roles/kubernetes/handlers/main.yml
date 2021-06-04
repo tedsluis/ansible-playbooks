@@ -1,0 +1,23 @@
+---
+- name: stop crio.service
+  listen: _restart_crio
+  systemd:
+    name: crio
+    state: stopped
+  become: true
+
+- name: daemon reload crio.service
+  listen: _restart_crio
+  systemd:
+    name: crio
+    state: stopped
+    daemon_reload: true
+  become: true
+
+- name: start crio.service
+  listen: _restart_crio
+  systemd:
+    name: crio
+    state: started
+  become: true
+

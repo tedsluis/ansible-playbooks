@@ -1,0 +1,116 @@
+---
+
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+- name: disable swap
+  shell: |
+    swapoff -a
+  become: true
+
+- name: remove zram swap
+  dnf:
+    name: zram-generator-defaults
+    state: absent
+  become: true
+
+- name: touch /etc/systemd/zram-generator.conf
+  file:
+    path: /etc/systemd/zram-generator.conf
+    state: touch
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: free 
+  shell: |
+    free
+  become: true
+  register: _free
+
+- debug:
+    var: _free
+
+- name: disable selinux
+  shell: |
+    setenforce 0
+  become: true
+
+- name: ensure SELinux is set to permissive mode
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+  become: true
+
+- name: configure crio
+  ansible.builtin.lineinfile:
+    path: /etc/modules-load.d/crio.conf
+    regexp: "^{{item}}"
+    line: "{{item}}"
+    create: true
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+  loop:
+    - overlay
+    - br_netfilter
+  notify: _restart_crio
+
+- name: Add br_netfilter and overlay module
+  community.general.modprobe:
+    name: "{{item}}"
+    state: present
+  become: true
+  loop:
+    - overlay
+    - br_netfilter
+  notify: _restart_crio
+
+- name: "Set net.bridge.bridge-nf-call-ip4/6itables"
+  sysctl:
+    name: "{{ item }}"
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  become: true
+  with_items:
+    - net.bridge.bridge-nf-call-ip6tables
+    - net.bridge.bridge-nf-call-iptables
+    - net.ipv4.ip_forward
+  notify: _restart_crio
+
+- name: create crio.conf.d directory
+  file:
+    path: /etc/crio/crio.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0664
+  become: true
+
+- name: enable crio
+  systemd:
+    name: crio
+    state: started
+    enabled: yes
+  become: true
+
+- name: enable kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: yes
+  become: true
+
+- name: trigger handelers
+  meta: flush_handlers
+
+- name: pull kubernetes images
+  shell: |
+    kubeadm config images pull
+  become: true
+
+
