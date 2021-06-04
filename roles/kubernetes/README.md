@@ -47,11 +47,18 @@ Use *ansible-vault encrypt roles/kubernetes/files/vault-sealed-secrets-key-secre
 $ ansible-playbook -l fed120 kubernetes.yaml
 ```
 
-Once the cluster is cluster is deployed, it will take some minutes before you can access argocd. 
+## Argocd
+
+Once the cluster is cluster is deployed, it may take more than a few minutes, you can access argocd. 
 When ready, create a port-forward to access argocd using the browser https://localhost:8443/
 ```bash
 $ kubectl -n argocd port-forward service/argocd-server 8443:443
 ```
+User admin uses this password:
+```bash
+$ kubectl -n argocd get secret argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d
+```
+
 
 ## Create sealed-secrets
 
