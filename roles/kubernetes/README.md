@@ -3,6 +3,7 @@
 ## create roles/kubernetes/files/vault-sealed-secrets-key-secret.yaml
 
 Create a secret with your private key to access git 
+
 https://kubernetes.io/docs/concepts/configuration/secret/#use-case-pod-with-ssh-keys
 ```bash
 apiVersion: v1
@@ -20,7 +21,9 @@ Use *ansible-vault encrypt roles/kubernetes/files/vault-sealed-secrets-key-secre
 ## create roles/kubernetes/files/vault-sealed-secrets-key-secret.yaml 
 
 Create your own rsa key pair to seal secrets.
+
 https://github.com/bitnami-labs/sealed-secrets/blob/main/docs/bring-your-own-certificates.md#used-your-recently-created-public-key-to-seal-your-secret
+
 Store the keypair in your .ssh directory. You will need the public key to create sealed-secrets later.
 ```bash
 ---
@@ -73,7 +76,7 @@ $ kubectl --cert ~/.ssh/sealed_secrets_tls.crt  -n awx create secret tls ingress
 
 ## Remove cluster
 
-# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#tear-down
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#tear-down
 ```bash
 # sudo kubeadm reset
 ```
