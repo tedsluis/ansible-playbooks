@@ -12,11 +12,13 @@ spec:
       - awx-k8s.bachstraat20.duckdns.org
     secretName: ingress-tls
   rules:
-    - host: awx-k8s.bachstraat20.duckdns.org
-      http:
-        paths:
-          - backend:
-              serviceName: awx-service
-              servicePort: 80
-            path: /
-            pathType: Prefix
+  - host: awx-k8s.bachstraat20.duckdns.org
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: awx-service
+            port:
+              number: 80
