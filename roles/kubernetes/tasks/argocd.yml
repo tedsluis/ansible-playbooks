@@ -113,13 +113,69 @@
   become: true
   failed_when: false
 
-- name: wait for rollout argoproj.io/v1alpha1
+- name: wait for rollout deployment.apps/argocd-operator
   shell: |
     kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-operator
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+
+- name: wait for rollout deployment.apps/argocd-redis
+  shell: |
     kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-redis
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: wait for rollout deployment.apps/argocd-repo-server
+  shell: |
     kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-repo-server
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: wait for rollout deployment.apps/argocd-server
+  shell: |
     kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-server
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: wait for rollout statefulset.apps/argocd-application-controller
+  shell: |
     kubectl rollout status  --namespace="argocd" -w statefulset.apps/argocd-application-controller
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
+
+- name: wait for rollout deployment.apps/argocd-dex-server
+  shell: |
     kubectl rollout status  --namespace="argocd" -w deployment.apps/argocd-dex-server
   environment:
     KUBECONFIG: '/etc/kubernetes/admin.conf'
@@ -146,4 +202,16 @@
     KUBECONFIG: '/etc/kubernetes/admin.conf'
   become: true
   failed_when: false
+
+- name: wait for rollout statefulset.apps/argocd-application-controller
+  shell: |
+    kubectl rollout status  --namespace="argocd" -w statefulset.apps/argocd-application-controller
+  environment:
+    KUBECONFIG: '/etc/kubernetes/admin.conf'
+  become: true
+  failed_when: false
+  register: _result
+  until: '"successfully" in _result.stdout'
+  retries: 60
+  delay: 5
 
