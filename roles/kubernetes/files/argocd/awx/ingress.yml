@@ -19,4 +19,4 @@ spec:
               serviceName: awx-service
               servicePort: 80
             path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix
