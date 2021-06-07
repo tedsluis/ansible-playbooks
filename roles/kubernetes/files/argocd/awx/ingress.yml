@@ -1,24 +1,22 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: awx-ingress
   namespace: awx
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
   tls:
-  - hosts:
+    - hosts:
       - awx-k8s.bachstraat20.duckdns.org
-    secretName: ingress-tls
+      # This assumes tls-secret exists and the SSL
+      # certificate contains a CN for foo.bar.com
+      secretName: ingress-tls
   rules:
-  - host: awx-k8s.bachstraat20.duckdns.org
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: awx-service
-            port:
-              number: 80
+    - host: awx-k8s.bachstraat20.duckdns.org
+      http:
+        paths:
+        - path: /
+          backend:
+            # This assumes http-svc exists and routes to healthy endpoints
+            serviceName: awx-service
+            servicePort: 80
