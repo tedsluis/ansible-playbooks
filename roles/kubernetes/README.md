@@ -71,7 +71,7 @@ Use your own sealed-secrets public key ~/.ssh/sealed_secrets_tls.crt to create s
 
 ingress-tls Sealed-secret:
 ```bash
-$ kubectl --cert ~/.ssh/sealed_secrets_tls.crt  -n awx create secret tls ingress-tls --cert=/var/lib/certs/fullchain.pem --key=/var/lib/certs/privkey.pem --dry-run=server -o yaml | kubeseal --controller-namespace=kube-system --controller-name=sealed-secrets-controller --format=yaml > roles/kubernetes/files/argocd/awx/ingress-tls.yml
+$ kubectl ~/.ssh/sealed_secrets_tls.crt  -n awx create secret tls ingress-tls --cert=/var/lib/certs/fullchain.pem --key=/var/lib/certs/privkey.pem --dry-run=server -o yaml | kubeseal --cert ~/.ssh/sealed_secrets_tls.crt --controller-namespace=kube-system --controller-name=sealed-secrets-controller --format=yaml > roles/kubernetes/files/argocd/awx/ingress-tls.yml
 ```
 
 ## Remove cluster
