@@ -1,7 +1,7 @@
 ---
 
 - name: check for /usr/bin/crictl
-  ansible.builtin.stat: 
+  ansible.builtin.stat:
     path: /usr/bin/crictl
   become: true
   failed_when: false
@@ -25,12 +25,12 @@
 
 - include: install-operator-lifecycle-manager.yml
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
-  
+
 - include: sealed-secrets.yml
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
-  
+
 - include: argocd.yml
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
 
 
-     
+
