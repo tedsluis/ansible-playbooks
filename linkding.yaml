@@ -3,7 +3,7 @@
 - name: linkding
 
   hosts:
-    - fed157
+    - fed168
 
   vars:
     ansible_user: ansible
