@@ -107,7 +107,7 @@
   containers.podman.podman_container:
     name: registry
     pod: registrypod
-    image: "{{_image_registry_url}}{{_registry_image.image}}-{{_architecture}}"
+    image: "{{_image_registry_url}}{{_registry_image.image}}"
     state: present
     env:
       REGISTRY_AUTH: "htpasswd"
@@ -140,7 +140,7 @@
   containers.podman.podman_container:
     name: registry-ui
     pod: registrypod
-    image: "{{_image_registry_url}}{{_docker_registry_ui_image.image}}-{{_architecture}}"
+    image: "{{_image_registry_url}}{{_docker_registry_ui_image.image}}"
     state: present
     env:
       NGINX_PROXY_PASS_URL: https://registry.bachstraat20.duckdns.org:5000
@@ -166,7 +166,7 @@
     name: haproxy
     pod: registrypod
     state: started
-    image: "{{_image_registry_url}}{{_haproxy_image.image}}-{{_architecture}}"
+    image: "{{_image_registry_url}}{{_haproxy_image.image}}"
     debug: true
     privileged: true
     volume:
