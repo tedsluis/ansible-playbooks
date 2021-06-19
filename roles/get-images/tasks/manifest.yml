@@ -18,6 +18,7 @@
 
 - name: create manifest
   shell: |
+    podman untag "{{_image_registry_url}}{{_image}}"
     podman manifest create "{{_image_registry_url}}{{_image}}"
   become: true
   when: "'EXISTS=1' in  _manifest_exists.stdout"
