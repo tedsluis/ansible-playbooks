@@ -66,12 +66,10 @@ $ ansible-galaxy collection install community.general
 $ ansible-galaxy collection install containers.podman
 $ sudo dnf install python3-pip
 $ sudo pip3 install virtualenv
-$ virtualenv venv
-$ source venv/bin/activate          # deactivate to exit
-$ virtualenv -p python3 myenv
+$ virtualenv ansible
+$ source ansible/bin/activate          # deactivate to exit
 $ pip install ansible
 ```
-
 
 ## Roles
 
