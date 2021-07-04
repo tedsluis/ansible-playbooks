@@ -43,6 +43,7 @@
   shell: |
     podman image prune --all --force
   become: true
+  failed_when: false
 
 - include: "{{outer_item.build}}.yml"
   loop: "{{_builds | unique}}"
@@ -67,3 +68,4 @@
   shell: |
     podman image prune --all --force
   become: true
+  failed_when: false
