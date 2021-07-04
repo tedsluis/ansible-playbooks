@@ -5,8 +5,8 @@
 
 - name: create blackbox directories
   file:
-    path: "{{item.directory}}"
-    owner: "{{item.owner}}"
+    path: "{{ item.directory }}"
+    owner: "{{ item.owner }}"
     group: "{{item.group}}"
     mode: "{{item.mode}}"
     state: directory
@@ -15,9 +15,9 @@
     - { directory: "/var/lib/blackbox"       ,owner: "blackbox" ,group: "blackbox" ,mode: "0777" }
     - { directory: "/var/lib/blackbox/config",owner: "blackbox" ,group: "blackbox" ,mode: "0777" }
 
-- name: "pull docker.io/prom/blackbox-exporter:{{_blackbox_image_tag}} image"
+- name: "pull docker.io/prom/blackbox-exporter: {{ _blackbox_image_tag }} image"
   shell: |
-    podman pull docker.io/prom/blackbox-exporter:{{_blackbox_image_tag}}
+    podman pull docker.io/prom/blackbox-exporter:{{ _blackbox_image_tag }}
   register: _image_pull
   become: true
 
