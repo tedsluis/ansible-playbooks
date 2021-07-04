@@ -140,7 +140,6 @@
 - name: "pause until jenkins is reachable"
   uri:
     url: "https://{{_jenkins_fqdn}}:8443"
-    follow_redirects: none
     method: POST
     url_username: "{{_jenkins_user}}"
     url_password: "{{_jenkins_password}}"
