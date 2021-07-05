@@ -104,6 +104,7 @@
     - dashboard.5.json
     - dashboard.6.json
     - dashboard.7.json
+    - dashboard.8.json
   notify: _restart_grafana
 
 - name: create /var/lib/grafana/etc/provisioning/datasources/datasource.aa.yaml
@@ -132,6 +133,7 @@
     - dashboard.5.yaml
     - dashboard.6.yaml
     - dashboard.7.yaml
+    - dashboard.8.yaml
   notify: _restart_grafana
 
 - name: create /etc/systemd/system/grafana.service
