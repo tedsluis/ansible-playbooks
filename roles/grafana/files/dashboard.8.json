@@ -83,11 +83,56 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dockerhub_remaining_nologin{env=\"fedora\", instance=\"fed120:9100\", job=\"node_exporters_https\"}"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dockerhub_reset_nologin{env=\"fedora\", instance=\"fed120:9100\", job=\"node_exporters_https\"}"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dockerhub_remaining_login{env=\"fedora\", instance=\"fed120:9100\", job=\"node_exporters_https\"}"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 14,
+        "h": 22,
         "w": 24,
         "x": 0,
         "y": 0
@@ -121,7 +166,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dockerhub_ratelimit_login",
+          "expr": "dockerhub_remaining_nologin",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -129,7 +174,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dockerhub_ratelimit_nologin",
+          "expr": "dockerhub_remaining_login",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -137,7 +182,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dockerhub_ratelimit_login",
+          "expr": "dockerhub_reset_nologin",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -145,7 +190,7 @@
         },
         {
           "exemplar": true,
-          "expr": "dockerhub_ratelimit_login",
+          "expr": "dockerhub_reset_login",
           "hide": false,
           "interval": "",
           "legendFormat": "",
@@ -164,12 +209,12 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Docker rate limit Copy",
   "uid": "hAOVb3k7k",
-  "version": 2
+  "version": 4
 }
