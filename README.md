@@ -8,7 +8,7 @@
 
 ## what runs where
 
-| fed127  | fed130  | fed143      | fed149       | fed157           | fed159     | fed160        | fed168   | fed171     | fed178           | openvpn         | pihole  | 
+| fed127  | fed130  | fed143      | fed149       | fed157           | fed159     | fed160        | fed168   | fed171     | fed178           | openvpn         | pihole  |
 | rpi4b8g | rpi4b8g | rpi4b4g     | rpi4b4g      | rpi3b+           | rpi2b      | rpi4b8g       | rpi4b8g  | rpi2b      | rpi2b            | rpi3b           | rpi3b   |
 | nvme128 | nvme128 | nvme512     | nvme1024     |                  |            | nvme128       |          |            |                  |                 |         |
 | f34     | f34     | f34         | f34          | f34              |            | f34           | f34      |            |                  |                 |         |
@@ -21,7 +21,7 @@
 |         |         |             |              |                  |            | snmpexporter  |          |            |                  |                 |         |
 |         |         |             |              |                  |            |               |          |            |                  |                 |         |
 
-## Playbooks:
+## Playbooks
 
 | playbooks                          | description                        |
 |------------------------------------|------------------------------------|
@@ -32,7 +32,6 @@
 | [pihole.yaml](pihole.yaml)         | pihole server deployment           |
 | [postgres.yaml](postgres.yaml)     | postgres db deployment             |
 | [rocketchat.yaml](rocketchat.yaml) | rocketchat server deployment       |
-
 
 ## Inventory
 
