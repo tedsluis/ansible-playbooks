@@ -7,7 +7,7 @@
 
 - name: create pihole_default podman network
   shell: |
-    /usr/bin/podman network create pihole_default
+    /usr/bin/podman network create pihole_default --disable-dns
   become: true
   when: '"pihole_default" not in podman_network.stdout' 
 
