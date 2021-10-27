@@ -20,7 +20,7 @@ spec:
         end
         return hs
   initialRepositories: |
-    - url: git@github.com:tedsluis/ansible-playbooks.git
+    - ssh://git@github.com:tedsluis/ansible-playbooks.git
       sshPrivateKeySecret:
         name: git-ssh-secret
         key: git-ssh-secret

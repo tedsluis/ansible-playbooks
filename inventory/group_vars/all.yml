@@ -89,6 +89,7 @@ _git_mail_address: ted.sluis@gmail.com
 _fqdns:
   - { ip: '192.168.1.17',    fqdn:        'pihole.bachstraat20.duckdns.org' }
   - { ip: '192.168.1.10',    fqdn:       'openvpn.bachstraat20.duckdns.org' }
+  - { ip: '192.168.11.120',  fqdn:     'kubernetes.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.143',  fqdn:           'git.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.143',  fqdn:          'home.bachstraat20.duckdns.org' }
   - { ip: '192.168.11.130',  fqdn:       'jenkins.bachstraat20.duckdns.org' }

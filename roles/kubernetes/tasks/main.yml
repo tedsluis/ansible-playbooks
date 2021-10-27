@@ -30,7 +30,7 @@
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
 
 - include: argocd.yml
-  when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
+  when: _stat_crictl.stat.exists
 
 
 

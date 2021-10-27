@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   repositories: |
-    - url: git@github.com:tedsluis/ansible-playbooks.git
+    - url: ssh://git@github.com:tedsluis/ansible-playbooks.git
       sshPrivateKeySecret:
         name: git-ssh-secret
         key: git-ssh-secret
