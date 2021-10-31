@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: roles/kubernetes/files/argocd/ingress-nginx
-    repoURL: ssh://git@github.com:tedsluis/ansible-playbooks.git
+    repoURL: https://github.com/tedsluis/ansible-playbooks.git
     targetRevision: HEAD
   syncPolicy:
     automated:

@@ -5,7 +5,7 @@
 
 - name: kubeadm init with pod network 100.64.0.0
   shell: |
-    kubeadm init --pod-network-cidr=100.64.0.0/16 --kubernetes-version=1.21
+    kubeadm init --pod-network-cidr=100.64.0.0/16
   become: true
 
 # Install pod network
