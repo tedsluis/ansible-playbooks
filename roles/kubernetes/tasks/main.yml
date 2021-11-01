@@ -26,11 +26,14 @@
 - include: install-operator-lifecycle-manager.yml
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
 
+- include: helm.yml
+  when: _stat_crictl.stat.exists
+
 - include: sealed-secrets.yml
   when: _stat_crictl.stat.exists and _containers_running.stdout == "0"
 
 - include: argocd.yml
-  when: _stat_crictl.stat.exists
+  when: _stat_crictl.stat.exists 
 
 
 
