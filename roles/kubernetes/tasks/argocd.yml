@@ -3,7 +3,7 @@
 # install argocd 
 # https://github.com/argoproj-labs/argocd-operator/blob/master/docs/install/olm.md
 
-- name: install .......
+- name: install argocd
   shell: |
     kubectl create namespace argocd || echo "namespace argocd already created"
     kubectl create -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml || kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
