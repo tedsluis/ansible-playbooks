@@ -16,7 +16,10 @@ spec:
       http:
         paths:
         - path: /
+          pathType: Prefix
           backend:
             # This assumes http-svc exists and routes to healthy endpoints
-            serviceName: awx-service
-            servicePort: 80
+            service:
+              name: awx-service
+              port: 
+                number: 80
