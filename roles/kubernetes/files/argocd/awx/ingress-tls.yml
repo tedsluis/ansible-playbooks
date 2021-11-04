@@ -3,6 +3,8 @@ kind: SealedSecret
 metadata:
   creationTimestamp: null
   name: ingress-tls
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   namespace: awx
 spec:
   encryptedData:
