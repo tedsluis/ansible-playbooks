@@ -10,12 +10,12 @@ metadata:
 spec:
   tls:
     - hosts:
-      - dashboard-k8s.bachstraat20.duckdns.org
+      - kubernetes-dashboard.bachstraat20.duckdns.org
       # This assumes tls-secret exists and the SSL
       # certificate contains a CN for foo.bar.com
       secretName: ingress-tls
   rules:
-    - host: dashboard-k8s.bachstraat20.duckdns.org
+    - host: kubernetes-dashboard.bachstraat20.duckdns.org
       http:
         paths:
         - path: /
