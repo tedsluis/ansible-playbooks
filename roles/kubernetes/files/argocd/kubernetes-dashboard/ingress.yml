@@ -7,6 +7,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   tls:
     - hosts:
@@ -26,3 +28,4 @@ spec:
               name: kubernetes-dashboard
               port: 
                 number: 443
+
