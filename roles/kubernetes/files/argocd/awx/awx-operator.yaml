@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   labels:
     control-plane: controller-manager
-  name: my-namespace
+  name: awx
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -612,13 +612,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: awx-operator-controller-manager
-  namespace: my-namespace
+  namespace: awx
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: awx-operator-leader-election-role
-  namespace: my-namespace
+  namespace: awx
 rules:
 - apiGroups:
   - ""
@@ -657,7 +657,7 @@ kind: Role
 metadata:
   creationTimestamp: null
   name: awx-operator-manager-role
-  namespace: my-namespace
+  namespace: awx
 rules:
 - apiGroups:
   - route.openshift.io
@@ -791,7 +791,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: awx-operator-leader-election-rolebinding
-  namespace: my-namespace
+  namespace: awx
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -799,13 +799,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: awx-operator-controller-manager
-  namespace: my-namespace
+  namespace: awx
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: awx-operator-manager-rolebinding
-  namespace: my-namespace
+  namespace: awx
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -813,7 +813,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: awx-operator-controller-manager
-  namespace: my-namespace
+  namespace: awx
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -826,7 +826,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: awx-operator-controller-manager
-  namespace: my-namespace
+  namespace: awx
 ---
 apiVersion: v1
 data:
@@ -844,7 +844,7 @@ data:
 kind: ConfigMap
 metadata:
   name: awx-operator-manager-config
-  namespace: my-namespace
+  namespace: awx
 ---
 apiVersion: v1
 kind: Service
@@ -852,7 +852,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: awx-operator-controller-manager-metrics-service
-  namespace: my-namespace
+  namespace: awx
 spec:
   ports:
   - name: https
@@ -868,7 +868,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: awx-operator-controller-manager
-  namespace: my-namespace
+  namespace: awx
 spec:
   replicas: 1
   selector:
