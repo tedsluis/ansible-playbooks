@@ -5,6 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
+  replicas: 1
   service_type: ClusterIP
   postgres_storage_class: nfs
   deployment_type: awx
